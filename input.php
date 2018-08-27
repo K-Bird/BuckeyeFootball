@@ -1096,6 +1096,7 @@
             $('.statInput').hide();
             $('.defLabel').show();
             $('.defInput').show();
+            $('.defInput').val("0");
         }
         if (newCategory === 'ret') {
             $('.statLabel').hide();
