@@ -600,9 +600,9 @@ function returnPos_PorS($posGroup, $pos1) {
         }
     } elseif ($posGroup === 'LB') {
         if ($pos1 === 'LB' || $pos1 === 'OLB' || $pos1 === 'MLB') {
-            return 'Secondary';
-        } else {
             return 'Primary';
+        } else {
+            return 'Secondary';
         }
     } elseif ($posGroup === ('KR' || 'PR' || 'H')) {
         if ($pos1 != ('KR' || 'PR' || 'H')) {
