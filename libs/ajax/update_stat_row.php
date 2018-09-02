@@ -96,9 +96,9 @@ if ($Category === 'def') {
         $passdef = $_POST['defPassDef'];
         db_query("UPDATE `stats_def` SET PassDef='{$passdef}' WHERE Game_ID='{$gameID}' AND Player_ID='{$playerID}'");
     }
-    if ($_POST['defFF'] != '') {
-        $fumbles = $_POST['defFF'];
-        db_query("UPDATE `stats_def` SET ForcedFumbles='{$fumbles}' WHERE Game_ID='{$gameID}' AND Player_ID='{$playerID}'");
+    if ($_POST['defQBHurries'] != '') {
+        $hurries = $_POST['defQBHurries'];
+        db_query("UPDATE `stats_def` SET QBHurries='{$hurries}' WHERE Game_ID='{$gameID}' AND Player_ID='{$playerID}'");
     }
     if ($_POST['defFumRec'] != '') {
         $rec = $_POST['defFumRec'];

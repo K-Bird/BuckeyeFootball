@@ -83,8 +83,8 @@ if ($Category === 'def') {
     if (isset($_POST['defPassDef'])) {
         $PassDef = $_POST['defPassDef'];
     }
-    if (isset($_POST['defFF'])) {
-        $FF = $_POST['defFF'];
+    if (isset($_POST['defQBHurries'])) {
+        $Hurries = $_POST['defQBHurries'];
     }
     if (isset($_POST['defFumRec'])) {
         $FumRec = $_POST['defFumRec'];
@@ -93,8 +93,8 @@ if ($Category === 'def') {
         $FumTDs = $_POST['defFumTDs'];
     }
 
-    db_query("INSERT INTO `stats_def` (Game_ID, Player_ID, Tackles, ForLoss, Sacks, INTs, INT_TDs, PassDef, ForcedFumbles, FumbleRec, FumbleTDs)
-            VALUES ('{$gameID}','{$playerID}','{$tak}','{$loss}','{$sacks}','{$INTs}','{$INTTDs}','{$PassDef}','{$FF}','{$FumRec}','{$FumTDs}')");
+    db_query("INSERT INTO `stats_def` (Game_ID, Player_ID, Tackles, ForLoss, Sacks, INTs, INT_TDs, PassDef, QBHurries, FumbleRec, FumbleTDs)
+            VALUES ('{$gameID}','{$playerID}','{$tak}','{$loss}','{$sacks}','{$INTs}','{$INTTDs}','{$PassDef}','{$Hurries}','{$FumRec}','{$FumTDs}')");
 }
 
 if ($Category === 'ret') {

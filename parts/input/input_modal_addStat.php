@@ -61,7 +61,7 @@
                                             <span class="badge badge-secondary statLabel retLabel">Punt Return TDs</span>
                                         </th>
                                         <th>
-                                            <span class="badge badge-secondary statLabel defLabel">Forced Fumbles</span>
+                                            <span class="badge badge-secondary statLabel defLabel">QB Hurries</span>
                                         </th>
                                         <th>
                                             <span class="badge badge-secondary statLabel defLabel">Fumble Rec</span>
@@ -129,7 +129,7 @@
                                             <input type="text" class="form-control statInput retInput" name="retPRRetTDs" style="width: 75px">
                                         </td>
                                         <td>
-                                            <input type="text" class="form-control statInput defInput" name="defFF" style="width: 75px">
+                                            <input type="text" class="form-control statInput defInput" name="defQBHurries" style="width: 75px">
                                         </td>
                                         <td>
                                             <input type="text" class="form-control statInput defInput" name="defFumRec" style="width: 75px">

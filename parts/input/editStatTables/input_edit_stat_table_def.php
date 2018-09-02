@@ -21,7 +21,7 @@
                     Passes Defended
                 </td>
                 <td>
-                    Forced Fumbles
+                    QB Hurries
                 </td>
                 <td>
                     Fumble Recoveries
@@ -52,7 +52,7 @@
                     <input class="form-control" type="text" name="defPassDef" placeholder="<?php echo $fetchPlayerGameStats['PassDef']; ?>">
                 </td>
                 <td>
-                    <input class="form-control" type="text" name="defFF" placeholder="<?php echo $fetchPlayerGameStats['ForcedFumbles']; ?>">
+                    <input class="form-control" type="text" name="defQBHurries" placeholder="<?php echo $fetchPlayerGameStats['QBHurries']; ?>">
                 </td>
                 <td>
                     <input class="form-control" type="text" name="defFumRec" placeholder="<?php echo $fetchPlayerGameStats['FumbleRec']; ?>">
