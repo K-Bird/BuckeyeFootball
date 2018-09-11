@@ -8,6 +8,7 @@
         <link rel="stylesheet" type="text/css" href="libs/css/bootstrap-datepicker.css">
         <link rel="stylesheet" type="text/css" href="libs/css/bootstrap-select.min.css">
         <link rel="stylesheet" type="text/css" href="libs/css/open-iconic-bootstrap.css">
+        <link rel="stylesheet" type="text/css" href="libs/css/common.css">
         <script src="libs/js/jquery.js"></script>
         <script src="libs/js/bootstrap.js"></script>
         <script src="libs/js/nouislider.js"></script>

@@ -19,6 +19,7 @@ $DepthForm = $fetchDepthForm['DepthChart'];
         <link rel="stylesheet" type="text/css" href="libs/css/nouislider.css">
         <link rel="stylesheet" type="text/css" href="libs/css/open-iconic-bootstrap.css">
         <link rel="stylesheet" type="text/css" href="libs/css/tablesorter-default.css">
+        <link rel="stylesheet" type="text/css" href="libs/css/common.css">
         <script src="libs/js/jquery.js"></script>
         <script src="libs/js/bootstrap.js"></script>
         <script src="libs/js/nouislider.js"></script>
@@ -26,33 +27,6 @@ $DepthForm = $fetchDepthForm['DepthChart'];
         <script src="libs/js/tablesorter-widgets.js"></script>
         <script src="libs/js/wNumb.js"></script>
         <script src="libs/js/commonFunctions.js"></script>
-        <style>
-            /* Loading Icon Look and Animation */
-            .loaderIcon {
-                position: absolute;
-                top:0;
-                bottom: 0;
-                left: 0;
-                right: 0;
-                margin: auto;
-                z-index: 9999;
-                border: 16px solid #666666; /* Light grey */
-                border-top: 16px solid #BB0000; /* Blue */
-                border-radius: 50%;
-                width: 120px;
-                height: 120px;
-                animation: spin 2s linear infinite;
-            }
-
-            @keyframes spin {
-                0% { transform: rotate(0deg); }
-                100% { transform: rotate(360deg); }
-            }
-            /* Start the entire page below the navbar as hidden, once page loads is shown */
-            #playerContent {
-                display: none;
-            }
-        </style>
     </head>
     <body>
         <?php include ('nav/navBar.php'); ?>
@@ -185,12 +159,10 @@ $DepthForm = $fetchDepthForm['DepthChart'];
 
         /* Player Table Sorting and Filtering */
         //Use tablesorting plugin to sort table columns
-         $("#playerTable").tablesorter({
-             
-             theme : "default",
-             
-         });
-        
+        $("#playerTable").tablesorter({
+            theme: "default",
+        });
+
         //Apply filtering and sorting plugin to the player table
         $('#playerTableSearch').on('input', function () {
             var searchText = $(this).val();
