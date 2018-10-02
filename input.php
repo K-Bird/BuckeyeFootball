@@ -1057,11 +1057,12 @@
 
         var addWeek = $(event.relatedTarget).data('week');
         var addfname = $(event.relatedTarget).data('fname');
+        var opp = $(event.relatedTarget).data('opp');
         var addlname = $(event.relatedTarget).data('lname');
         var addseason = $(event.relatedTarget).data('season');
         var game_ID = $(event.relatedTarget).data('gameid');
         $("#Stat_GM_ID").val(game_ID);
-        $('#AddStatTitle').append('Add Stat for ' + addfname + " " + addlname + " - " + addseason + ' - Week ' + addWeek);
+        $('#AddStatTitle').append('Add Stat for ' + addfname + " " + addlname + " - " + addseason + ' - Week ' + addWeek + ' Vs ' + opp);
         $('.statLabel').hide();
         $('.statInput').hide();
     });
@@ -1150,6 +1151,7 @@
         var player_ID = $(event.relatedTarget).data('player');
         var game_ID = $(event.relatedTarget).data('game');
         var week = $(event.relatedTarget).data('week');
+        var opp = $(event.relatedTarget).data('opp');
         var category = $(event.relatedTarget).data('cat');
         var fname = $(event.relatedTarget).data('fname');
         var lname = $(event.relatedTarget).data('lname');
@@ -1164,7 +1166,7 @@
                     {
                         //After control update then load the edit table and Update the Modal Title
                         $('#editStatBody').load('parts/input/input_edit_stat_body.php');
-                        $('#EditStatTitle').prepend('Edit ' + category + ' for ' + fname + " " + lname + " " + season + " - Week " + week);
+                        $('#EditStatTitle').prepend('Edit ' + category + ' for ' + fname + " " + lname + " " + season + " - Week " + week + " Vs " + opp);
                     },
                     error: function (jqXHR, textStatus, errorThrown)
                     {

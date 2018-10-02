@@ -707,7 +707,7 @@ function opponentLookup($opp_ID) {
     return $oppName;
 }
 
-function gameStatExists($gm_ID, $player_ID, $category, $week, $fname, $lname, $season) {
+function gameStatExists($gm_ID, $player_ID, $category, $week, $fname, $lname, $season, $opp) {
 
     $player_ID = returnPlayerMasterID($player_ID);
 
@@ -720,7 +720,7 @@ function gameStatExists($gm_ID, $player_ID, $category, $week, $fname, $lname, $s
            class="oi oi-comment-square existingStat"
            data-toggle="modal" 
            data-target="#editStatModal"
-           data-game=' . $gm_ID . ' data-player=' . $player_ID . ' data-cat=' . $category . ' data-week=' . $week . ' data-fname=' . $fname . ' data-lname=' . $lname . ' data-season=' . $season .
+           data-game=' . $gm_ID . ' data-player=' . $player_ID . ' data-cat=' . $category . ' data-week=' . $week . ' data-fname=' . $fname . ' data-lname=' . $lname . ' data-season=' . $season . ' data-opp=' . opponentLookup($opp) .
                 '></span ></button>
            <button class="btn btn-sm btn-danger removeStat" data-cat="' . $category . '" data-game="' . $gm_ID . '" data-player="' . $player_ID . '"><span class="oi oi-minus"></span></button> ';
     } else {
