@@ -1,3 +1,9 @@
+/* Define Variables */
+:root {
+    --color-scarlet : #BB0000;
+    --color-gray : #666666;
+}
+
 /* Loading Icon Look and Animation */
 .loaderIcon {
     position: absolute;
@@ -7,8 +13,8 @@
     right: 0;
     margin: auto;
     z-index: 9999;
-    border: 16px solid #666666; /* Light grey */
-    border-top: 16px solid #BB0000; /* Blue */
+    border: 16px solid var(--color-gray); /* Gray */
+    border-top: 16px solid var(--color-scarlet); /* Scarlet */
     border-radius: 50%;
     width: 120px;
     height: 120px;
@@ -23,12 +29,12 @@
 
 /* Slider Color Outside Of Handles */
 .noUi-target {
-    background-color: gray
+    background-color : var(--color-gray);
 }
 /* Slider Color Inside Of Handles */
 .noUi-connect {
 
-    background-color: red 
+    background-color : var(--color-scarlet);
 }
 
 /* Start the entire page below the navbar as hidden, once page loads is shown */
@@ -40,4 +46,21 @@
 /* Start the entire page below the navbar as hidden, once page loads is shown */
 #seasonContent {
     display: none;
+}
+
+
+/* Active Nav Pill Color */
+.nav-pills .nav-link.active, .nav-pills .show > .nav-link {
+    background-color : var(--color-scarlet);
+    color: white;
+}
+
+/* Non Active Nav Pill Color */
+a {
+    color : var(--color-gray);
+}
+
+/* Link Hover Color */
+a:hover {
+    color : black;
 }

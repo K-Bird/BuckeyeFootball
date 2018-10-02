@@ -691,9 +691,17 @@ function incrementPlayerClass($prevClass) {
     }
 }
 
-function getPlayerField($field, $player_row) {
+function getPlayerFieldByRow($field, $player_row) {
 
     $getAttribute = db_query("SELECT * FROM `players` WHERE Player_Row='{$player_row}'");
+    $fetchAttribute = $getAttribute->fetch_assoc();
+    $attribute = $fetchAttribute[$field];
+    return $attribute;
+}
+
+function getPlayerFieldByMasterID($field, $player_ID) {
+
+    $getAttribute = db_query("SELECT * FROM `players` WHERE Player_Master_ID='{$player_ID}'");
     $fetchAttribute = $getAttribute->fetch_assoc();
     $attribute = $fetchAttribute[$field];
     return $attribute;
@@ -1385,5 +1393,54 @@ function playerCompareAddYearsBtn($startYear, $endYear, $location) {
     }
     if ($location === 'Right') {
         echo '<button id="nextCompareYearRight" class="btn btn-success btn-sm" data-year="' . getSeason_Year($rightYear) . '"><span class="oi oi-plus"></span></button>';
+    }
+}
+
+/* Carousel Functions */
+
+function buildCarousel($id) {
+
+    echo '<div id="playerPhotoIndicators" class="carousel slide" data-ride="carousel">
+  <ol class="carousel-indicators">';
+    echo buildCarouselIndicators();
+    echo '</ol>
+  <div class="carousel-inner">';
+    echo buildCarouselImages();
+    echo '</div>
+  <a class="carousel-control-prev" href="#playerPhotoIndicators" role="button" data-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="sr-only">Previous</span>
+  </a>
+  <a class="carousel-control-next" href="#playerPhotoIndicators" role="button" data-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="sr-only">Next</span>
+  </a>
+</div>';
+}
+
+function buildCarouselIndicators() {
+
+    $i = 0;
+    $getImages = db_query('SELECT * FROM `photos`');
+    while ($fetchImages = $getImages->fetch_assoc()) {
+        echo '<li data-target = "#playerPhotoIndicators" data-slide-to = "' . $i . '"></li>';
+        $i++;
+    }
+}
+
+function buildCarouselImages() {
+
+    $i = 0;
+    $getImages = db_query('SELECT * FROM `photos`');
+    while ($fetchImages = $getImages->fetch_assoc()) {
+
+        echo '<div class = "carousel-item ';
+        if ($i === 0) {
+            echo 'active';
+        }
+        echo '">
+    <img class = "d-block w-100" src = "/buckeyefootball/libs/images/' . $fetchImages['Photo_Name'] . '.' . $fetchImages['Extension'] . '">
+    </div>';
+        $i++;
     }
 }

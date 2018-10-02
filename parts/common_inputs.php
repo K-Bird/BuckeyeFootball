@@ -604,3 +604,41 @@ function displayPlayerClassFilterSelect() {
 
     echo '</select>';
 }
+
+//Build Players With Photos Select List
+function displayPlayerPhotoSelect($currentPlayer) {
+
+    $taggedPlayers = [];
+    $getTaggedPlayers = db_query("SELECT * FROM `photos`");
+
+    while ($fetchTaggedPlayers = $getTaggedPlayers->fetch_assoc()) {
+
+        $tags = $fetchTaggedPlayers['Player_Tags'];
+        $eachTag = explode(',', $tags);
+
+        foreach ($eachTag as $tag) {
+            array_push($taggedPlayers, $tag);
+        }
+    }
+
+
+    echo '<select id="playerPhotoSelect" class="selectpicker" data-live-search="true" name="playerPhotoSelect">';
+
+    echo '<option></option>';
+
+    foreach ($taggedPlayers as $tag) {
+
+        echo '<option value="', $tag, '" ';
+
+        if ($currentPlayer === $tag) {
+
+            echo 'Selected="Selected"';
+        }
+
+        echo '>';
+        echo getPlayerFieldByMasterID('First_Name', $tag). " " . getPlayerFieldByMasterID('Last_Name', $tag);
+        echo '</option>';
+    }
+
+    echo '</select>';
+}

@@ -5,9 +5,9 @@
         <div class="col-lg-6">
             <h2><span class="badge badge-secondary">Add <?php ?> Stats For:
                     <?php
-                    echo getPlayerField("Position", $inputAddPlayer) . " - ";
-                    echo getPlayerField("First_Name", $inputAddPlayer) . " ";
-                    echo getPlayerField("Last_Name", $inputAddPlayer);
+                    echo getPlayerFieldByRow("Position", $inputAddPlayer) . " - ";
+                    echo getPlayerFieldByRow("First_Name", $inputAddPlayer) . " ";
+                    echo getPlayerFieldByRow("Last_Name", $inputAddPlayer);
                     echo " ( " . $Input_Season . " )";
                     ?>
                 </span></h2>
@@ -64,33 +64,33 @@
 
 
                         echo '<td>';
-                        echo gameStatExists($fetchGameData['GM_ID'], $inputAddPlayer, 'passing', $fetchGameData['Week'], getPlayerField("First_Name", $inputAddPlayer), getPlayerField("Last_Name", $inputAddPlayer), $Input_Season);
+                        echo gameStatExists($fetchGameData['GM_ID'], $inputAddPlayer, 'passing', $fetchGameData['Week'], getPlayerFieldByRow("First_Name", $inputAddPlayer), getPlayerFieldByRow("Last_Name", $inputAddPlayer), $Input_Season);
                         echo '</td>';
                         echo '<td>';
-                        echo gameStatExists($fetchGameData['GM_ID'], $inputAddPlayer, 'rushing', $fetchGameData['Week'], getPlayerField("First_Name", $inputAddPlayer), getPlayerField("Last_Name", $inputAddPlayer), $Input_Season);
+                        echo gameStatExists($fetchGameData['GM_ID'], $inputAddPlayer, 'rushing', $fetchGameData['Week'], getPlayerFieldByRow("First_Name", $inputAddPlayer), getPlayerFieldByRow("Last_Name", $inputAddPlayer), $Input_Season);
                         echo '</td>';
                         echo '<td>';
-                        echo gameStatExists($fetchGameData['GM_ID'], $inputAddPlayer, 'rec', $fetchGameData['Week'], getPlayerField("First_Name", $inputAddPlayer), getPlayerField("Last_Name", $inputAddPlayer), $Input_Season);
+                        echo gameStatExists($fetchGameData['GM_ID'], $inputAddPlayer, 'rec', $fetchGameData['Week'], getPlayerFieldByRow("First_Name", $inputAddPlayer), getPlayerFieldByRow("Last_Name", $inputAddPlayer), $Input_Season);
                         echo '</td>';
                         echo '<td>';
-                        echo gameStatExists($fetchGameData['GM_ID'], $inputAddPlayer, 'def', $fetchGameData['Week'], getPlayerField("First_Name", $inputAddPlayer), getPlayerField("Last_Name", $inputAddPlayer), $Input_Season);
+                        echo gameStatExists($fetchGameData['GM_ID'], $inputAddPlayer, 'def', $fetchGameData['Week'], getPlayerFieldByRow("First_Name", $inputAddPlayer), getPlayerFieldByRow("Last_Name", $inputAddPlayer), $Input_Season);
                         echo '</td>';
                         echo '<td>';
-                        echo gameStatExists($fetchGameData['GM_ID'], $inputAddPlayer, 'ret', $fetchGameData['Week'], getPlayerField("First_Name", $inputAddPlayer), getPlayerField("Last_Name", $inputAddPlayer), $Input_Season);
+                        echo gameStatExists($fetchGameData['GM_ID'], $inputAddPlayer, 'ret', $fetchGameData['Week'], getPlayerFieldByRow("First_Name", $inputAddPlayer), getPlayerFieldByRow("Last_Name", $inputAddPlayer), $Input_Season);
                         echo '</td>';
                         echo '<td>';
-                        echo gameStatExists($fetchGameData['GM_ID'], $inputAddPlayer, 'kicking', $fetchGameData['Week'], getPlayerField("First_Name", $inputAddPlayer), getPlayerField("Last_Name", $inputAddPlayer), $Input_Season);
+                        echo gameStatExists($fetchGameData['GM_ID'], $inputAddPlayer, 'kicking', $fetchGameData['Week'], getPlayerFieldByRow("First_Name", $inputAddPlayer), getPlayerFieldByRow("Last_Name", $inputAddPlayer), $Input_Season);
                         echo '</td>';
                         echo '<td>';
-                        echo gameStatExists($fetchGameData['GM_ID'], $inputAddPlayer, 'punting', $fetchGameData['Week'], getPlayerField("First_Name", $inputAddPlayer), getPlayerField("Last_Name", $inputAddPlayer), $Input_Season);
+                        echo gameStatExists($fetchGameData['GM_ID'], $inputAddPlayer, 'punting', $fetchGameData['Week'], getPlayerFieldByRow("First_Name", $inputAddPlayer), getPlayerFieldByRow("Last_Name", $inputAddPlayer), $Input_Season);
                         echo '</td>';
                         echo '<td>';
                         echo '<button
                                    class="btn btn-success" 
                                    data-gameID="', $fetchGameData['GM_ID'], '"
                                    data-week="', $fetchGameData['Week'], '" 
-                                   data-fname="', getPlayerField("First_Name", $inputAddPlayer), '" 
-                                   data-lname="', getPlayerField("Last_Name", $inputAddPlayer), '" 
+                                   data-fname="', getPlayerFieldByRow("First_Name", $inputAddPlayer), '" 
+                                   data-lname="', getPlayerFieldByRow("Last_Name", $inputAddPlayer), '" 
                                    data-season="', $Input_Season, '"
                                    data-toggle="modal" 
                                    data-target="#addStatModal">
