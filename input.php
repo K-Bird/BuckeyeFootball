@@ -1058,18 +1058,49 @@
         var addWeek = $(event.relatedTarget).data('week');
         var addfname = $(event.relatedTarget).data('fname');
         var opp = $(event.relatedTarget).data('opp');
+        var masterID = $(event.relatedTarget).data('playerid');
         var addlname = $(event.relatedTarget).data('lname');
         var addseason = $(event.relatedTarget).data('season');
         var game_ID = $(event.relatedTarget).data('gameid');
+
         $("#Stat_GM_ID").val(game_ID);
         $('#AddStatTitle').append('Add Stat for ' + addfname + " " + addlname + " - " + addseason + ' - Week ' + addWeek + ' Vs ' + opp);
         $('.statLabel').hide();
         $('.statInput').hide();
+
+        if ($('#passing' + game_ID + masterID).length) {
+            $('#statOptionPassing').prop( "disabled", true );
+        }
+        if ($('#rushing' + game_ID + masterID).length) {
+            $('#statOptionRushing').prop( "disabled", true );
+        }
+        if ($('#rec' + game_ID + masterID).length) {
+            $('#statOptionRec').prop( "disabled", true );
+        }
+        if ($('#def' + game_ID + masterID).length) {
+            $('#statOptionDef').prop( "disabled", true );
+        }
+        if ($('#ret' + game_ID + masterID).length) {
+            $('#statOptionRet').prop( "disabled", true );
+        }
+        if ($('#kicking' + game_ID + masterID).length) {
+            $('#statOptionKicking').prop( "disabled", true );
+        }
+        if ($('#punting' + game_ID + masterID).length) {
+            $('#statOptionPunting').prop( "disabled", true );
+        }
     });
 
     $('#addStatModal').on('hidden.bs.modal', function (event) {
 
         $('#AddStatTitle').empty();
+        $('#statOptionPassing').prop( "disabled", false);
+        $('#statOptionRushing').prop( "disabled", false);
+        $('#statOptionRec').prop( "disabled", false);
+        $('#statOptionDef').prop( "disabled", false);
+        $('#statOptionRet').prop( "disabled", false);
+        $('#statOptionKicking').prop( "disabled", false);
+        $('#statOptionPunting').prop( "disabled", false);
     });
 
     $('#statCategory').change(function () {
@@ -1614,18 +1645,18 @@
         clearTimeout(timer);
         timer = setTimeout(function () {
 
-            
+
             var newValue = $(e.target).val();
             var ID = $(e.target).data('id');
             var table = $(e.target).data('table');
             var datacol = $(e.target).data('datacol');
             var idcol = $(e.target).data('idcol');
- 
+
             $.ajax(
                     {
                         url: "libs/ajax/update_input_ListItem.php",
                         type: "POST",
-                        data: {newValue : newValue, ID : ID, table : table, datacol : datacol, idcol : idcol},
+                        data: {newValue: newValue, ID: ID, table: table, datacol: datacol, idcol: idcol},
                         success: function (data, textStatus, jqXHR)
                         {
                             location.reload();

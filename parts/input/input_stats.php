@@ -67,6 +67,7 @@
                                    data-gameID="', $fetchGameData['GM_ID'], '"
                                    data-week="', $fetchGameData['Week'], '" 
                                    data-opp="', opponentLookup($fetchGameData['Vs']),'"
+                                   data-playerID="', getPlayerField("Player_Master_ID", $inputAddPlayer), '"
                                    data-fname="', getPlayerField("First_Name", $inputAddPlayer), '" 
                                    data-lname="', getPlayerField("Last_Name", $inputAddPlayer), '" 
                                    data-season="', $Input_Season, '"

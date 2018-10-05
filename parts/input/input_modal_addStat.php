@@ -76,13 +76,13 @@
                                         <td>
                                             <select id="statCategory" name="statCategory" class="form-control">
                                                 <option value=""></option>
-                                                <option value="pass">Passing</option>
-                                                <option value="rush">Rushing</option>
-                                                <option value="rec">Receiving</option>
-                                                <option value="def">Defense</option>
-                                                <option value="ret">Returns</option>
-                                                <option value="kick">Kicking</option>
-                                                <option value="punt">Punting</option>
+                                                <option id="statOptionPassing" value="pass">Passing</option>
+                                                <option id="statOptionRushing" value="rush">Rushing</option>
+                                                <option id="statOptionRec" value="rec">Receiving</option>
+                                                <option id="statOptionDef" value="def">Defense</option>
+                                                <option id="statOptionRet" value="ret">Returns</option>
+                                                <option id="statOptionKicking" value="kick">Kicking</option>
+                                                <option id="statOptionPunting" value="punt">Punting</option>
                                             </select>
                                         </td>
                                         <td>
