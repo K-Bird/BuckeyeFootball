@@ -8,6 +8,9 @@
                 <td>
                     Punt Yards
                 </td>
+                <td>
+                    Punt Long
+                </td>
             </tr>
         </thead>
         <tbody>
@@ -17,6 +20,9 @@
                 </td>
                 <td>
                     <input class="form-control" type="text" name="puntYards" placeholder="<?php echo $fetchPlayerGameStats['Yards']; ?>">
+                </td>
+                <td>
+                    <input class="form-control" type="text" name="puntLong" placeholder="<?php echo $fetchPlayerGameStats['LongPunt']; ?>">
                 </td>
             </tr>
             <tr style="text-align: center">

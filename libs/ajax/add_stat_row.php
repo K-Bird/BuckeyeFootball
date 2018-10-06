@@ -117,7 +117,7 @@ if ($Category === 'ret') {
     if (isset($_POST['retPRRetTDs'])) {
         $PRTDs = $_POST['retPRRetTDs'];
     }
-  
+
     db_query("INSERT INTO `stats_ret` (Game_ID, Player_ID, KR_Ret, KR_Yards, KR_TDs, PR_Ret, PR_Yards, PR_TDs)
             VALUES ('{$gameID}','{$playerID}','{$KRreturns}','{$KRyards}','{$KRTDs}','{$PRreturns}','{$PRyards}','{$PRTDs}')");
 }
@@ -131,14 +131,17 @@ if ($Category === 'kick') {
         $XPA = $_POST['kickXPA'];
     }
     if (isset($_POST['kickFGM'])) {
-        $FGM= $_POST['kickFGM'];
+        $FGM = $_POST['kickFGM'];
     }
     if (isset($_POST['kickFGA'])) {
         $FGA = $_POST['kickFGA'];
     }
-  
-    db_query("INSERT INTO `stats_kicking` (Game_ID, Player_ID, XPA, XPM, FGA, FGM)
-            VALUES ('{$gameID}','{$playerID}','{$XPA}','{$XPM}','{$FGA}','{$FGM}')");
+    if (isset($_POST['kickLong'])) {
+        $Long = $_POST['kickLong'];
+    }
+
+    db_query("INSERT INTO `stats_kicking` (Game_ID, Player_ID, XPA, XPM, FGA, FGM, LongKick )
+            VALUES ('{$gameID}','{$playerID}','{$XPA}','{$XPM}','{$FGA}','{$FGM}','{$Long}')");
 }
 
 if ($Category === 'punt') {
@@ -149,7 +152,10 @@ if ($Category === 'punt') {
     if (isset($_POST['puntYards'])) {
         $Yards = $_POST['puntYards'];
     }
-  
-    db_query("INSERT INTO `stats_punting` (Game_ID, Player_ID, Att, Yards)
-            VALUES ('{$gameID}','{$playerID}','{$Attempts}','{$Yards}')");
+    if (isset($_POST['puntLong'])) {
+        $Long = $_POST['puntLong'];
+    }
+
+    db_query("INSERT INTO `stats_punting` (Game_ID, Player_ID, Att, Yards, LongPunt)
+            VALUES ('{$gameID}','{$playerID}','{$Attempts}','{$Yards}','{$Long}')");
 }

@@ -154,6 +154,10 @@ if ($Category === 'kicking') {
         $FGA = $_POST['kickFGA'];
         db_query("UPDATE `stats_kicking` SET FGA='{$FGA}' WHERE Game_ID='{$gameID}' AND Player_ID='{$playerID}'");
     }
+    if ($_POST['kickLong'] != '') {
+        $Long = $_POST['kickLong'];
+        db_query("UPDATE `stats_kicking` SET LongKick='{$Long}' WHERE Game_ID='{$gameID}' AND Player_ID='{$playerID}'");
+    }
 }
 
 if ($Category === 'punting') {
@@ -164,6 +168,10 @@ if ($Category === 'punting') {
     if ($_POST['puntYards'] != '') {
         $yards = $_POST['puntYards'];
         db_query("UPDATE `stats_punting` SET Yards='{$yards}' WHERE Game_ID='{$gameID}' AND Player_ID='{$playerID}'");
+    }
+    if ($_POST['puntLong'] != '') {
+        $Long = $_POST['puntLong'];
+        db_query("UPDATE `stats_punting` SET LongPunt='{$Long}' WHERE Game_ID='{$gameID}' AND Player_ID='{$playerID}'");
     }
 }
  

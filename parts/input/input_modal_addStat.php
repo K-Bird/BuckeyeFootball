@@ -43,6 +43,7 @@
                                             <span class="badge badge-secondary statLabel defLabel">Sacks</span>
                                             <span class="badge badge-secondary statLabel retLabel">Kick Return TDs</span>
                                             <span class="badge badge-secondary statLabel kickLabel">FG Made</span>
+                                            <span class="badge badge-secondary statLabel puntLabel">Punt Long</span>
                                         </th>
                                         <th>
                                             <span class="badge badge-secondary statLabel passLabel">TDs</span>
@@ -54,6 +55,7 @@
                                             <span class="badge badge-secondary statLabel passLabel">INTs</span>
                                             <span class="badge badge-secondary statLabel defLabel">INT TDs</span>
                                             <span class="badge badge-secondary statLabel retLabel">Punt Return Yards</span>
+                                            <span class="badge badge-secondary statLabel kickLabel">FG Long</span>
                                         </th>
                                         <th>
                                             <span class="badge badge-secondary statLabel passLabel">Rate</span>
@@ -111,6 +113,7 @@
                                             <input type="text" class="form-control statInput defInput" name="defSack" style="width: 75px">
                                             <input type="text" class="form-control statInput retInput" name="retKRRetTDs" style="width: 75px">
                                             <input type="text" class="form-control statInput kickInput" name="kickFGM" style="width: 75px">
+                                            <input type="text" class="form-control statInput puntInput" name="puntLong" style="width: 75px">
                                         </td>
                                         <td>
                                             <input type="text" class="form-control statInput passInput" name="passTDs" style="width: 75px">
@@ -122,6 +125,7 @@
                                             <input type="text" class="form-control statInput passInput" name="passINTs" style="width: 75px">
                                             <input type="text" class="form-control statInput defInput" name="defINTTDs" style="width: 75px">
                                             <input type="text" class="form-control statInput retInput" name="retPRRetYards" style="width: 75px">
+                                            <input type="text" class="form-control statInput kickInput" name="kickLong" style="width: 75px">
                                         </td>
                                         <td>
                                             <input type="text" class="form-control statInput passInput" name="passRate" style="width: 75px">

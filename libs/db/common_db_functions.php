@@ -810,11 +810,11 @@ function playerStatCardthead($cagetory) {
     }
     if ($cagetory === 'Kicking') {
 
-        return '<th></th><td>Extra Points Made</td><td>Extra Point Attempts</td><td>Extra Point %</td><td>Field Goals Made</td><td>Field Goal Attempts</td><td>Field Goal %</td>';
+        return '<th></th><td>Extra Points Made</td><td>Extra Point Attempts</td><td>Extra Point %</td><td>Field Goals Made</td><td>Field Goal Attempts</td><td>Field Goal %</td><td>Field Goal Long</td>';
     }
     if ($cagetory === 'Punting') {
 
-        return '<th></th><td>Punts</td><td>Punt Yards</td><td>Punt Average</td>';
+        return '<th></th><td>Punts</td><td>Punt Yards</td><td>Punt Average</td><td>Long Punt</td>';
     }
 }
 
@@ -956,6 +956,7 @@ function playerStatCardrow($category, $year, $master_ID) {
         $XPA = 0;
         $FGM = 0;
         $FGA = 0;
+        $Long = 0;
 
         $getKickingStats = db_query("SELECT * FROM `stats_kicking` WHERE Player_ID='{$master_ID}'");
         while ($fetchKickingStats = $getKickingStats->fetch_assoc()) {
@@ -966,19 +967,23 @@ function playerStatCardrow($category, $year, $master_ID) {
                 $XPA = $XPA + $fetchKickingStats['XPA'];
                 $FGM = $FGM + $fetchKickingStats['FGM'];
                 $FGA = $FGA + $fetchKickingStats['FGA'];
+                if ($fetchKickingStats['LongKick'] > $Long) {
+                    $Long = $fetchKickingStats['LongKick'];
+                }
             }
         }
 
         $XP_Percent = $XPM / $XPA;
         $FG_Percent = $FGM / $FGA;
 
-        echo '<td>' . $year . '</td><td>' . $XPM . '</td><td>' . $XPA . '</td><td>' . toPercent($XP_Percent) . '</td><td>' . $FGM . '</td><td>' . $FGA . '</td><td>' . toPercent($FG_Percent) . '</td>';
+        echo '<td>' . $year . '</td><td>' . $XPM . '</td><td>' . $XPA . '</td><td>' . toPercent($XP_Percent) . '</td><td>' . $FGM . '</td><td>' . $FGA . '</td><td>' . toPercent($FG_Percent) . '</td><td>' . $Long . '</td>';
     }
 
     if ($category === 'Punting') {
 
         $punts = 0;
         $puntYards = 0;
+        $Long = 0;
 
         $getPuntingStats = db_query("SELECT * FROM `stats_punting` WHERE Player_ID='{$master_ID}'");
         while ($fetchPuntingStats = $getPuntingStats->fetch_assoc()) {
@@ -987,12 +992,15 @@ function playerStatCardrow($category, $year, $master_ID) {
 
                 $punts = $punts + $fetchPuntingStats['Att'];
                 $puntYards = $puntYards + $fetchPuntingStats['Yards'];
+                if ($fetchPuntingStats['LongPunt'] > $Long) {
+                    $Long = $fetchPuntingStats['LongPunt'];
+                }
             }
         }
 
         $punt_Avg = $puntYards / $punts;
 
-        echo '<td>' . $year . '</td><td>' . $punts . '</td><td>' . $puntYards . '</td><td>' . number_format($punt_Avg, 1) . '</td>';
+        echo '<td>' . $year . '</td><td>' . $punts . '</td><td>' . $puntYards . '</td><td>' . number_format($punt_Avg, 1) . '</td><td>' . $Long . '</td>';
     }
 }
 

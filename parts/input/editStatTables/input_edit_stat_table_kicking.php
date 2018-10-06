@@ -14,6 +14,9 @@
                 <td>
                     Field Goal Attempts
                 </td>
+                <td>
+                    Field Goal Long
+                </td>
             </tr>
         </thead>
         <tbody>
@@ -29,6 +32,9 @@
                 </td>
                 <td>
                     <input class="form-control" type="text" name="kickFGA" placeholder="<?php echo $fetchPlayerGameStats['FGA']; ?>">
+                </td>
+                <td>
+                    <input class="form-control" type="text" name="kickLong" placeholder="<?php echo $fetchPlayerGameStats['LongKick']; ?>">
                 </td>
             </tr>
             <tr style="text-align: center">
