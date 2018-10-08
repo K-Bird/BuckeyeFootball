@@ -802,7 +802,7 @@ function playerStatCardthead($cagetory) {
     }
     if ($cagetory === 'def') {
 
-        return '<th></th><td>Tackles</td><td>For Loss</td><td>Sacks</td><td>INTs</td><td>INT TDs</td><td>Passes Defended</td><td>Forced Fumbles</td><td>Fumble Recoveries</td><td>Fumble TDs</td>';
+        return '<th></th><td>Tackles</td><td>For Loss</td><td>Sacks</td><td>INTs</td><td>INT TDs</td><td>Passes Defended</td><td>QB Hurries</td><td>Fumble Recoveries</td><td>Fumble TDs</td>';
     }
     if ($cagetory === 'ret') {
 
@@ -900,7 +900,7 @@ function playerStatCardrow($category, $year, $master_ID) {
         $INTs = 0;
         $INTTDs = 0;
         $passDef = 0;
-        $ff = 0;
+        $QBHurries = 0;
         $fumRec = 0;
         $fumTDs = 0;
 
@@ -915,13 +915,13 @@ function playerStatCardrow($category, $year, $master_ID) {
                 $INTs = $INTs + $fetchDefStats['INTs'];
                 $INTTDs = $INTTDs + $fetchDefStats['INT_TDs'];
                 $passDef = $passDef + $fetchDefStats['PassDef'];
-                $ff = $ff + $fetchDefStats['ForcedFumbles'];
+                $QBHurries = $QBHurries + $fetchDefStats['QBHurries'];
                 $fumRec = $fumRec + $fetchDefStats['FumbleRec'];
                 $fumTDs = $fumTDs + $fetchDefStats['FumbleTDs'];
             }
         }
 
-        echo '<td>' . $year . '</td><td>' . $tak . '</td><td>' . $forloss . '</td><td>' . $sacks . '</td><td>' . $INTs . '</td><td>' . $INTTDs . '</td><td>' . $passDef . '</td><td>' . $ff . '</td><td>' . $fumRec . '</td><td>' . $fumTDs . '</td>';
+        echo '<td>' . $year . '</td><td>' . $tak . '</td><td>' . $forloss . '</td><td>' . $sacks . '</td><td>' . $INTs . '</td><td>' . $INTTDs . '</td><td>' . $passDef . '</td><td>' . $QBHurries . '</td><td>' . $fumRec . '</td><td>' . $fumTDs . '</td>';
     }
 
     if ($category === 'ret') {
