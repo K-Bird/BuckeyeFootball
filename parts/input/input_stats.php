@@ -72,7 +72,13 @@
                                    data-lname="', getPlayerField("Last_Name", $inputAddPlayer), '" 
                                    data-season="', $Input_Season, '"
                                    data-toggle="modal" 
-                                   data-target="#addStatModal">
+                                   data-target="#addStatModal"';
+                        
+                        if ($inputAddPlayer === '') {
+                            echo ' disabled';
+                        }
+                        
+                        echo '>
                                    <span class="oi oi-plus"></span>
                               </button>';
                         echo '</td>';
