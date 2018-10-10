@@ -302,11 +302,11 @@ include ("parts/common_inputs.php");
 
         /* Season Table Sorting and Filtering */
         //Use tablesorting plugin to sort table columns
-         $("#seasonTable").tablesorter({
-             theme : "default",             
-         });
-        
-        
+        $("#seasonTable").tablesorter({
+            theme: "default",
+        });
+
+
         $('#seasonTableSearch').on('input', function () {
             var searchText = $(this).val();
 
@@ -488,6 +488,21 @@ include ("parts/common_inputs.php");
             form.appendChild(input);
             form.submit();
         });
+    });
+
+    //Go to game detail page and send which game should be displayed
+    $('.gameDetail').click(function (e) {
+        var GM_ID = $(e.target).data("gmid");
+        var form = document.createElement('form');
+        document.body.appendChild(form);
+        form.method = 'post';
+        form.action = 'gameDetails.php';
+        var input = document.createElement('input');
+        input.type = 'hidden';
+        input.name = "GM_ID";
+        input.value = GM_ID;
+        form.appendChild(input);
+        form.submit();
     });
 
     /* Support Functions */

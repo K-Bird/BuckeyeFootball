@@ -32,7 +32,7 @@
 
 
         echo '<table class="table-sm" style="font-size:small">';
-        echo '<thead><th>Week</th><th>Date</th><th>Location</th><th>Game Type</th><th>Home/Away</th><th>Opponent</th><th>Result</th><th>OSU Score</th><th>Opp Score</th><th>Running Record</th><th>New AP Rank</th><th>New CFP Rank</th></thead>';
+        echo '<thead><th>Week</th><th>Date</th><th>Location</th><th>Game Type</th><th>Home/Away</th><th>Opponent</th><th>Result</th><th>OSU Score</th><th>Opp Score</th><th>Running Record</th><th>New AP Rank</th><th>New CFP Rank</th><th></th></thead>';
 
         //Grab Each Season's Games
         $get_GameData = db_query("SELECT * FROM `games` WHERE Season_ID={$fetch_SeasonData['Season_ID']}");
@@ -105,6 +105,7 @@
                 echo '<td>( ', $SeasonWins, ' - ', $SeasonLosses, ' - ', $SeasonTies, ' )</td>';
                 echo '<td>', calc_AP_RK_Diff($fetch_SeasonData['Season_ID'], $fetch_gameData['Week'], $fetch_gameData['Post_AP']), '</td>';
                 echo '<td>', calc_CFP_RK_Diff($fetch_SeasonData['Season_ID'], $fetch_gameData['Week'], $fetch_gameData['Post_CFP'], $fetch_gameData['GM_ID']), '</td>';
+                echo '<td><span class="badge badge-secondary"><a href="#" class="badge badge-secondary gameDetail" data-gmid="',$fetch_gameData['GM_ID'],'">Details</a></span><td>';
                 echo '</tr>';
             }
         }
