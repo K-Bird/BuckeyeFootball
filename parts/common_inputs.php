@@ -619,12 +619,11 @@ function displayPlayerPhotoSelect($currentPlayer) {
         foreach ($eachTag as $tag) {
             array_push($taggedPlayers, $tag);
         }
+        $taggedPlayers = array_unique($taggedPlayers);
     }
 
 
     echo '<select id="playerPhotoSelect" class="selectpicker" data-live-search="true" name="playerPhotoSelect">';
-
-    echo '<option></option>';
 
     foreach ($taggedPlayers as $tag) {
 

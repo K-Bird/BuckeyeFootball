@@ -1,15 +1,15 @@
 <ul class="nav nav-pills nav-justified" id="mediaTopNav" role="tablist">
     <li class="nav-item">
-        <a class="nav-link" id="home-tab" data-toggle="tab" href="#mediaPhotoTab" role="tab">Photos</a>
+        <a id="photo-tab-mainnav" class="nav-link" data-toggle="tab" href="#mediaPhotoTab" role="tab">Photos</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" id="profile-tab" data-toggle="tab" href="#mediaVideoTab" role="tab">Videos</a>
+        <a id="video-tab-mainnav" class="nav-link" data-toggle="tab" href="#mediaVideoTab" role="tab">Videos</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" id="contact-tab" data-toggle="tab" href="#mediaSocialTab" role="tab">Social Media</a>
+        <a id="social-tab-mainnav" class="nav-link" data-toggle="tab" href="#mediaSocialTab" role="tab">Social Media</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" id="contact-tab" data-toggle="tab" href="#mediaWebTab" role="tab">Web</a>
+        <a id="web-tab-mainnav" class="nav-link" data-toggle="tab" href="#mediaWebTab" role="tab">Web</a>
     </li>
 </ul>
 <div class="tab-content" id="mediaTopNavContent">

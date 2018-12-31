@@ -1396,51 +1396,160 @@ function playerCompareAddYearsBtn($startYear, $endYear, $location) {
     }
 }
 
-/* Carousel Functions */
+/* Grid Gallery Functions */
 
-function buildCarousel($id) {
+//recevie a player id and genterate all images tagged with the player ID
+function buildPlayerPhotoGallery($player_tag) {
 
-    echo '<div id="playerPhotoIndicators" class="carousel slide" data-ride="carousel">
-  <ol class="carousel-indicators">';
-    echo buildCarouselIndicators();
-    echo '</ol>
-  <div class="carousel-inner">';
-    echo buildCarouselImages();
-    echo '</div>
-  <a class="carousel-control-prev" href="#playerPhotoIndicators" role="button" data-slide="prev">
-    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-    <span class="sr-only">Previous</span>
-  </a>
-  <a class="carousel-control-next" href="#playerPhotoIndicators" role="button" data-slide="next">
-    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-    <span class="sr-only">Next</span>
-  </a>
-</div>';
-}
+    $taggedPhotos = taggedIDs($player_tag, 'player');
 
-function buildCarouselIndicators() {
 
-    $i = 0;
-    $getImages = db_query('SELECT * FROM `photos`');
-    while ($fetchImages = $getImages->fetch_assoc()) {
-        echo '<li data-target = "#playerPhotoIndicators" data-slide-to = "' . $i . '"></li>';
-        $i++;
+    foreach ($taggedPhotos as $photoID) {
+
+        $getPhotoDetails = db_query("SELECT * FROM `photos` WHERE Photo_ID='{$photoID}'");
+        $fetchPhotoDetails = $getPhotoDetails->fetch_assoc();
+
+        echo '<div class="gg-element">';
+        echo '<img class="playerPhoto" src="/buckeyefootball/libs/images/uploaded/' . $fetchPhotoDetails['Photo_Name'] . '.' . $fetchPhotoDetails['Extension'] . '">';
+        echo '</div>';
     }
 }
 
-function buildCarouselImages() {
+//recieve a player id and display all the tags associated with images that player is tagged in
+function buildEditTagsBody($player_photo_ID, $type) {
 
-    $i = 0;
-    $getImages = db_query('SELECT * FROM `photos`');
-    while ($fetchImages = $getImages->fetch_assoc()) {
 
-        echo '<div class = "carousel-item ';
-        if ($i === 0) {
-            echo 'active';
+    $taggedPhotos = taggedIDs($player_photo_ID, $type);
+
+    echo '<ul class="list-group">';
+    
+    $i = 1;
+
+    foreach ($taggedPhotos as $photoID) {
+
+        $getPhotoDetails = db_query("SELECT * FROM `photos` WHERE Photo_ID='{$photoID}'");
+        $fetchPhotoDetails = $getPhotoDetails->fetch_assoc();
+
+
+        echo '<li class="list-group-item">';
+        echo '<img class="playerPhoto" src="/buckeyefootball/libs/images/uploaded/' . $fetchPhotoDetails['Photo_Name'] . '.' . $fetchPhotoDetails['Extension'] . '" height=150 width=150>';
+        echo '<div id="playerPhotoTags'. $i . '">';
+        echo returnTags($photoID,'player');
+        echo '</div>';
+        echo '<br>Tag Player(s) In This Photo:&nbsp;&nbsp;
+              <input type="text" class="form-control playerTagSearchDisplayed" id="editAddPlayerTagSearch', $i . '" data-num="', $i . '" data-photoID="'.$photoID.'" placeholder="Search for Player"/>
+              <div id="playerTagExistingResults' . $i . '" class="editAddPlayerTagResults" data-num="' . $i . '"></div>';
+        echo '</li>';
+        $i++;
+    }
+    echo '</ul>';
+}
+
+//display tags for a given photo
+function returnTags ($photo_id, $type) {
+    
+    $getPhotoTags = db_query("SELECT * FROM `photos` WHERE Photo_ID='{$photo_id}'");
+    $fetchPhototag = $getPhotoTags->fetch_assoc();
+
+    $playerTags = $fetchPhototag['Player_Tags'];
+    //$gameTags = $fetchPhototag['Game_Tags'];
+    //$misc_Tags = $fetchPhototag['Misc_Tags'];
+
+    $eachPlayerTag = explode(',', $playerTags);
+    
+    foreach ($eachPlayerTag as $tag) {
+        echo '<span class="badge badge-pill badge-secondary">';
+        echo getPlayerFieldByMasterID('First_Name', $tag) . " " . getPlayerFieldByMasterID('Last_Name', $tag);
+        echo '&nbsp;<span aria-hidden="true" data-photo="',$photo_id,'" id="ptag',$tag,'" class="playerTagRemove">&times;</span>';
+        echo '</span>';
+    }
+    
+}
+
+function taggedIDs($tag, $type) {
+
+    if ($type === 'player') {
+
+        $getAllTaggedPlayers = db_query("SELECT * FROM `photos`");
+        $taggedPlayers = [];
+
+        while ($fetchAllTaggedPlayers = $getAllTaggedPlayers->fetch_assoc()) {
+
+            $tags = $fetchAllTaggedPlayers['Player_Tags'];
+            $eachTag = explode(',', $tags);
+
+            foreach ($eachTag as $tag_loop) {
+                if ($tag_loop === $tag) {
+                    $photoID = $fetchAllTaggedPlayers['Photo_ID'];
+                    array_push($taggedPlayers, $photoID);
+                }
+            }
         }
-        echo '">
-    <img class = "d-block w-100" src = "/buckeyefootball/libs/images/' . $fetchImages['Photo_Name'] . '.' . $fetchImages['Extension'] . '">
-    </div>';
-        $i++;
     }
+    return $taggedPlayers;
+}
+
+function returnYearsPlayed($Master_ID) {
+
+
+    $getSeasonsByMasterID = db_query("SELECT * FROM `players` WHERE Player_Master_ID='{$Master_ID}' ORDER BY Season ASC");
+    $seasons = [];
+
+    while ($fetchSeasons = $getSeasonsByMasterID->fetch_assoc()) {
+
+        array_push($seasons, $fetchSeasons['Season']);
+    }
+
+    //Count how many years are in the array
+    $numYears = count($seasons);
+
+    //If there is only 1 year in the array
+    if ($numYears === 1) {
+
+        //get season year by the season ID
+        $season = getSeason_Year($seasons[0]);
+        //If the season is the current year display dash
+        if ($season === date('Y')) {
+            return '(' . $season . ' - )';
+        } else {
+            return '(' . $season . ')';
+        }
+        //If there is more than 1 year in the array
+    } else {
+        //Check if the array contains sequential seasons
+        $checkSequential = is_array_sequential($seasons);
+        //If the array is sequential
+        if ($checkSequential === true) {
+
+            //sort array smallest to largest
+            sort($seasons);
+            //return mix and max year by season id
+            $largestYear = max($seasons);
+            $smallestYear = min($seasons);
+
+            return '(' . getSeason_Year($smallestYear) . ' - ' . getSeason_Year($largestYear) . ')';
+
+            //If the array is not sequential    
+        } else {
+            //remove the first season and set to a variable
+            $firstSeason = array_shift($seasons);
+            //is the remaining array sequential? If yes, take the min/max season and return both the sequential and non-sequential parts
+            if (is_array_sequential($seasons)) {
+                $firstSequential = min($seasons);
+                $lastSequential = max($seasons);
+                return getSeason_Year($firstSeason) . ', (' . getSeason_Year($firstSequential) . ' - ' . getSeason_Year($lastSequential) . ')';
+            }
+        }
+    }
+}
+
+function is_array_sequential($arr) {
+    $delta = $arr[1] - $arr[0];
+    for ($index = 0; $index < sizeof($arr) - 1; $index++) {
+        if (($arr[$index + 1] - $arr[$index]) != $delta) {
+
+            return false;
+        }
+    }
+    return true;
 }
