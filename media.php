@@ -92,10 +92,14 @@ include ('parts/common_inputs.php');
 
             if (target === '#photoTabPlayers') {
                 localStorage.setItem('OSU_Media_Sub_Nav', 'Players');
+                $('#editTagsModalContainer').empty();
+                $('#editTagsModalContainer').load('parts/media/editTagsModal.php?playerID=' + getPhotoPlayerID() + '&type=player');
             }
 
             if (target === '#photoTabGames') {
                 localStorage.setItem('OSU_Media_Sub_Nav', 'Games');
+                $('#editTagsModalContainer').empty();
+                $('#editTagsModalContainer').load('parts/media/editTagsModal.php?gameID=' + getPhotoGameID() + '&type=game');
             }
             if (target === '#photoTabMisc') {
                 localStorage.setItem('OSU_Media_Sub_Nav', 'Misc');
@@ -104,8 +108,13 @@ include ('parts/common_inputs.php');
 
         });
 
-        //On page load, load the edit tags modal passing the last player photo ID from the database
-        $('#editTagsModalContainer').load('parts/media/editTagsModal.php?playerID=' + getPhotoPlayerID());
+        //On page load, load the edit tags modal passing the last player photo ID or game ID from the database depending on which tab is active (players or games)
+        if (localStorage.getItem('OSU_Media_Sub_Nav') === 'Players') {
+            $('#editTagsModalContainer').load('parts/media/editTagsModal.php?playerID=' + getPhotoPlayerID() + '&type=player');
+        }
+        if (localStorage.getItem('OSU_Media_Sub_Nav') === 'Games') {
+            $('#editTagsModalContainer').load('parts/media/editTagsModal.php?gameID=' + getPhotoGameID() + '&type=game');
+        }
 
 
         //When New Player is Selected From the Player Photo Dropdown Set Them to View
@@ -123,7 +132,32 @@ include ('parts/common_inputs.php');
                             $('#playerPhotoGalleryBox').empty();
                             $('#playerPhotoGalleryBox').append(data);
                             $('#editTagsModalContainer').empty();
-                            $('#editTagsModalContainer').load('parts/media/editTagsModal.php?playerID=' + getPhotoPlayerID());
+                            $('#editTagsModalContainer').load('parts/media/editTagsModal.php?playerID=' + getPhotoPlayerID() + '&type=player');
+                        },
+                        error: function (jqXHR, textStatus, errorThrown)
+                        {
+                            alert("Content Could Not Be Loaded: " + errorThrown);
+                        }
+                    });
+
+        });
+
+        //When New Game is Selected From the Game Photo Dropdown Set Them to View
+        $('#gamePhotoSelect').change(function () {
+
+            var game_tag = $(this).val();
+
+            $.ajax(
+                    {
+                        url: "libs/ajax/update_game_photo_gallery.php",
+                        type: "POST",
+                        data: {game_tag: game_tag},
+                        success: function (data, textStatus, jqXHR)
+                        {
+                            $('#gamePhotoGalleryBox').empty();
+                            $('#gamePhotoGalleryBox').append(data);
+                            $('#editTagsModalContainer').empty();
+                            $('#editTagsModalContainer').load('parts/media/editTagsModal.php?gameID=' + getPhotoGameID() + '&type=game');
                         },
                         error: function (jqXHR, textStatus, errorThrown)
                         {
@@ -160,8 +194,34 @@ include ('parts/common_inputs.php');
             }
         });
 
+        //On typing into game tag upload searchbox genterate the tag results as buttons
+        $("#gameTagSearchUpload").keyup(function () {
+
+            var date = $('#gameTagSearchUpload').val();
+
+            if (date === '') {
+                $('#gameTagResults').replaceWith('<div id="gameTagResults"></div>');
+            } else {
+
+                $.ajax(
+                        {
+                            url: "libs/ajax/search_game_tag.php",
+                            type: "POST",
+                            data: {date: date, type: "upload"},
+                            success: function (data, textStatus, jqXHR)
+                            {
+                                $('#gameTagResults').replaceWith(data);
+                            },
+                            error: function (jqXHR, textStatus, errorThrown)
+                            {
+                                alert("Tags Could Not Be Loaded: " + errorThrown);
+                            }
+                        });
+            }
+        });
+
         //On typing into player tag existing searchbox genterate the tag results as buttons
-        $(document).on("keyup",'.playerTagSearchDisplayed' , function () {
+        $(document).on("keyup", '.playerTagSearchDisplayed', function () {
 
             var name = $(this).val();
             var number = $(this).attr('data-num');
@@ -174,7 +234,7 @@ include ('parts/common_inputs.php');
                         {
                             url: "libs/ajax/search_player_tag.php",
                             type: "POST",
-                            data: {name: name, num : number, type: "existing", photoID : photoID},
+                            data: {name: name, num: number, type: "existing", photoID: photoID},
                             success: function (data, textStatus, jqXHR)
                             {
                                 $('#playerTagExistingResults' + number).replaceWith(data);
@@ -187,7 +247,34 @@ include ('parts/common_inputs.php');
             }
         });
 
-        //On upload tag button click post ajax rendering
+        //On typing into game tag existing searchbox genterate the tag results as buttons
+        $(document).on("keyup", '.gameTagSearchDisplayed', function () {
+
+            var date = $(this).val();
+            var number = $(this).attr('data-num');
+            var photoID = $(this).attr('data-photoID');
+
+            if (date === '') {
+                $('#gameTagExistingResults' + number).empty();
+            } else {
+                $.ajax(
+                        {
+                            url: "libs/ajax/search_game_tag.php",
+                            type: "POST",
+                            data: {date: date, num: number, type: "existing", photoID: photoID},
+                            success: function (data, textStatus, jqXHR)
+                            {
+                                $('#gameTagExistingResults' + number).replaceWith(data);
+                            },
+                            error: function (jqXHR, textStatus, errorThrown)
+                            {
+                                alert("Tags Could Not Be Loaded: " + errorThrown);
+                            }
+                        });
+            }
+        });
+
+        //On upload player tag button click post ajax rendering
         $(document).on("click", '.playerTagListItem', function (event) {
 
             //Get player ID of clicked player to tag
@@ -210,10 +297,47 @@ include ('parts/common_inputs.php');
                     {
                         url: "libs/ajax/return_selected_tag.php",
                         type: "POST",
-                        data: {playerID: playerID},
+                        data: {playerID: playerID, type: 'player'},
                         success: function (data, textStatus, jqXHR)
                         {
                             $('#playerTagSelected').append(data);
+                        },
+                        error: function (jqXHR, textStatus, errorThrown)
+                        {
+                            alert("Selected Tag Could Not Be Loaded: " + errorThrown);
+                        }
+                    });
+
+        });
+
+        //On upload game tag button click post ajax rendering
+        $(document).on("click", '.gameTagListItem', function (event) {
+
+            //Get game ID of clicked game to tag
+            var gameID = $(this).attr('id');
+            //create array to capture current tags
+            var newTagArray = [];
+            //explode new gamePhotoTag values
+            var tagString = $('#gamePhotoTag').val()
+
+            newTagArray = tagString.split(",");
+            //add new tag to array
+            newTagArray.push(gameID);
+            //filter out blank values
+            newTagArray = newTagArray.filter(function (e) {
+                return e
+            });
+            //set array as value for gamePhotoTag
+            $('#gamePhotoTag').val(newTagArray);
+
+            $.ajax(
+                    {
+                        url: "libs/ajax/return_selected_tag.php",
+                        type: "POST",
+                        data: {gameID: gameID, type: 'game'},
+                        success: function (data, textStatus, jqXHR)
+                        {
+                            $('#gameTagSelected').append(data);
                         },
                         error: function (jqXHR, textStatus, errorThrown)
                         {
@@ -228,10 +352,10 @@ include ('parts/common_inputs.php');
 
             //Get player ID of clicked player to tag
             var playerID = $(this).attr('id');
-            
+
             //Get sequential number of editing controls
             var num = $(this).attr('data-num');
-            
+
             //Get ID of photo being edited
             var photo_id = $(this).attr('data-photoID');
 
@@ -243,6 +367,34 @@ include ('parts/common_inputs.php');
                         success: function (data, textStatus, jqXHR)
                         {
                             $('#playerPhotoTags' + num).append(data);
+                        },
+                        error: function (jqXHR, textStatus, errorThrown)
+                        {
+                            alert("Selected Tag Could Not Be Loaded: " + errorThrown);
+                        }
+                    });
+        });
+
+        //On existing tag button click add the tag and render it
+        $(document).on("click", '.gameTagListExistingItem', function (event) {
+
+            //Get game ID of clicked game to tag
+            var gameID = $(this).attr('id');
+
+            //Get sequential number of editing controls
+            var num = $(this).attr('data-num');
+
+            //Get ID of photo being edited
+            var photo_id = $(this).attr('data-photoID');
+
+            $.ajax(
+                    {
+                        url: "libs/ajax/add_gameTag.php",
+                        type: "POST",
+                        data: {gameID: gameID, photo_id: photo_id},
+                        success: function (data, textStatus, jqXHR)
+                        {
+                            $('#gamePhotoTags' + num).append(data);
                         },
                         error: function (jqXHR, textStatus, errorThrown)
                         {
@@ -281,6 +433,36 @@ include ('parts/common_inputs.php');
 
         });
 
+        // When game existing tag X is clicked, remove the tag from the image
+        $(document).on('click', '.gameTagRemove', function () {
+
+            //Get value of clicked tags ID
+            var gameID_pre = $(this).attr('id');
+            var gameID = gameID_pre.slice(4);
+
+            //get id of visible photo
+            var photo_id = $(this).attr('data-photo');
+
+
+            //remove selected tag from photo
+            $.ajax(
+                    {
+                        url: "libs/ajax/remove_gameTag.php",
+                        type: "POST",
+                        data: {gameID: gameID, photo_id: photo_id},
+                        success: function (data, textStatus, jqXHR)
+                        {
+                            //remove deleted tag
+                            $('#' + gameID_pre).parent().remove();
+                        },
+                        error: function (jqXHR, textStatus, errorThrown)
+                        {
+                            alert("Selected Tag Could Not Be Removed: " + errorThrown);
+                        }
+                    });
+
+        });
+
         //When player upload tag X is clicked, alter the form value that contains the tags to upload
         $(document).on("click", '.playerUploadTagRemove', function (event) {
 
@@ -299,6 +481,29 @@ include ('parts/common_inputs.php');
             });
             //Set value of photo tags to be uploaded
             $('#playerPhotoTag').val(filteredArray);
+            //remove the tag on screen
+            $(this).parent().remove();
+
+        });
+
+        //When game upload tag X is clicked, alter the form value that contains the tags to upload
+        $(document).on("click", '.gameUploadTagRemove', function (event) {
+
+            //Get value of clicked tags ID
+            var gameID = $(this).attr('id');
+
+            var newTagArray = [];
+            //explode new gamePhotoTag values
+            var tagString = $('#gamePhotoTag').val()
+            newTagArray = tagString.split(",");
+            //removed matched tag from array
+            var filteredArray = newTagArray.filter(function (value, index, arr) {
+
+                return value != gameID;
+
+            });
+            //Set value of photo tags to be uploaded
+            $('#gamePhotoTag').val(filteredArray);
             //remove the tag on screen
             $(this).parent().remove();
 
@@ -324,6 +529,27 @@ include ('parts/common_inputs.php');
                     }
                 });
         return playerID;
+    }
+
+    function getPhotoGameID() {
+
+        var gameID = "";
+        $.ajax(
+                {
+                    async: false,
+                    url: "libs/ajax/returnControl-PhotoGameID.php",
+                    type: "POST",
+                    data: {},
+                    success: function (data, textStatus, jqXHR)
+                    {
+                        gameID = data.toString();
+                    },
+                    error: function (jqXHR, textStatus, errorThrown)
+                    {
+                        alert("DB Control Could Not Be Loaded: " + errorThrown);
+                    }
+                });
+        return gameID;
     }
 
     //Attempt to get the active photo's ID. If not defined or set check a different carousel item class

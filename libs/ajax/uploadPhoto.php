@@ -3,18 +3,36 @@
 include ("../../libs/db/common_db_functions.php");
 
 $combinedPlayerTags = '';
+$combinedGameTags = '';
 
-$tagCount = count($_POST['playerPhotoTag']);
+if (isset($_POST['playerPhotoTag'])) {
+    $tagCount = count($_POST['playerPhotoTag']);
 
-$i = 1;
-foreach ($_POST['playerPhotoTag'] as $tag) {
-    if ($i < $tagCount) {
-        $combinedPlayerTags = $combinedPlayerTags . $tag . ',';
-    } else {
-        $combinedPlayerTags = $combinedPlayerTags . $tag;
+    $i = 1;
+    foreach ($_POST['playerPhotoTag'] as $tag) {
+        if ($i < $tagCount) {
+            $combinedPlayerTags = $combinedPlayerTags . $tag . ',';
+        } else {
+            $combinedPlayerTags = $combinedPlayerTags . $tag;
+        }
+        $i++;
     }
-    $i++;
 }
+
+if (isset($_POST['gamePhotoTag'])) {
+    $tagCount = count($_POST['gamePhotoTag']);
+
+    $i = 1;
+    foreach ($_POST['gamePhotoTag'] as $tag) {
+        if ($i < $tagCount) {
+            $combinedGameTags = $combinedGameTags . $tag . ',';
+        } else {
+            $combinedGameTags = $combinedGameTags . $tag;
+        }
+        $i++;
+    }
+}
+
 
 //Get the max photo identifier, increment by 1
 $getMaxPhotoName = db_query("SELECT Max(Photo_Name) as MaxName FROM `photos`");
@@ -39,7 +57,7 @@ $fileExtension = strtolower(end(explode('.', $fileName)));
 
 $uploadPath = $uploadDirectory . $nextName . "." . $fileExtension;
 
-$addNewPhoto = db_query("INSERT INTO `photos` (Photo_Name, Extension, Player_Tags) VALUES ('{$nextName}','{$fileExtension}','{$combinedPlayerTags}')");
+$addNewPhoto = db_query("INSERT INTO `photos` (Photo_Name, Extension, Player_Tags, Game_Tags) VALUES ('{$nextName}','{$fileExtension}','{$combinedPlayerTags}','{$combinedGameTags}')");
 
 if (isset($_POST['submit'])) {
 
