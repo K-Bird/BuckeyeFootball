@@ -1432,6 +1432,23 @@ function buildGamePhotoGallery($gameID) {
     }
 }
 
+//recevie a misc tag id and genterate all images tagged with the player ID
+function buildMiscPhotoGallery($miscID) {
+
+    $taggedPhotos = taggedIDs($miscID, 'misc');
+
+
+    foreach ($taggedPhotos as $photoID) {
+
+        $getPhotoDetails = db_query("SELECT * FROM `photos` WHERE Photo_ID='{$photoID}'");
+        $fetchPhotoDetails = $getPhotoDetails->fetch_assoc();
+
+        echo '<div class="gg-element">';
+        echo '<img class="playerPhoto" src="/buckeyefootball/libs/images/uploaded/' . $fetchPhotoDetails['Photo_Name'] . '.' . $fetchPhotoDetails['Extension'] . '">';
+        echo '</div>';
+    }
+}
+
 //recieve a player id and display all the tags associated with images that player is tagged in
 function buildEditTagsBody($ID, $type) {
 
@@ -1465,6 +1482,14 @@ function buildEditTagsBody($ID, $type) {
             echo '<br>Tag Game(s) In This Photo:&nbsp;&nbsp;
               <input type="text" class="form-control gameTagSearchDisplayed" id="editAddGameTagSearch', $i . '" data-num="', $i . '" data-photoID="' . $photoID . '" placeholder="Search for Game By Date"/>
               <div id="gameTagExistingResults' . $i . '" class="editAddGameTagResults" data-num="' . $i . '"></div>';
+            echo '</li>';
+        }
+        if ($type === 'misc') {
+            echo '<div id="miscPhotoTags' . $i . '">';
+            echo returnTags($photoID, 'misc');
+            echo '<br>Misc Tag(s) In This Photo:&nbsp;&nbsp;
+              <input type="text" class="form-control miscTagSearchDisplayed" id="editAddMiscTagSearch', $i . '" data-num="', $i . '" data-photoID="' . $photoID . '" placeholder="Search for Misc By Date"/>
+              <div id="miscTagExistingResults' . $i . '" class="editAddMiscTagResults" data-num="' . $i . '"></div>';
             echo '</li>';
         }
         echo '</div>';
@@ -1511,6 +1536,21 @@ function returnTags($photo_id, $type) {
             echo '</span>';
         }
     }
+
+    if ($type === 'misc') {
+        $miscTags = $fetchPhototag['Misc_Tags'];
+
+        $eachTag = explode(',', $miscTags);
+
+        foreach ($eachTag as $tag) {
+            echo '<span class="badge badge-pill badge-secondary">';
+
+            echo returnMiscTagNameByID($tag);
+
+            echo '&nbsp;<span aria-hidden="true" data-photo="', $photo_id, '" id="gtag', $tag, '" class="miscTagRemove">&times;</span>';
+            echo '</span>';
+        }
+    }
 }
 
 function taggedIDs($tag, $type) {
@@ -1553,6 +1593,26 @@ function taggedIDs($tag, $type) {
             }
         }
         return $taggedGames;
+    }
+
+    if ($type === 'misc') {
+
+        $getAllTaggedMisc = db_query("SELECT * FROM `photos`");
+        $taggedMisc = [];
+
+        while ($fetchAllTaggedMisc = $getAllTaggedMisc->fetch_assoc()) {
+
+            $tags = $fetchAllTaggedMisc['Misc_Tags'];
+            $eachTag = explode(',', $tags);
+
+            foreach ($eachTag as $tag_loop) {
+                if ($tag_loop === $tag) {
+                    $photoID = $fetchAllTaggedMisc['Photo_ID'];
+                    array_push($taggedMisc, $photoID);
+                }
+            }
+        }
+        return $taggedMisc;
     }
 }
 
@@ -1619,4 +1679,12 @@ function is_array_sequential($arr) {
         }
     }
     return true;
+}
+
+function returnMiscTagNameByID($ID) {
+
+    $getTagName = db_query("SELECT * FROM `ref_misc_photo_tags` WHERE Tag_ID='{$ID}'");
+    $fetchTagName = $getTagName->fetch_assoc();
+    $TagName = $fetchTagName['Tag_Name'];
+    return $TagName;
 }

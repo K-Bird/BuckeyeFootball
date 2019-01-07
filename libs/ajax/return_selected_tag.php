@@ -30,3 +30,16 @@ if ($type === 'game') {
     echo '</span>&nbsp;';
     
 }
+
+if ($type === 'misc') {
+
+    $miscID = $_POST['miscID'];
+    
+    $getMiscData = db_query("SELECT * FROM `ref_misc_photo_tags` WHERE Tag_ID='{$miscID}'");
+    $fetchMiscData = $getMiscData->fetch_assoc();
+
+    echo '&nbsp;<span class="badge badge-pill badge-secondary">';
+    echo $fetchMiscData['Tag_Name'];
+    echo '&nbsp;<span aria-hidden="true" id="', $miscID, '" class="miscUploadTagRemove">&times;</span>';
+    echo '</span>&nbsp;';
+}

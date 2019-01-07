@@ -11,6 +11,7 @@ include ('parts/common_inputs.php');
         <link rel="stylesheet" type="text/css" href="libs/css/grid-gallery.css">
         <link rel="stylesheet" type="text/css" href="libs/css/lightbox.css">
         <link rel="stylesheet" type="text/css" href="libs/css/bootstrap-select.min.css">
+        <link rel="stylesheet" type="text/css" href="libs/css/open-iconic-bootstrap.css">
         <script src="libs/js/jquery.js"></script>
         <script src="libs/js/bootstrap.js"></script>
         <script src="libs/js/nouislider.js"></script>
@@ -103,17 +104,22 @@ include ('parts/common_inputs.php');
             }
             if (target === '#photoTabMisc') {
                 localStorage.setItem('OSU_Media_Sub_Nav', 'Misc');
+                $('#editTagsModalContainer').empty();
+                $('#editTagsModalContainer').load('parts/media/editTagsModal.php?miscID=' + getPhotoMiscID() + '&type=misc');
             }
 
 
         });
 
-        //On page load, load the edit tags modal passing the last player photo ID or game ID from the database depending on which tab is active (players or games)
+        //On page load, load the edit tags modal passing the last player photo ID, game ID, or Misc ID from the database depending on which tab is active (players or games)
         if (localStorage.getItem('OSU_Media_Sub_Nav') === 'Players') {
             $('#editTagsModalContainer').load('parts/media/editTagsModal.php?playerID=' + getPhotoPlayerID() + '&type=player');
         }
         if (localStorage.getItem('OSU_Media_Sub_Nav') === 'Games') {
             $('#editTagsModalContainer').load('parts/media/editTagsModal.php?gameID=' + getPhotoGameID() + '&type=game');
+        }
+        if (localStorage.getItem('OSU_Media_Sub_Nav') === 'Misc') {
+            $('#editTagsModalContainer').load('parts/media/editTagsModal.php?miscID=' + getPhotoMiscID() + '&type=misc');
         }
 
 
@@ -158,6 +164,31 @@ include ('parts/common_inputs.php');
                             $('#gamePhotoGalleryBox').append(data);
                             $('#editTagsModalContainer').empty();
                             $('#editTagsModalContainer').load('parts/media/editTagsModal.php?gameID=' + getPhotoGameID() + '&type=game');
+                        },
+                        error: function (jqXHR, textStatus, errorThrown)
+                        {
+                            alert("Content Could Not Be Loaded: " + errorThrown);
+                        }
+                    });
+
+        });
+
+        //When New Misc is Selected From the Misc Photo Dropdown Set Them to View
+        $('#miscPhotoSelect').change(function () {
+
+            var misc_tag = $(this).val();
+
+            $.ajax(
+                    {
+                        url: "libs/ajax/update_misc_photo_gallery.php",
+                        type: "POST",
+                        data: {misc_tag: misc_tag},
+                        success: function (data, textStatus, jqXHR)
+                        {
+                            $('#miscPhotoGalleryBox').empty();
+                            $('#miscPhotoGalleryBox').append(data);
+                            $('#editTagsModalContainer').empty();
+                            $('#editTagsModalContainer').load('parts/media/editTagsModal.php?miscID=' + getPhotoMiscID() + '&type=misc');
                         },
                         error: function (jqXHR, textStatus, errorThrown)
                         {
@@ -220,6 +251,32 @@ include ('parts/common_inputs.php');
             }
         });
 
+        //On typing into misc tag upload searchbox genterate the tag results as buttons
+        $("#miscTagSearchUpload").keyup(function () {
+
+            var name = $('#miscTagSearchUpload').val();
+
+            if (name === '') {
+                $('#miscTagResults').replaceWith('<div id="miscTagResults"></div>');
+            } else {
+
+                $.ajax(
+                        {
+                            url: "libs/ajax/search_misc_tag.php",
+                            type: "POST",
+                            data: {name: name, type: "upload"},
+                            success: function (data, textStatus, jqXHR)
+                            {
+                                $('#miscTagResults').replaceWith(data);
+                            },
+                            error: function (jqXHR, textStatus, errorThrown)
+                            {
+                                alert("Tags Could Not Be Loaded: " + errorThrown);
+                            }
+                        });
+            }
+        });
+
         //On typing into player tag existing searchbox genterate the tag results as buttons
         $(document).on("keyup", '.playerTagSearchDisplayed', function () {
 
@@ -265,6 +322,33 @@ include ('parts/common_inputs.php');
                             success: function (data, textStatus, jqXHR)
                             {
                                 $('#gameTagExistingResults' + number).replaceWith(data);
+                            },
+                            error: function (jqXHR, textStatus, errorThrown)
+                            {
+                                alert("Tags Could Not Be Loaded: " + errorThrown);
+                            }
+                        });
+            }
+        });
+
+        //On typing into misc tag existing searchbox genterate the tag results as buttons
+        $(document).on("keyup", '.miscTagSearchDisplayed', function () {
+
+            var name = $(this).val();
+            var number = $(this).attr('data-num');
+            var photoID = $(this).attr('data-photoID');
+
+            if (name === '') {
+                $('#miscTagExistingResults' + number).empty();
+            } else {
+                $.ajax(
+                        {
+                            url: "libs/ajax/search_misc_tag.php",
+                            type: "POST",
+                            data: {name: name, num: number, type: "existing", photoID: photoID},
+                            success: function (data, textStatus, jqXHR)
+                            {
+                                $('#miscTagExistingResults' + number).replaceWith(data);
                             },
                             error: function (jqXHR, textStatus, errorThrown)
                             {
@@ -347,6 +431,43 @@ include ('parts/common_inputs.php');
 
         });
 
+        //On upload misc tag button click post ajax rendering
+        $(document).on("click", '.miscTagListItem', function (event) {
+
+            //Get misc ID of clicked misc to tag
+            var miscID = $(this).attr('id');
+            //create array to capture current tags
+            var newTagArray = [];
+            //explode new miscPhotoTag values
+            var tagString = $('#miscPhotoTag').val()
+
+            newTagArray = tagString.split(",");
+            //add new tag to array
+            newTagArray.push(miscID);
+            //filter out blank values
+            newTagArray = newTagArray.filter(function (e) {
+                return e
+            });
+            //set array as value for miscPhotoTag
+            $('#miscPhotoTag').val(newTagArray);
+
+            $.ajax(
+                    {
+                        url: "libs/ajax/return_selected_tag.php",
+                        type: "POST",
+                        data: {miscID: miscID, type: 'misc'},
+                        success: function (data, textStatus, jqXHR)
+                        {
+                            $('#miscTagSelected').append(data);
+                        },
+                        error: function (jqXHR, textStatus, errorThrown)
+                        {
+                            alert("Selected Tag Could Not Be Loaded: " + errorThrown);
+                        }
+                    });
+
+        });
+
         //On existing tag button click add the tag and render it
         $(document).on("click", '.playerTagListExistingItem', function (event) {
 
@@ -395,6 +516,34 @@ include ('parts/common_inputs.php');
                         success: function (data, textStatus, jqXHR)
                         {
                             $('#gamePhotoTags' + num).append(data);
+                        },
+                        error: function (jqXHR, textStatus, errorThrown)
+                        {
+                            alert("Selected Tag Could Not Be Loaded: " + errorThrown);
+                        }
+                    });
+        });
+
+        //On existing tag button click add the tag and render it
+        $(document).on("click", '.miscTagListExistingItem', function (event) {
+
+            //Get misc ID of clicked misc to tag
+            var miscID = $(this).attr('id');
+
+            //Get sequential number of editing controls
+            var num = $(this).attr('data-num');
+
+            //Get ID of photo being edited
+            var photo_id = $(this).attr('data-photoID');
+
+            $.ajax(
+                    {
+                        url: "libs/ajax/add_miscTag.php",
+                        type: "POST",
+                        data: {miscID: miscID, photo_id: photo_id},
+                        success: function (data, textStatus, jqXHR)
+                        {
+                            $('#miscPhotoTags' + num).append(data);
                         },
                         error: function (jqXHR, textStatus, errorThrown)
                         {
@@ -463,6 +612,36 @@ include ('parts/common_inputs.php');
 
         });
 
+        // When misc existing tag X is clicked, remove the tag from the image
+        $(document).on('click', '.miscTagRemove', function () {
+
+            //Get value of clicked tags ID
+            var miscID_pre = $(this).attr('id');
+            var miscID = miscID_pre.slice(4);
+
+            //get id of visible photo
+            var photo_id = $(this).attr('data-photo');
+
+
+            //remove selected tag from photo
+            $.ajax(
+                    {
+                        url: "libs/ajax/remove_miscTag.php",
+                        type: "POST",
+                        data: {miscID: miscID, photo_id: photo_id},
+                        success: function (data, textStatus, jqXHR)
+                        {
+                            //remove deleted tag
+                            $('#' + miscID_pre).parent().remove();
+                        },
+                        error: function (jqXHR, textStatus, errorThrown)
+                        {
+                            alert("Selected Tag Could Not Be Removed: " + errorThrown);
+                        }
+                    });
+
+        });
+
         //When player upload tag X is clicked, alter the form value that contains the tags to upload
         $(document).on("click", '.playerUploadTagRemove', function (event) {
 
@@ -508,7 +687,55 @@ include ('parts/common_inputs.php');
             $(this).parent().remove();
 
         });
+
+        //When misc upload tag X is clicked, alter the form value that contains the tags to upload
+        $(document).on("click", '.miscUploadTagRemove', function (event) {
+
+            //Get value of clicked tags ID
+            var miscID = $(this).attr('id');
+
+            var newTagArray = [];
+            //explode new miscPhotoTag values
+            var tagString = $('#miscPhotoTag').val()
+            newTagArray = tagString.split(",");
+            //removed matched tag from array
+            var filteredArray = newTagArray.filter(function (value, index, arr) {
+
+                return value != miscID;
+
+            });
+            //Set value of photo tags to be uploaded
+            $('#miscPhotoTag').val(filteredArray);
+            //remove the tag on screen
+            $(this).parent().remove();
+
+        });
+        
+        //On Add Misc Tag Click, Add New Tag to Database and Append a Rendering to the Tag List
+         $(document).on("click", '.addMiscTag', function (event) {
+             event.preventDefault();
+             var newTag = $(this).attr('data-newTag');
+             
+              $.ajax(
+                    {
+                        url: "libs/ajax/add_new_MiscTag.php",
+                        type: "POST",
+                        data: {newTag : newTag},
+                        success: function (data, textStatus, jqXHR)
+                        {
+                            location.reload();
+                        },
+                        error: function (jqXHR, textStatus, errorThrown)
+                        {
+                            alert("Selected Tag Could Not Be Removed: " + errorThrown);
+                        }
+                    });
+             
+             
+         });
     });
+
+
 
     function getPhotoPlayerID() {
 
@@ -550,6 +777,27 @@ include ('parts/common_inputs.php');
                     }
                 });
         return gameID;
+    }
+
+    function getPhotoMiscID() {
+
+        var miscID = "";
+        $.ajax(
+                {
+                    async: false,
+                    url: "libs/ajax/returnControl-PhotoMiscID.php",
+                    type: "POST",
+                    data: {},
+                    success: function (data, textStatus, jqXHR)
+                    {
+                        miscID = data.toString();
+                    },
+                    error: function (jqXHR, textStatus, errorThrown)
+                    {
+                        alert("DB Control Could Not Be Loaded: " + errorThrown);
+                    }
+                });
+        return miscID;
     }
 
     //Attempt to get the active photo's ID. If not defined or set check a different carousel item class

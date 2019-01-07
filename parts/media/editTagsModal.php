@@ -9,6 +9,9 @@ if ($refreshType === 'player') {
 if ($refreshType === 'game') {
     $game_photo_ID = $_GET['gameID'];
 }
+if ($refreshType === 'misc') {
+    $misc_photo_ID = $_GET['miscID'];
+}
 ?>
 <div class="modal fade" id="editTagsModal" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
@@ -26,6 +29,9 @@ if ($refreshType === 'game') {
                 }
                 if ($refreshType === 'game') {
                     buildEditTagsBody($game_photo_ID, 'game');
+                }
+                if ($refreshType === 'misc') {
+                    buildEditTagsBody($misc_photo_ID, 'misc');
                 }
                 ?>
             </div>

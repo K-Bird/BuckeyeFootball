@@ -681,3 +681,40 @@ function displayGamePhotoSelect($currentGame) {
 
     echo '</select>';
 }
+
+//Build Misc Tags With Photos Select List
+function displayMiscPhotoSelect($currentMisc) {
+
+    $taggedMiscs = [];
+    $getTaggedMiscs = db_query("SELECT * FROM `photos`");
+
+    while ($fetchTaggedMiscs = $getTaggedMiscs->fetch_assoc()) {
+
+        $tags = $fetchTaggedMiscs['Misc_Tags'];
+        $eachTag = explode(',', $tags);
+
+        foreach ($eachTag as $tag) {
+            array_push($taggedMiscs, $tag);
+        }
+        $taggedMiscs = array_unique($taggedMiscs);
+    }
+
+
+    echo '<select id="miscPhotoSelect" class="selectpicker" data-live-search="true" name="miscPhotoSelect">';
+
+    foreach ($taggedMiscs as $tag) {
+
+        echo '<option value="', $tag, '" ';
+
+        if ($currentMisc === $tag) {
+
+            echo 'Selected="Selected"';
+        }
+
+        echo '>';
+        echo returnMiscTagNameByID($tag);
+        echo '</option>';
+    }
+
+    echo '</select>';
+}
