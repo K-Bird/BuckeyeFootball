@@ -1,14 +1,7 @@
-<?php
-include ("../../libs/db/common_db_functions.php");
+<?php include ("../../libs/db/common_db_functions.php");
 
-$refreshType = $_GET['type'];
+$player_photo_ID = $_GET['playerID'];
 
-if ($refreshType === 'player') {
-    $player_photo_ID = $_GET['playerID'];
-}
-if ($refreshType === 'game') {
-    $game_photo_ID = $_GET['gameID'];
-}
 ?>
 <div class="modal fade" id="editTagsModal" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
@@ -20,14 +13,10 @@ if ($refreshType === 'game') {
                 </button>
             </div>
             <div class="modal-body">
-                <?php
-                if ($refreshType === 'player') {
-                    buildEditTagsBody($player_photo_ID, 'player');
-                }
-                if ($refreshType === 'game') {
-                    buildEditTagsBody($game_photo_ID, 'game');
-                }
-                ?>
+                <?php buildEditTagsBody($player_photo_ID, 'player'); ?>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
             </div>
         </div>
     </div>

@@ -1415,31 +1415,14 @@ function buildPlayerPhotoGallery($player_tag) {
     }
 }
 
-//recevie a game id and genterate all images tagged with the player ID
-function buildGamePhotoGallery($gameID) {
-
-    $taggedPhotos = taggedIDs($gameID, 'game');
-
-
-    foreach ($taggedPhotos as $photoID) {
-
-        $getPhotoDetails = db_query("SELECT * FROM `photos` WHERE Photo_ID='{$photoID}'");
-        $fetchPhotoDetails = $getPhotoDetails->fetch_assoc();
-
-        echo '<div class="gg-element">';
-        echo '<img class="playerPhoto" src="/buckeyefootball/libs/images/uploaded/' . $fetchPhotoDetails['Photo_Name'] . '.' . $fetchPhotoDetails['Extension'] . '">';
-        echo '</div>';
-    }
-}
-
 //recieve a player id and display all the tags associated with images that player is tagged in
-function buildEditTagsBody($ID, $type) {
+function buildEditTagsBody($player_photo_ID, $type) {
 
 
-    $taggedPhotos = taggedIDs($ID, $type);
+    $taggedPhotos = taggedIDs($player_photo_ID, $type);
 
     echo '<ul class="list-group">';
-
+    
     $i = 1;
 
     foreach ($taggedPhotos as $photoID) {
@@ -1450,67 +1433,37 @@ function buildEditTagsBody($ID, $type) {
 
         echo '<li class="list-group-item">';
         echo '<img class="playerPhoto" src="/buckeyefootball/libs/images/uploaded/' . $fetchPhotoDetails['Photo_Name'] . '.' . $fetchPhotoDetails['Extension'] . '" height=150 width=150>';
-
-        if ($type === 'player') {
-            echo '<div id="playerPhotoTags' . $i . '">';
-            echo returnTags($photoID, 'player');
-            echo '<br>Tag Player(s) In This Photo:&nbsp;&nbsp;
-              <input type="text" class="form-control playerTagSearchDisplayed" id="editAddPlayerTagSearch', $i . '" data-num="', $i . '" data-photoID="' . $photoID . '" placeholder="Search for Player By Name"/>
-              <div id="playerTagExistingResults' . $i . '" class="editAddPlayerTagResults" data-num="' . $i . '"></div>';
-            echo '</li>';
-        }
-        if ($type === 'game') {
-            echo '<div id="gamePhotoTags' . $i . '">';
-            echo returnTags($photoID, 'game');
-            echo '<br>Tag Game(s) In This Photo:&nbsp;&nbsp;
-              <input type="text" class="form-control gameTagSearchDisplayed" id="editAddGameTagSearch', $i . '" data-num="', $i . '" data-photoID="' . $photoID . '" placeholder="Search for Game By Date"/>
-              <div id="gameTagExistingResults' . $i . '" class="editAddGameTagResults" data-num="' . $i . '"></div>';
-            echo '</li>';
-        }
+        echo '<div id="playerPhotoTags'. $i . '">';
+        echo returnTags($photoID,'player');
         echo '</div>';
-
+        echo '<br>Tag Player(s) In This Photo:&nbsp;&nbsp;
+              <input type="text" class="form-control playerTagSearchDisplayed" id="editAddPlayerTagSearch', $i . '" data-num="', $i . '" data-photoID="'.$photoID.'" placeholder="Search for Player"/>
+              <div id="playerTagExistingResults' . $i . '" class="editAddPlayerTagResults" data-num="' . $i . '"></div>';
+        echo '</li>';
         $i++;
     }
     echo '</ul>';
 }
 
 //display tags for a given photo
-function returnTags($photo_id, $type) {
-
+function returnTags ($photo_id, $type) {
+    
     $getPhotoTags = db_query("SELECT * FROM `photos` WHERE Photo_ID='{$photo_id}'");
     $fetchPhototag = $getPhotoTags->fetch_assoc();
 
-    if ($type === 'player') {
-        $playerTags = $fetchPhototag['Player_Tags'];
+    $playerTags = $fetchPhototag['Player_Tags'];
+    //$gameTags = $fetchPhototag['Game_Tags'];
+    //$misc_Tags = $fetchPhototag['Misc_Tags'];
 
-        $eachTag = explode(',', $playerTags);
-
-        foreach ($eachTag as $tag) {
-            echo '<span class="badge badge-pill badge-secondary">';
-
-            echo getPlayerFieldByMasterID('First_Name', $tag) . " " . getPlayerFieldByMasterID('Last_Name', $tag);
-
-            echo '&nbsp;<span aria-hidden="true" data-photo="', $photo_id, '" id="ptag', $tag, '" class="playerTagRemove">&times;</span>';
-            echo '</span>';
-        }
+    $eachPlayerTag = explode(',', $playerTags);
+    
+    foreach ($eachPlayerTag as $tag) {
+        echo '<span class="badge badge-pill badge-secondary">';
+        echo getPlayerFieldByMasterID('First_Name', $tag) . " " . getPlayerFieldByMasterID('Last_Name', $tag);
+        echo '&nbsp;<span aria-hidden="true" data-photo="',$photo_id,'" id="ptag',$tag,'" class="playerTagRemove">&times;</span>';
+        echo '</span>';
     }
-    if ($type === 'game') {
-        $gameTags = $fetchPhototag['Game_Tags'];
-
-        $eachTag = explode(',', $gameTags);
-
-        foreach ($eachTag as $tag) {
-            echo '<span class="badge badge-pill badge-secondary">';
-
-            $getGameData = db_query("SELECT * FROM `games` WHERE GM_ID='{$tag}'");
-            $fetchGameData = $getGameData->fetch_assoc();
-
-            echo $fetchGameData['Date'] . " - (" . HomeAwayLookup($fetchGameData ['H_A']) . ") Vs " . opponentLookup($fetchGameData['Vs']);
-
-            echo '&nbsp;<span aria-hidden="true" data-photo="', $photo_id, '" id="gtag', $tag, '" class="gameTagRemove">&times;</span>';
-            echo '</span>';
-        }
-    }
+    
 }
 
 function taggedIDs($tag, $type) {
@@ -1532,28 +1485,8 @@ function taggedIDs($tag, $type) {
                 }
             }
         }
-        return $taggedPlayers;
     }
-
-    if ($type === 'game') {
-
-        $getAllTaggedGames = db_query("SELECT * FROM `photos`");
-        $taggedGames = [];
-
-        while ($fetchAllTaggedGames = $getAllTaggedGames->fetch_assoc()) {
-
-            $tags = $fetchAllTaggedGames['Game_Tags'];
-            $eachTag = explode(',', $tags);
-
-            foreach ($eachTag as $tag_loop) {
-                if ($tag_loop === $tag) {
-                    $photoID = $fetchAllTaggedGames['Photo_ID'];
-                    array_push($taggedGames, $photoID);
-                }
-            }
-        }
-        return $taggedGames;
-    }
+    return $taggedPlayers;
 }
 
 function returnYearsPlayed($Master_ID) {
