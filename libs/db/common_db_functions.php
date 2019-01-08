@@ -691,9 +691,17 @@ function incrementPlayerClass($prevClass) {
     }
 }
 
-function getPlayerField($field, $player_row) {
+function getPlayerFieldByRow($field, $player_row) {
 
     $getAttribute = db_query("SELECT * FROM `players` WHERE Player_Row='{$player_row}'");
+    $fetchAttribute = $getAttribute->fetch_assoc();
+    $attribute = $fetchAttribute[$field];
+    return $attribute;
+}
+
+function getPlayerFieldByMasterID($field, $player_ID) {
+
+    $getAttribute = db_query("SELECT * FROM `players` WHERE Player_Master_ID='{$player_ID}'");
     $fetchAttribute = $getAttribute->fetch_assoc();
     $attribute = $fetchAttribute[$field];
     return $attribute;
@@ -707,7 +715,7 @@ function opponentLookup($opp_ID) {
     return $oppName;
 }
 
-function gameStatExists($gm_ID, $player_ID, $category, $week, $fname, $lname, $season, $opp) {
+function gameStatExists($gm_ID, $player_ID, $category, $week, $fname, $lname, $season) {
 
     $player_ID = returnPlayerMasterID($player_ID);
 
@@ -716,11 +724,11 @@ function gameStatExists($gm_ID, $player_ID, $category, $week, $fname, $lname, $s
     $RowCount = mysqli_num_rows($getStatRow);
 
     if ($RowCount >= 1) {
-        return '<button id="' . $category . $gm_ID . $player_ID . '" class="btn btn-sm btn-secondary"><span 
+        return '<button class="btn btn-sm btn-secondary"><span 
            class="oi oi-comment-square existingStat"
            data-toggle="modal" 
            data-target="#editStatModal"
-           data-game=' . $gm_ID . ' data-player=' . $player_ID . ' data-cat=' . $category . ' data-week=' . $week . ' data-fname=' . $fname . ' data-lname=' . $lname . ' data-season=' . $season . ' data-opp=' . opponentLookup($opp) .
+           data-game=' . $gm_ID . ' data-player=' . $player_ID . ' data-cat=' . $category . ' data-week=' . $week . ' data-fname=' . $fname . ' data-lname=' . $lname . ' data-season=' . $season .
                 '></span ></button>
            <button class="btn btn-sm btn-danger removeStat" data-cat="' . $category . '" data-game="' . $gm_ID . '" data-player="' . $player_ID . '"><span class="oi oi-minus"></span></button> ';
     } else {
@@ -763,7 +771,7 @@ function returnPlayerDetailStatCard($master_ID, $category) {
     echo '<table class="table">';
     echo '<thead><tr>';
     //Build table header based on category
-    echo StatCardthead($category);
+    echo playerStatCardthead($category);
     echo '<tr></thead>';
     foreach ($yearArray as $year) {
         echo '<tr>';
@@ -786,7 +794,7 @@ function getGameYear($GM_ID) {
 }
 
 //Build the table headings for the player stat summary
-function StatCardthead($cagetory) {
+function playerStatCardthead($cagetory) {
 
     if ($cagetory === 'Passing') {
 
@@ -802,7 +810,7 @@ function StatCardthead($cagetory) {
     }
     if ($cagetory === 'def') {
 
-        return '<th></th><td>Tackles</td><td>For Loss</td><td>Sacks</td><td>INTs</td><td>INT TDs</td><td>Passes Defended</td><td>QB Hurries</td><td>Fumble Recoveries</td><td>Fumble TDs</td>';
+        return '<th></th><td>Tackles</td><td>For Loss</td><td>Sacks</td><td>INTs</td><td>INT TDs</td><td>Passes Defended</td><td>Forced Fumbles</td><td>Fumble Recoveries</td><td>Fumble TDs</td>';
     }
     if ($cagetory === 'ret') {
 
@@ -810,11 +818,11 @@ function StatCardthead($cagetory) {
     }
     if ($cagetory === 'Kicking') {
 
-        return '<th></th><td>Extra Points Made</td><td>Extra Point Attempts</td><td>Extra Point %</td><td>Field Goals Made</td><td>Field Goal Attempts</td><td>Field Goal %</td><td>Field Goal Long</td>';
+        return '<th></th><td>Extra Points Made</td><td>Extra Point Attempts</td><td>Extra Point %</td><td>Field Goals Made</td><td>Field Goal Attempts</td><td>Field Goal %</td>';
     }
     if ($cagetory === 'Punting') {
 
-        return '<th></th><td>Punts</td><td>Punt Yards</td><td>Punt Average</td><td>Long Punt</td>';
+        return '<th></th><td>Punts</td><td>Punt Yards</td><td>Punt Average</td>';
     }
 }
 
@@ -900,7 +908,7 @@ function playerStatCardrow($category, $year, $master_ID) {
         $INTs = 0;
         $INTTDs = 0;
         $passDef = 0;
-        $QBHurries = 0;
+        $ff = 0;
         $fumRec = 0;
         $fumTDs = 0;
 
@@ -915,13 +923,13 @@ function playerStatCardrow($category, $year, $master_ID) {
                 $INTs = $INTs + $fetchDefStats['INTs'];
                 $INTTDs = $INTTDs + $fetchDefStats['INT_TDs'];
                 $passDef = $passDef + $fetchDefStats['PassDef'];
-                $QBHurries = $QBHurries + $fetchDefStats['QBHurries'];
+                $ff = $ff + $fetchDefStats['ForcedFumbles'];
                 $fumRec = $fumRec + $fetchDefStats['FumbleRec'];
                 $fumTDs = $fumTDs + $fetchDefStats['FumbleTDs'];
             }
         }
 
-        echo '<td>' . $year . '</td><td>' . $tak . '</td><td>' . $forloss . '</td><td>' . $sacks . '</td><td>' . $INTs . '</td><td>' . $INTTDs . '</td><td>' . $passDef . '</td><td>' . $QBHurries . '</td><td>' . $fumRec . '</td><td>' . $fumTDs . '</td>';
+        echo '<td>' . $year . '</td><td>' . $tak . '</td><td>' . $forloss . '</td><td>' . $sacks . '</td><td>' . $INTs . '</td><td>' . $INTTDs . '</td><td>' . $passDef . '</td><td>' . $ff . '</td><td>' . $fumRec . '</td><td>' . $fumTDs . '</td>';
     }
 
     if ($category === 'ret') {
@@ -956,7 +964,6 @@ function playerStatCardrow($category, $year, $master_ID) {
         $XPA = 0;
         $FGM = 0;
         $FGA = 0;
-        $Long = 0;
 
         $getKickingStats = db_query("SELECT * FROM `stats_kicking` WHERE Player_ID='{$master_ID}'");
         while ($fetchKickingStats = $getKickingStats->fetch_assoc()) {
@@ -967,23 +974,19 @@ function playerStatCardrow($category, $year, $master_ID) {
                 $XPA = $XPA + $fetchKickingStats['XPA'];
                 $FGM = $FGM + $fetchKickingStats['FGM'];
                 $FGA = $FGA + $fetchKickingStats['FGA'];
-                if ($fetchKickingStats['LongKick'] > $Long) {
-                    $Long = $fetchKickingStats['LongKick'];
-                }
             }
         }
 
         $XP_Percent = $XPM / $XPA;
         $FG_Percent = $FGM / $FGA;
 
-        echo '<td>' . $year . '</td><td>' . $XPM . '</td><td>' . $XPA . '</td><td>' . toPercent($XP_Percent) . '</td><td>' . $FGM . '</td><td>' . $FGA . '</td><td>' . toPercent($FG_Percent) . '</td><td>' . $Long . '</td>';
+        echo '<td>' . $year . '</td><td>' . $XPM . '</td><td>' . $XPA . '</td><td>' . toPercent($XP_Percent) . '</td><td>' . $FGM . '</td><td>' . $FGA . '</td><td>' . toPercent($FG_Percent) . '</td>';
     }
 
     if ($category === 'Punting') {
 
         $punts = 0;
         $puntYards = 0;
-        $Long = 0;
 
         $getPuntingStats = db_query("SELECT * FROM `stats_punting` WHERE Player_ID='{$master_ID}'");
         while ($fetchPuntingStats = $getPuntingStats->fetch_assoc()) {
@@ -992,15 +995,12 @@ function playerStatCardrow($category, $year, $master_ID) {
 
                 $punts = $punts + $fetchPuntingStats['Att'];
                 $puntYards = $puntYards + $fetchPuntingStats['Yards'];
-                if ($fetchPuntingStats['LongPunt'] > $Long) {
-                    $Long = $fetchPuntingStats['LongPunt'];
-                }
             }
         }
 
         $punt_Avg = $puntYards / $punts;
 
-        echo '<td>' . $year . '</td><td>' . $punts . '</td><td>' . $puntYards . '</td><td>' . number_format($punt_Avg, 1) . '</td><td>' . $Long . '</td>';
+        echo '<td>' . $year . '</td><td>' . $punts . '</td><td>' . $puntYards . '</td><td>' . number_format($punt_Avg, 1) . '</td>';
     }
 }
 
@@ -1396,134 +1396,295 @@ function playerCompareAddYearsBtn($startYear, $endYear, $location) {
     }
 }
 
-function returnGameDetailStatCard($GM_ID, $category) {
+/* Grid Gallery Functions */
 
-    echo '<div class="card">';
-    echo '<div class="card-header">';
-    echo categoryToTitle($category);
-    echo '</div>';
-    echo '<div class="card-body">';
-    echo '<table class="table">';
-    echo '<thead><tr>';
-    //Build table header based on category
-    echo StatCardthead($category);
-    echo '<tr></thead>';
-    //Build each year's stat summary based on the year, category and player master ID
-    echo gameStatCardRows($category, $GM_ID);
-    echo '</table>';
-    echo '</div>';
-    echo '</div>';
+//recevie a player id and genterate all images tagged with the player ID
+function buildPlayerPhotoGallery($player_tag) {
+
+    $taggedPhotos = taggedIDs($player_tag, 'player');
+
+
+    foreach ($taggedPhotos as $photoID) {
+
+        $getPhotoDetails = db_query("SELECT * FROM `photos` WHERE Photo_ID='{$photoID}'");
+        $fetchPhotoDetails = $getPhotoDetails->fetch_assoc();
+
+        echo '<div class="gg-element">';
+        echo '<img class="playerPhoto" src="/buckeyefootball/libs/images/uploaded/' . $fetchPhotoDetails['Photo_Name'] . '.' . $fetchPhotoDetails['Extension'] . '">';
+        echo '</div>';
+    }
 }
 
-function gameStatCardRows($category, $GM_ID) {
+//recevie a game id and genterate all images tagged with the player ID
+function buildGamePhotoGallery($gameID) {
 
-    $getPlayerStatRows = db_query("SELECT * FROM `stats_{$category}` WHERE Game_ID='{$GM_ID}'");
+    $taggedPhotos = taggedIDs($gameID, 'game');
 
-    if (mysqli_num_rows($getPlayerStatRows) < 1) {
-        echo '<tr><td>No ' . $category . ' Stats</td></tr>';
+
+    foreach ($taggedPhotos as $photoID) {
+
+        $getPhotoDetails = db_query("SELECT * FROM `photos` WHERE Photo_ID='{$photoID}'");
+        $fetchPhotoDetails = $getPhotoDetails->fetch_assoc();
+
+        echo '<div class="gg-element">';
+        echo '<img class="playerPhoto" src="/buckeyefootball/libs/images/uploaded/' . $fetchPhotoDetails['Photo_Name'] . '.' . $fetchPhotoDetails['Extension'] . '">';
+        echo '</div>';
+    }
+}
+
+//recevie a misc tag id and genterate all images tagged with the player ID
+function buildMiscPhotoGallery($miscID) {
+
+    $taggedPhotos = taggedIDs($miscID, 'misc');
+
+
+    foreach ($taggedPhotos as $photoID) {
+
+        $getPhotoDetails = db_query("SELECT * FROM `photos` WHERE Photo_ID='{$photoID}'");
+        $fetchPhotoDetails = $getPhotoDetails->fetch_assoc();
+
+        echo '<div class="gg-element">';
+        echo '<img class="playerPhoto" src="/buckeyefootball/libs/images/uploaded/' . $fetchPhotoDetails['Photo_Name'] . '.' . $fetchPhotoDetails['Extension'] . '">';
+        echo '</div>';
+    }
+}
+
+//recieve a player id and display all the tags associated with images that player is tagged in
+function buildEditTagsBody($ID, $type) {
+
+
+    $taggedPhotos = taggedIDs($ID, $type);
+
+    echo '<ul class="list-group">';
+
+    $i = 1;
+
+    foreach ($taggedPhotos as $photoID) {
+
+        $getPhotoDetails = db_query("SELECT * FROM `photos` WHERE Photo_ID='{$photoID}'");
+        $fetchPhotoDetails = $getPhotoDetails->fetch_assoc();
+
+
+        echo '<li class="list-group-item">';
+        echo '<img class="playerPhoto" src="/buckeyefootball/libs/images/uploaded/' . $fetchPhotoDetails['Photo_Name'] . '.' . $fetchPhotoDetails['Extension'] . '" height=150 width=150>';
+
+        if ($type === 'player') {
+            echo '<div id="playerPhotoTags' . $i . '">';
+            echo returnTags($photoID, 'player');
+            echo '<br>Tag Player(s) In This Photo:&nbsp;&nbsp;
+              <input type="text" class="form-control playerTagSearchDisplayed" id="editAddPlayerTagSearch', $i . '" data-num="', $i . '" data-photoID="' . $photoID . '" placeholder="Search for Player By Name"/>
+              <div id="playerTagExistingResults' . $i . '" class="editAddPlayerTagResults" data-num="' . $i . '"></div>';
+            echo '</li>';
+        }
+        if ($type === 'game') {
+            echo '<div id="gamePhotoTags' . $i . '">';
+            echo returnTags($photoID, 'game');
+            echo '<br>Tag Game(s) In This Photo:&nbsp;&nbsp;
+              <input type="text" class="form-control gameTagSearchDisplayed" id="editAddGameTagSearch', $i . '" data-num="', $i . '" data-photoID="' . $photoID . '" placeholder="Search for Game By Date"/>
+              <div id="gameTagExistingResults' . $i . '" class="editAddGameTagResults" data-num="' . $i . '"></div>';
+            echo '</li>';
+        }
+        if ($type === 'misc') {
+            echo '<div id="miscPhotoTags' . $i . '">';
+            echo returnTags($photoID, 'misc');
+            echo '<br>Misc Tag(s) In This Photo:&nbsp;&nbsp;
+              <input type="text" class="form-control miscTagSearchDisplayed" id="editAddMiscTagSearch', $i . '" data-num="', $i . '" data-photoID="' . $photoID . '" placeholder="Search for Misc By Date"/>
+              <div id="miscTagExistingResults' . $i . '" class="editAddMiscTagResults" data-num="' . $i . '"></div>';
+            echo '</li>';
+        }
+        echo '</div>';
+
+        $i++;
+    }
+    echo '</ul>';
+}
+
+//display tags for a given photo
+function returnTags($photo_id, $type) {
+
+    $getPhotoTags = db_query("SELECT * FROM `photos` WHERE Photo_ID='{$photo_id}'");
+    $fetchPhototag = $getPhotoTags->fetch_assoc();
+
+    if ($type === 'player') {
+        $playerTags = $fetchPhototag['Player_Tags'];
+
+        $eachTag = explode(',', $playerTags);
+
+        foreach ($eachTag as $tag) {
+            echo '<span class="badge badge-pill badge-secondary">';
+
+            echo getPlayerFieldByMasterID('First_Name', $tag) . " " . getPlayerFieldByMasterID('Last_Name', $tag);
+
+            echo '&nbsp;<span aria-hidden="true" data-photo="', $photo_id, '" id="ptag', $tag, '" class="playerTagRemove">&times;</span>';
+            echo '</span>';
+        }
+    }
+    if ($type === 'game') {
+        $gameTags = $fetchPhototag['Game_Tags'];
+
+        $eachTag = explode(',', $gameTags);
+
+        foreach ($eachTag as $tag) {
+            echo '<span class="badge badge-pill badge-secondary">';
+
+            $getGameData = db_query("SELECT * FROM `games` WHERE GM_ID='{$tag}'");
+            $fetchGameData = $getGameData->fetch_assoc();
+
+            echo $fetchGameData['Date'] . " - (" . HomeAwayLookup($fetchGameData ['H_A']) . ") Vs " . opponentLookup($fetchGameData['Vs']);
+
+            echo '&nbsp;<span aria-hidden="true" data-photo="', $photo_id, '" id="gtag', $tag, '" class="gameTagRemove">&times;</span>';
+            echo '</span>';
+        }
+    }
+
+    if ($type === 'misc') {
+        $miscTags = $fetchPhototag['Misc_Tags'];
+
+        $eachTag = explode(',', $miscTags);
+
+        foreach ($eachTag as $tag) {
+            echo '<span class="badge badge-pill badge-secondary">';
+
+            echo returnMiscTagNameByID($tag);
+
+            echo '&nbsp;<span aria-hidden="true" data-photo="', $photo_id, '" id="gtag', $tag, '" class="miscTagRemove">&times;</span>';
+            echo '</span>';
+        }
+    }
+}
+
+function taggedIDs($tag, $type) {
+
+    if ($type === 'player') {
+
+        $getAllTaggedPlayers = db_query("SELECT * FROM `photos`");
+        $taggedPlayers = [];
+
+        while ($fetchAllTaggedPlayers = $getAllTaggedPlayers->fetch_assoc()) {
+
+            $tags = $fetchAllTaggedPlayers['Player_Tags'];
+            $eachTag = explode(',', $tags);
+
+            foreach ($eachTag as $tag_loop) {
+                if ($tag_loop === $tag) {
+                    $photoID = $fetchAllTaggedPlayers['Photo_ID'];
+                    array_push($taggedPlayers, $photoID);
+                }
+            }
+        }
+        return $taggedPlayers;
+    }
+
+    if ($type === 'game') {
+
+        $getAllTaggedGames = db_query("SELECT * FROM `photos`");
+        $taggedGames = [];
+
+        while ($fetchAllTaggedGames = $getAllTaggedGames->fetch_assoc()) {
+
+            $tags = $fetchAllTaggedGames['Game_Tags'];
+            $eachTag = explode(',', $tags);
+
+            foreach ($eachTag as $tag_loop) {
+                if ($tag_loop === $tag) {
+                    $photoID = $fetchAllTaggedGames['Photo_ID'];
+                    array_push($taggedGames, $photoID);
+                }
+            }
+        }
+        return $taggedGames;
+    }
+
+    if ($type === 'misc') {
+
+        $getAllTaggedMisc = db_query("SELECT * FROM `photos`");
+        $taggedMisc = [];
+
+        while ($fetchAllTaggedMisc = $getAllTaggedMisc->fetch_assoc()) {
+
+            $tags = $fetchAllTaggedMisc['Misc_Tags'];
+            $eachTag = explode(',', $tags);
+
+            foreach ($eachTag as $tag_loop) {
+                if ($tag_loop === $tag) {
+                    $photoID = $fetchAllTaggedMisc['Photo_ID'];
+                    array_push($taggedMisc, $photoID);
+                }
+            }
+        }
+        return $taggedMisc;
+    }
+}
+
+function returnYearsPlayed($Master_ID) {
+
+
+    $getSeasonsByMasterID = db_query("SELECT * FROM `players` WHERE Player_Master_ID='{$Master_ID}' ORDER BY Season ASC");
+    $seasons = [];
+
+    while ($fetchSeasons = $getSeasonsByMasterID->fetch_assoc()) {
+
+        array_push($seasons, $fetchSeasons['Season']);
+    }
+
+    //Count how many years are in the array
+    $numYears = count($seasons);
+
+    //If there is only 1 year in the array
+    if ($numYears === 1) {
+
+        //get season year by the season ID
+        $season = getSeason_Year($seasons[0]);
+        //If the season is the current year display dash
+        if ($season === date('Y')) {
+            return '(' . $season . ' - )';
+        } else {
+            return '(' . $season . ')';
+        }
+        //If there is more than 1 year in the array
     } else {
+        //Check if the array contains sequential seasons
+        $checkSequential = is_array_sequential($seasons);
+        //If the array is sequential
+        if ($checkSequential === true) {
 
-        while ($fetchPlayerStatRows = $getPlayerStatRows->fetch_assoc()) {
+            //sort array smallest to largest
+            sort($seasons);
+            //return mix and max year by season id
+            $largestYear = max($seasons);
+            $smallestYear = min($seasons);
 
-            $master_ID = $fetchPlayerStatRows['Player_ID'];
+            return '(' . getSeason_Year($smallestYear) . ' - ' . getSeason_Year($largestYear) . ')';
 
-            if ($category === 'Passing') {
-
-                $comp = $fetchPlayerStatRows['Comp'];
-                $att = $fetchPlayerStatRows['Att'];
-                $yards = $fetchPlayerStatRows['Yards'];
-                $TDs = $fetchPlayerStatRows['TDs'];
-                $INTs = $fetchPlayerStatRows['INTs'];
-                $Rate = $fetchPlayerStatRows['Rate'];
-
-                $CompPercentage = $comp / $att;
-
-                echo '<tr><td>' . returnPlayerName($master_ID) . '</td><td>' . $comp . '</td><td>' . $att . '</td><td>' . toPercent($CompPercentage) . '</td><td>' . number_format($yards) . '</td><td>' . $TDs . '</td><td>' . $INTs . '</td><td>' . number_format($Rate, 1) . '</td></tr>';
-            }
-            if ($category === 'Rushing') {
-
-
-                $att = $fetchPlayerStatRows['Att'];
-                $yards = $fetchPlayerStatRows['Yards'];
-                $TDs = $fetchPlayerStatRows['TDs'];
-
-                echo '<tr><td>' . returnPlayerName($master_ID) . '</td><td>' . $att . '</td><td>' . number_format($yards) . '</td><td>' . $TDs . '</td></tr>';
-            }
-            if ($category === 'rec') {
-
-                $rec = $fetchPlayerStatRows['Rec'];
-                $yards = $fetchPlayerStatRows['Yards'];
-                $TDs = $fetchPlayerStatRows['TDs'];
-
-                echo '<tr><td>' . returnPlayerName($master_ID) . '</td><td>' . $rec . '</td><td>' . number_format($yards) . '</td><td>' . $TDs . '</td></tr>';
-            }
-            if ($category === 'def') {
-
-                $tak = $fetchPlayerStatRows['Tackles'];
-                $forloss = $fetchPlayerStatRows['ForLoss'];
-                $sacks = $fetchPlayerStatRows['Sacks'];
-                $INTs = $fetchPlayerStatRows['INTs'];
-                $INTTDs = $fetchPlayerStatRows['INT_TDs'];
-                $passDef = $fetchPlayerStatRows['PassDef'];
-                $QBHurries = $fetchPlayerStatRows['QBHurries'];
-                $fumRec = $fetchPlayerStatRows['FumbleRec'];
-                $fumTDs = $fetchPlayerStatRows['FumbleTDs'];
-
-                echo '<tr><td>' . returnPlayerName($master_ID) . '</td><td>' . $tak . '</td><td>' . $forloss . '</td><td>' . $sacks . '</td><td>' . $INTs . '</td><td>' . $INTTDs . '</td><td>' . $passDef . '</td><td>' . $QBHurries . '</td><td>' . $fumRec . '</td><td>' . $fumTDs . '</td></tr>';
-            }
-            if ($category === 'ret') {
-
-                $KRs = $fetchPlayerStatRows['KR_Ret'];
-                $KRyards = $fetchPlayerStatRows['KR_Yards'];
-                $KRTDs = $fetchPlayerStatRows['KR_TDs'];
-                $PRs = $fetchPlayerStatRows['PR_Ret'];
-                $PRyards = $fetchPlayerStatRows['PR_Yards'];
-                $PRTDs = $fetchPlayerStatRows['PR_TDs'];
-
-
-                echo '<tr><td>' . returnPlayerName($master_ID) . '</td><td>' . $KRs . '</td><td>' . $KRyards . '</td><td>' . $KRTDs . '</td><td>' . $PRs . '</td><td>' . $PRyards . '</td><td>' . $PRTDs . '</td></tr>';
-            }
-
-            if ($category === 'Kicking') {
-
-                $XPM = $fetchPlayerStatRows['XPM'];
-                $XPA = $fetchPlayerStatRows['XPA'];
-                $FGM = $fetchPlayerStatRows['FGM'];
-                $FGA = $fetchPlayerStatRows['FGA'];
-                $Long = $fetchPlayerStatRows['LongKick'];
-
-                if ($XPA > 0) {
-                    $XP_Percent = $XPM / $XPA;
-                } else {
-                    $XP_Percent = 0;
-                }
-                if ($FGA > 0) {
-                    $FG_Percent = $FGM / $FGA;
-                } else {
-                    $FG_Percent = 0;
-                }
-
-                echo '<td>' . returnPlayerName($master_ID) . '</td><td>' . $XPM . '</td><td>' . $XPA . '</td><td>' . toPercent($XP_Percent) . '</td><td>' . $FGM . '</td><td>' . $FGA . '</td><td>' . toPercent($FG_Percent) . '</td><td>' . $Long . '</td>';
-            }
-            if ($category === 'Punting') {
-
-                $punts = $fetchPlayerStatRows['Att'];
-                $puntYards = $fetchPlayerStatRows['Yards'];
-                $Long = $fetchPlayerStatRows['LongPunt'];
-
-
-                $punt_Avg = $puntYards / $punts;
-
-                echo '<td>' . returnPlayerName($master_ID) . '</td><td>' . $punts . '</td><td>' . $puntYards . '</td><td>' . number_format($punt_Avg, 1) . '</td><td>' . $Long . '</td>';
+            //If the array is not sequential    
+        } else {
+            //remove the first season and set to a variable
+            $firstSeason = array_shift($seasons);
+            //is the remaining array sequential? If yes, take the min/max season and return both the sequential and non-sequential parts
+            if (is_array_sequential($seasons)) {
+                $firstSequential = min($seasons);
+                $lastSequential = max($seasons);
+                return getSeason_Year($firstSeason) . ', (' . getSeason_Year($firstSequential) . ' - ' . getSeason_Year($lastSequential) . ')';
             }
         }
     }
 }
 
-function returnPlayerName($master_ID) {
+function is_array_sequential($arr) {
+    $delta = $arr[1] - $arr[0];
+    for ($index = 0; $index < sizeof($arr) - 1; $index++) {
+        if (($arr[$index + 1] - $arr[$index]) != $delta) {
 
-    $getPlayer = db_query("SELECT * FROM `players` WHERE Player_Master_ID='{$master_ID}'");
-    $fetchPlayerName = $getPlayer->fetch_assoc();
+            return false;
+        }
+    }
+    return true;
+}
 
-    return $fetchPlayerName['First_Name'] . " " . $fetchPlayerName['Last_Name'];
+function returnMiscTagNameByID($ID) {
+
+    $getTagName = db_query("SELECT * FROM `ref_misc_photo_tags` WHERE Tag_ID='{$ID}'");
+    $fetchTagName = $getTagName->fetch_assoc();
+    $TagName = $fetchTagName['Tag_Name'];
+    return $TagName;
 }
