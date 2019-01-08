@@ -28,3 +28,6 @@ db_query("INSERT INTO `players` (
 VALUES 
 
 ('{$nextPlayerRow}','{$nextMasterID}', '{$season}', '', '', '', '{$pos}', '', '', '','', '', 'FR', '')");
+
+
+db_query("INSERT INTO `ref_player_lookup` (`Player_Master_ID`) VALUES ('{$nextMasterID}')");

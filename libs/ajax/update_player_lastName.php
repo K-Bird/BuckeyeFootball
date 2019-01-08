@@ -4,3 +4,4 @@ $master_ID = $_POST['master_ID'];
 $newLName = addslashes($_POST['newLName']);
 
 db_query("UPDATE `players` SET Last_Name ='{$newLName}' WHERE Player_Master_ID='{$master_ID}'");
+db_query("UPDATE `ref_player_lookup` SET Last_Name ='{$newLName}' WHERE Player_Master_ID='{$master_ID}'");
