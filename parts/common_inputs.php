@@ -604,3 +604,117 @@ function displayPlayerClassFilterSelect() {
 
     echo '</select>';
 }
+
+//Build Players With Photos Select List
+function displayPlayerPhotoSelect($currentPlayer) {
+
+    $taggedPlayers = [];
+    $getTaggedPlayers = db_query("SELECT * FROM `photos`");
+
+    while ($fetchTaggedPlayers = $getTaggedPlayers->fetch_assoc()) {
+
+        $tags = $fetchTaggedPlayers['Player_Tags'];
+        $eachTag = explode(',', $tags);
+
+        foreach ($eachTag as $tag) {
+            array_push($taggedPlayers, $tag);
+        }
+        $taggedPlayers = array_unique($taggedPlayers);
+    }
+
+
+    echo '<select id="playerPhotoSelect" class="selectpicker" data-live-search="true" name="playerPhotoSelect">';
+
+    foreach ($taggedPlayers as $tag) {
+
+        echo '<option value="', $tag, '" ';
+
+        if ($currentPlayer === $tag) {
+
+            echo 'Selected="Selected"';
+        }
+
+        echo '>';
+        echo getPlayerFieldByMasterID('First_Name', $tag). " " . getPlayerFieldByMasterID('Last_Name', $tag);
+        echo '</option>';
+    }
+
+    echo '</select>';
+}
+
+//Build Games With Photos Select List
+function displayGamePhotoSelect($currentGame) {
+
+    $taggedGames = [];
+    $getTaggedGames = db_query("SELECT * FROM `photos`");
+
+    while ($fetchTaggedGames = $getTaggedGames->fetch_assoc()) {
+
+        $tags = $fetchTaggedGames['Game_Tags'];
+        $eachTag = explode(',', $tags);
+
+        foreach ($eachTag as $tag) {
+            array_push($taggedGames, $tag);
+        }
+        $taggedGames = array_unique($taggedGames);
+    }
+
+
+    echo '<select id="gamePhotoSelect" class="selectpicker" data-live-search="true" name="playerPhotoSelect">';
+
+    foreach ($taggedGames as $tag) {
+
+        echo '<option value="', $tag, '" ';
+
+        if ($currentGame === $tag) {
+
+            echo 'Selected="Selected"';
+        }
+        
+        $getGameData = db_query("SELECT * FROM `games` WHERE GM_ID='{$tag}'");
+        $fetchGameData = $getGameData->fetch_assoc();
+
+        echo '>';
+        echo  $fetchGameData['Date'] . " - (" . HomeAwayLookup($fetchGameData ['H_A']) . ") Vs " . opponentLookup($fetchGameData['Vs']);
+        echo '</option>';
+    }
+
+    echo '</select>';
+}
+
+//Build Misc Tags With Photos Select List
+function displayMiscPhotoSelect($currentMisc) {
+
+    $taggedMiscs = [];
+    $getTaggedMiscs = db_query("SELECT * FROM `photos`");
+
+    while ($fetchTaggedMiscs = $getTaggedMiscs->fetch_assoc()) {
+
+        $tags = $fetchTaggedMiscs['Misc_Tags'];
+        $eachTag = explode(',', $tags);
+
+        foreach ($eachTag as $tag) {
+            array_push($taggedMiscs, $tag);
+        }
+        $taggedMiscs = array_unique($taggedMiscs);
+    }
+
+
+    echo '<select id="miscPhotoSelect" class="selectpicker" data-live-search="true" name="miscPhotoSelect">';
+
+    foreach ($taggedMiscs as $tag) {
+
+        echo '<option value="', $tag, '" ';
+
+        if ($currentMisc === $tag) {
+
+            echo 'Selected="Selected"';
+        }
+
+        echo '>';
+        echo returnMiscTagNameByID($tag);
+        echo '</option>';
+    }
+
+    echo '</select>';
+}
