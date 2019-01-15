@@ -508,7 +508,7 @@
                 });
         e.preventDefault();
     });
-    $(".removeWeek").click(function () {
+    $("#removeWeek").click(function () {
 
         var gmID = $(this).attr("data-game");
         $.ajax(

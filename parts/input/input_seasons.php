@@ -194,7 +194,7 @@
                 data-season="<?php echo $Season_ID; ?>"
 
                 >Add Week</button>
-            <button class="btn btn-danger removeWeek" data-game="', $fetchGamesData['GM_ID'], '">Remove Last Week</button>
+            <button id="removeWeek" class="btn btn-danger" data-game="<?php echo returnMaxGameID(); ?>">Remove Last Week</button>
             <br><br>
         </div>
     </div>

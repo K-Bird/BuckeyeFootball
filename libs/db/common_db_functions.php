@@ -1688,3 +1688,12 @@ function returnMiscTagNameByID($ID) {
     $TagName = $fetchTagName['Tag_Name'];
     return $TagName;
 }
+
+function returnMaxGameID() {
+
+    $getLastGame = db_query("SELECT Max(GM_ID) as LastGame From `games`");
+    $fetchLastGame = $getLastGame->fetch_assoc();
+    $lastGameID = $fetchLastGame['LastGame'];
+    
+    return $lastGameID;
+}

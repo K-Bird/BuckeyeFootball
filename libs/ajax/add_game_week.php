@@ -33,3 +33,7 @@ db_query("INSERT INTO `games` (
 VALUES 
 
 ('{$season}', '{$nextWeek}', '', '', '0', '0', '0', '43', '0', '0', '0', '0', '0', 'N', 'N', '0', '0')");
+
+$lastGameID = returnMaxGameID();
+
+db_query("INSERT INTO `ref_game_lookup` (GM_ID) VALUES ('{$lastGameID}')");
