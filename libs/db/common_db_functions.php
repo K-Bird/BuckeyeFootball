@@ -1480,8 +1480,10 @@ function buildEditTagsBody($ID, $type) {
             echo '<div id="gamePhotoTags' . $i . '">';
             echo returnTags($photoID, 'game');
             echo '<br>Tag Game(s) In This Photo:&nbsp;&nbsp;
-              <input type="text" class="form-control gameTagSearchDisplayed" id="editAddGameTagSearch', $i . '" data-num="', $i . '" data-photoID="' . $photoID . '" placeholder="Search for Game By Date"/>
-              <div id="gameTagExistingResults' . $i . '" class="editAddGameTagResults" data-num="' . $i . '"></div>';
+              <input id="gamesSearchExistingYear' . $i . '" type="text" class="form-control gameSearchFieldExisting" data-num="', $i . '" data-photoID="' . $photoID . '" placeholder="Search for Game By Year"/>
+              <input id="gamesSearchExistingOpp' . $i . '" type="text" class="form-control gameSearchFieldExisting" data-num="', $i . '" data-photoID="' . $photoID . '" placeholder="Search for Game By Opponent"/>
+              <input id="gamesSearchExistingLoc' . $i . '" type="text" class="form-control gameSearchFieldExisting" data-num="', $i . '" data-photoID="' . $photoID . '" placeholder="Search for Game By Location"/>
+            <div id="gameTagExistingResults' . $i . '" class="editAddGameTagResults" data-num="' . $i . '"></div>';
             echo '</li>';
         }
         if ($type === 'misc') {
@@ -1694,6 +1696,6 @@ function returnMaxGameID() {
     $getLastGame = db_query("SELECT Max(GM_ID) as LastGame From `games`");
     $fetchLastGame = $getLastGame->fetch_assoc();
     $lastGameID = $fetchLastGame['LastGame'];
-    
+
     return $lastGameID;
 }

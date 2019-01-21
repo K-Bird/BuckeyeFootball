@@ -8,6 +8,7 @@ include ('parts/common_inputs.php');
         <link rel="stylesheet" type="text/css" href="libs/css/bootstrap.css">
         <link rel="stylesheet" type="text/css" href="libs/css/nouislider.css">
         <link rel="stylesheet" type="text/css" href="libs/css/common.css">
+        <link rel="stylesheet" type="text/css" href="libs/css/bootstrap-datepicker.css">
         <link rel="stylesheet" type="text/css" href="libs/css/grid-gallery.css">
         <link rel="stylesheet" type="text/css" href="libs/css/lightbox.css">
         <link rel="stylesheet" type="text/css" href="libs/css/bootstrap-select.min.css">
@@ -17,6 +18,7 @@ include ('parts/common_inputs.php');
         <script src="libs/js/nouislider.js"></script>
         <script src="libs/js/wNumb.js"></script>
         <script src="libs/js/bootstrap-select.min.js"></script>
+        <script src="libs/js/bootstrap-datepicker.js"></script>
         <script src="libs/js/grid-gallery.js"></script>
         <script src="libs/js/lightbox.js"></script>
         <script src="libs/js/commonFunctions.js"></script>
@@ -226,11 +228,13 @@ include ('parts/common_inputs.php');
         });
 
         //On typing into game tag upload searchbox genterate the tag results as buttons
-        $("#gameTagSearchUpload").keyup(function () {
+        $(".gamesSearchField").keyup(function () {
 
-            var date = $('#gameTagSearchUpload').val();
-
-            if (date === '') {
+            var year = $('#gamesSearchYear').val();
+            var opp = $('#gamesSearchOpp').val();
+            var loc = $('#gamesSearchLoc').val();
+            
+            if (year === '' && opp === '' && loc === '') {
                 $('#gameTagResults').replaceWith('<div id="gameTagResults"></div>');
             } else {
 
@@ -238,7 +242,7 @@ include ('parts/common_inputs.php');
                         {
                             url: "libs/ajax/search_game_tag.php",
                             type: "POST",
-                            data: {date: date, type: "upload"},
+                            data: {year : year, opp : opp, loc : loc, type: "upload"},
                             success: function (data, textStatus, jqXHR)
                             {
                                 $('#gameTagResults').replaceWith(data);
@@ -249,6 +253,7 @@ include ('parts/common_inputs.php');
                             }
                         });
             }
+
         });
 
         //On typing into misc tag upload searchbox genterate the tag results as buttons
@@ -305,20 +310,24 @@ include ('parts/common_inputs.php');
         });
 
         //On typing into game tag existing searchbox genterate the tag results as buttons
-        $(document).on("keyup", '.gameTagSearchDisplayed', function () {
+        $(document).on("keyup", '.gameSearchFieldExisting', function () {
 
-            var date = $(this).val();
             var number = $(this).attr('data-num');
             var photoID = $(this).attr('data-photoID');
 
-            if (date === '') {
+            var year = $('#gamesSearchExistingYear' + number).val();
+            var opp = $('#gamesSearchExistingOpp' + number).val();
+            var loc = $('#gamesSearchExistingLoc' + number).val();
+           
+
+            if (year === '' && opp === '' && loc === '') {
                 $('#gameTagExistingResults' + number).empty();
             } else {
                 $.ajax(
                         {
                             url: "libs/ajax/search_game_tag.php",
                             type: "POST",
-                            data: {date: date, num: number, type: "existing", photoID: photoID},
+                            data: {year : year, opp : opp, loc : loc, num: number, type: "existing", photoID: photoID},
                             success: function (data, textStatus, jqXHR)
                             {
                                 $('#gameTagExistingResults' + number).replaceWith(data);
