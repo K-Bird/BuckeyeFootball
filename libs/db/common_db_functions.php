@@ -1401,7 +1401,7 @@ function playerCompareAddYearsBtn($startYear, $endYear, $location) {
 //recevie a player id and genterate all images tagged with the player ID
 function buildPlayerPhotoGallery($player_tag) {
 
-    $taggedPhotos = taggedIDs($player_tag, 'player');
+    $taggedPhotos = taggedPhotoIDs($player_tag, 'player');
 
 
     foreach ($taggedPhotos as $photoID) {
@@ -1418,7 +1418,7 @@ function buildPlayerPhotoGallery($player_tag) {
 //recevie a game id and genterate all images tagged with the player ID
 function buildGamePhotoGallery($gameID) {
 
-    $taggedPhotos = taggedIDs($gameID, 'game');
+    $taggedPhotos = taggedPhotoIDs($gameID, 'game');
 
 
     foreach ($taggedPhotos as $photoID) {
@@ -1435,7 +1435,7 @@ function buildGamePhotoGallery($gameID) {
 //recevie a misc tag id and genterate all images tagged with the player ID
 function buildMiscPhotoGallery($miscID) {
 
-    $taggedPhotos = taggedIDs($miscID, 'misc');
+    $taggedPhotos = taggedPhotoIDs($miscID, 'misc');
 
 
     foreach ($taggedPhotos as $photoID) {
@@ -1453,7 +1453,7 @@ function buildMiscPhotoGallery($miscID) {
 function buildEditTagsBody($ID, $type) {
 
 
-    $taggedPhotos = taggedIDs($ID, $type);
+    $taggedPhotos = taggedPhotoIDs($ID, $type);
 
     echo '<ul class="list-group">';
 
@@ -1555,7 +1555,74 @@ function returnTags($photo_id, $type) {
     }
 }
 
-function taggedIDs($tag, $type) {
+//display tags for a given video
+function returnVideoTags($video_id, $type) {
+
+    $getVideoTags = db_query("SELECT * FROM `videos` WHERE Video_ID='{$video_id}'");
+    $fetchVideotag = $getVideoTags->fetch_assoc();
+
+    if ($type === 'game') {
+        $gameTags = $fetchVideotag['Game_Tags'];
+
+        if ($gameTags === '') {
+            echo 'Tag Games(s) In Uploaded Video:&nbsp;&nbsp;';
+            echo '<input id="existingGamesSearchYearv' . $video_id . '" class="form-control existingGamesSearchFieldv" data-videoID="' . $video_id . '" placeholder="Search Year">';
+            echo '<input id="existingGamesSearchOppv' . $video_id . '" class="form-control existingGamesSearchFieldv" data-videoID="' . $video_id . '" placeholder="Search Opponent">';
+            echo '<input id="existingGamesSearchLocv' . $video_id . '" class="form-control existingGamesSearchFieldv" data-videoID="' . $video_id . '" placeholder="Search Location">';
+            echo '<div id="existingGameTagResultsv' . $video_id . '"></div>';
+        } else {
+
+            echo 'Tag Games(s) In Uploaded Video:&nbsp;&nbsp;';
+            echo '<input id="existingGamesSearchYearv' . $video_id . '" class="form-control existingGamesSearchFieldv" data-videoID="' . $video_id . '" placeholder="Search Year">';
+            echo '<input id="existingGamesSearchOppv' . $video_id . '" class="form-control existingGamesSearchFieldv" data-videoID="' . $video_id . '" placeholder="Search Opponent">';
+            echo '<input id="existingGamesSearchLocv' . $video_id . '" class="form-control existingGamesSearchFieldv" data-videoID="' . $video_id . '" placeholder="Search Location">';
+            echo '<div id="existingGameTagResultsv' . $video_id . '"></div>';
+
+            $eachTag = explode(',', $gameTags);
+
+            foreach ($eachTag as $tag) {
+                echo '<span class="badge badge-pill badge-secondary">';
+
+                $getGameData = db_query("SELECT * FROM `games` WHERE GM_ID='{$tag}'");
+                $fetchGameData = $getGameData->fetch_assoc();
+
+                echo $fetchGameData['Date'] . " - (" . HomeAwayLookup($fetchGameData ['H_A']) . ") Vs " . opponentLookup($fetchGameData['Vs']);
+
+                echo '&nbsp;<span aria-hidden="true" data-video="', $video_id, '" id="gtag', $tag, '" class="gameTagRemovev">&times;</span>';
+                echo '</span>';
+            }
+        }
+    }
+
+    if ($type === 'misc') {
+        $miscTags = $fetchVideotag['Misc_Tags'];
+
+        if ($miscTags === '') {
+
+            echo '<br>Misc Tag(s) In This Photo:&nbsp;&nbsp;
+              <input type="text" class="form-control miscTagSearchDisplayedv" id="editAddMiscTagSearchv', $video_id . '" data-videoID="' . $video_id . '" placeholder="Search for Misc Tag"/>
+              <div id="miscTagExistingResultsv' . $video_id . '" class="editAddMiscTagResultsv"></div>';
+        } else {
+
+            echo '<br>Misc Tag(s) In This Photo:&nbsp;&nbsp;
+              <input type="text" class="form-control miscTagSearchDisplayedv" id="editAddMiscTagSearchv', $video_id . '" data-videoID="' . $video_id . '" placeholder="Search for Misc Tag"/>
+              <div id="miscTagExistingResultsv' . $video_id . '" class="editAddMiscTagResultsv"></div>';
+
+            $eachTag = explode(',', $miscTags);
+
+            foreach ($eachTag as $tag) {
+                echo '<span class="badge badge-pill badge-secondary">';
+
+                echo returnMiscTagNameByIDv($tag);
+
+                echo '&nbsp;<span aria-hidden="true" data-video="', $video_id, '" id="gtag', $tag, '" class="miscTagRemovev">&times;</span>';
+                echo '</span>';
+            }
+        }
+    }
+}
+
+function taggedPhotoIDs($tag, $type) {
 
     if ($type === 'player') {
 
@@ -1611,6 +1678,49 @@ function taggedIDs($tag, $type) {
                 if ($tag_loop === $tag) {
                     $photoID = $fetchAllTaggedMisc['Photo_ID'];
                     array_push($taggedMisc, $photoID);
+                }
+            }
+        }
+        return $taggedMisc;
+    }
+}
+
+function taggedVideoIDs($tag, $type) {
+
+    if ($type === 'game') {
+
+        $getAllTaggedGames = db_query("SELECT * FROM `videos`");
+        $taggedGames = [];
+
+        while ($fetchAllTaggedGames = $getAllTaggedGames->fetch_assoc()) {
+
+            $tags = $fetchAllTaggedGames['Game_Tags'];
+            $eachTag = explode(',', $tags);
+
+            foreach ($eachTag as $tag_loop) {
+                if ($tag_loop === $tag) {
+                    $videoID = $fetchAllTaggedGames['Video_ID'];
+                    array_push($taggedGames, $videoID);
+                }
+            }
+        }
+        return $taggedGames;
+    }
+
+    if ($type === 'misc') {
+
+        $getAllTaggedMisc = db_query("SELECT * FROM `videos`");
+        $taggedMisc = [];
+
+        while ($fetchAllTaggedMisc = $getAllTaggedMisc->fetch_assoc()) {
+
+            $tags = $fetchAllTaggedMisc['Misc_Tags'];
+            $eachTag = explode(',', $tags);
+
+            foreach ($eachTag as $tag_loop) {
+                if ($tag_loop === $tag) {
+                    $videoID = $fetchAllTaggedMisc['Video_ID'];
+                    array_push($taggedMisc, $videoID);
                 }
             }
         }
@@ -1691,6 +1801,14 @@ function returnMiscTagNameByID($ID) {
     return $TagName;
 }
 
+function returnMiscTagNameByIDv($ID) {
+
+    $getTagName = db_query("SELECT * FROM `ref_misc_video_tags` WHERE Tag_ID='{$ID}'");
+    $fetchTagName = $getTagName->fetch_assoc();
+    $TagName = $fetchTagName['Tag_Name'];
+    return $TagName;
+}
+
 function returnMaxGameID() {
 
     $getLastGame = db_query("SELECT Max(GM_ID) as LastGame From `games`");
@@ -1698,4 +1816,22 @@ function returnMaxGameID() {
     $lastGameID = $fetchLastGame['LastGame'];
 
     return $lastGameID;
+}
+
+function buildVideosDisplay($type, $tag) {
+
+    $taggedVideos = taggedVideoIDs($tag, $type);
+
+    foreach ($taggedVideos as $video_id) {
+
+        $getVideoInfo = db_query("SELECT * FROM `videos` WHERE Video_ID={$video_id}");
+        $fetchVideoInfo = $getVideoInfo->fetch_assoc();
+
+        echo '<div>';
+        echo '<video controls height="500px" width="800px">';
+        echo "<source src=/buckeyefootball/libs/video/uploaded/" . $fetchVideoInfo['Video_Name'] . "." . $fetchVideoInfo['Extension'] . " type=video/" . $fetchVideoInfo['Extension'] . ">";
+        echo '</video>';
+        echo '<br><br>';
+        echo '</div>';
+    }
 }

@@ -3,13 +3,13 @@
 include ("../../libs/db/common_db_functions.php");
 
 $miscID = $_POST['miscID'];
-$photo_id = $_POST['photo_id'];
+$video_id = $_POST['video_id'];
 
-//get all existing misc tags for the photo ID
-$getPhotoTags = db_query("SELECT * FROM `photos` WHERE Photo_ID='{$photo_id}'");
-$fetchPhototag = $getPhotoTags->fetch_assoc();
+//get all existing misc tags for the video ID
+$getVideoTags = db_query("SELECT * FROM `videos` WHERE Video_ID='{$video_id}'");
+$fetchVideotag = $getVideoTags->fetch_assoc();
 
-$miscTags = $fetchPhototag['Misc_Tags'];
+$miscTags = $fetchVideotag['Misc_Tags'];
 $eachMiscTag = explode(',', $miscTags);
 
 $index = array_search('',$eachMiscTag);
@@ -35,9 +35,9 @@ foreach ($eachMiscTag as $tag) {
     $i++;
 }
 
-db_query("Update `Photos` SET Misc_Tags ='{$reloadedTags}' WHERE Photo_ID='{$photo_id}'");
+db_query("Update `Videos` SET Misc_Tags ='{$reloadedTags}' WHERE Video_ID='{$video_id}'");
 
 echo '&nbsp;<span class="badge badge-pill badge-secondary">';
-echo returnMiscTagNameByID($miscID);
+echo returnMiscTagNameByIDv($miscID);
 echo '&nbsp;<span aria-hidden="true">&times;</span>';
 echo '</span>&nbsp;';

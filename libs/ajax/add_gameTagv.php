@@ -3,19 +3,20 @@
 include ("../../libs/db/common_db_functions.php");
 
 $gameID = $_POST['gameID'];
-$photo_id = $_POST['photo_id'];
+$video_id = $_POST['video_id'];
 
-//get all existing game tags for the photo ID
-$getPhotoTags = db_query("SELECT * FROM `photos` WHERE Photo_ID='{$photo_id}'");
-$fetchPhototag = $getPhotoTags->fetch_assoc();
+//get all existing game tags for the video ID
+$getVideoTags = db_query("SELECT * FROM `videos` WHERE Video_ID='{$video_id}'");
+$fetchVideotag = $getVideoTags->fetch_assoc();
 
-$gameTags = $fetchPhototag['Game_Tags'];
+$gameTags = $fetchVideotag['Game_Tags'];
 $eachGameTag = explode(',', $gameTags);
 
 $index = array_search('',$eachGameTag);
 if($index !== FALSE){
     unset($eachGameTag[$index]);
 }
+
 
 //push new tag into tag array
 array_push($eachGameTag, $gameID);
@@ -35,7 +36,7 @@ foreach ($eachGameTag as $tag) {
     $i++;
 }
 
-db_query("Update `Photos` SET Game_Tags ='{$reloadedTags}' WHERE Photo_ID='{$photo_id}'");
+db_query("Update `videos` SET Game_Tags ='{$reloadedTags}' WHERE Video_ID='{$video_id}'");
 
 $getGameData = db_query("SELECT * FROM `games` WHERE GM_ID='{$gameID}'");
 $fetchGameData = $getGameData->fetch_assoc();

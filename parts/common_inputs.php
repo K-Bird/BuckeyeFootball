@@ -718,3 +718,58 @@ function displayMiscPhotoSelect($currentMisc) {
 
     echo '</select>';
 }
+
+//Build Games With Videos Select List
+function displayGameVideoSelect($currentGame) {
+
+    $taggedGames = [];
+    $getTaggedGames = db_query("SELECT * FROM `videos`");
+
+    while ($fetchTaggedGames = $getTaggedGames->fetch_assoc()) {
+
+        $tags = $fetchTaggedGames['Game_Tags'];
+        $eachTag = explode(',', $tags);
+
+        foreach ($eachTag as $tag) {
+            array_push($taggedGames, $tag);
+        }
+        $taggedGames = array_unique($taggedGames);
+    }
+
+
+    echo '<select id="gameVideoSelect" class="selectpicker" data-live-search="true" name="playerVideoSelect" style="width: 300px">';
+
+    foreach ($taggedGames as $tag) {
+
+        echo '<option value="', $tag, '" ';
+
+        if ($currentGame === $tag) {
+
+            echo 'Selected="Selected"';
+        }
+        
+        $getGameData = db_query("SELECT * FROM `games` WHERE GM_ID='{$tag}'");
+        $fetchGameData = $getGameData->fetch_assoc();
+
+        echo '>';
+        echo  $fetchGameData['Date'] . " - (" . HomeAwayLookup($fetchGameData ['H_A']) . ") Vs " . opponentLookup($fetchGameData['Vs']);
+        echo '</option>';
+    }
+
+    echo '</select>';
+}
+
+function displayVideoMiscSelect() {
+
+    $selectVidMiscTag = db_query("SELECT * from `ref_misc_video_tags`");
+
+    echo '<select id="miscVideoSelect" class="selectpicker" data-live-search="true">';
+
+    while ($fetchVidMiscTag = $selectVidMiscTag->fetch_assoc()) {
+
+
+        echo '<option value="' . $fetchVidMiscTag['Tag_ID'] . '">' . $fetchVidMiscTag['Tag_Name'] . '</option>';
+    }
+
+    echo '</select>';
+}
