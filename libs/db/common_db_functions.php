@@ -1948,3 +1948,40 @@ function returnPlayerName($master_ID) {
     $fetchPlayerName = $getPlayer->fetch_assoc();
     return $fetchPlayerName['First_Name'] . " " . $fetchPlayerName['Last_Name'];
 }
+
+
+function returnGameDate($GameID) {
+    
+    $getGameDate = db_query("SELECT * FROM `games` WHERE GM_ID='{$GameID}'");
+    $fetchGameDate = $getGameDate->fetch_assoc();
+    return $fetchGameDate['Date'];
+    
+}
+
+function isGameConf($GM_ID) {
+    
+    $getGameDate = db_query("SELECT * FROM `games` WHERE GM_ID='{$GM_ID}'");
+    $fetchGameDate = $getGameDate->fetch_assoc();
+    $Conf_GM = $fetchGameDate['Conf_GM'];
+    
+    if ($Conf_GM === 'Y') {
+        return true;
+    } else {
+        return false;
+    }
+    
+}
+
+function isGameDiv($GM_ID) {
+    
+    $getGameDate = db_query("SELECT * FROM `games` WHERE GM_ID='{$GM_ID}'");
+    $fetchGameDate = $getGameDate->fetch_assoc();
+    $Div_GM = $fetchGameDate['Div_GM'];
+    
+    if ($Div_GM === 'Y') {
+        return true;
+    } else {
+        return false;
+    }
+    
+}
