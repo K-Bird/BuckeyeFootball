@@ -15,6 +15,11 @@
         <script src="libs/js/bootstrap-datepicker.js"></script>
         <script src="libs/js/bootstrap-select.min.js"></script>
         <script src="libs/js/wNumb.js"></script>
+        <style>
+            .listInputTable {
+                width: 50%; margin: 0 auto; text-align: left
+            }
+        </style>
     </head>
     <body>
         <?php include ('nav/navBar.php'); ?>

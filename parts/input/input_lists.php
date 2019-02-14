@@ -36,7 +36,7 @@ $getInputList = db_query("SELECT * FROM `controls` WHERE Control='input_list_edi
 $fetchInputList = $getInputList->fetch_assoc();
 $inputList = $fetchInputList['Value'];
 ?>
-<div class="container-fluid" style="text-align: center">
+<div class="container-fluid">
     <br>
     <div class="row">
         <div class="col-lg-12">
@@ -56,6 +56,7 @@ $inputList = $fetchInputList['Value'];
     </div>
     <div class="row">
         <div class="col-lg-12">
+            <br>
             <?php
             if ($inputList === 'b10div') {
                 include ('parts/input/list_input/b10div.php');
@@ -79,7 +80,6 @@ $inputList = $fetchInputList['Value'];
                 include ('parts/input/list_input/gameTypes.php');
             }
             ?>
-
         </div>
     </div>
 </div>

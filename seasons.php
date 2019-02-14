@@ -21,7 +21,7 @@ include ("parts/common_inputs.php");
         <?php include ('nav/navBar.php'); ?>
         <div class="loaderText" style="text-align: center"><br><br><h2><span class="badge badge-secondary">Loading Season Data</span></h2></div>
         <div class="loaderIcon"></div>
-        <div id="seasonContent" class="container-fluid" style="width: 75%">
+        <div id="seasonContent" class="container-fluid" style="width: 80%">
             <div class="row">
                 <div class="col-lg-12 text-center">
                     <br>

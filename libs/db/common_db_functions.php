@@ -1372,7 +1372,7 @@ function playerCompareBody($startYear, $endYear) {
                 echo '<td>-</td>';
             } else {
 
-                echo '<td>' . $fetchPlayerData['Player_Master_ID'] . " " . $fetchPlayerData['First_Name'] . " " . $fetchPlayerData['Last_Name'] . " " . $fetchPlayerData['Class'] . " " . $fetchPlayerData['Position'] . '</td>';
+                echo '<td>' . $fetchPlayerData['First_Name'] . " " . $fetchPlayerData['Last_Name'] . " - " . $fetchPlayerData['Class'] . " - " . $fetchPlayerData['Position'] . '</td>';
             }
             $season++;
         }
