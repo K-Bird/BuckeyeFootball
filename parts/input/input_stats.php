@@ -26,6 +26,9 @@
                             Game
                         </th>
                         <th>
+
+                        </th>
+                        <th>
                             Passing
                         </th>
                         <th>
@@ -46,9 +49,6 @@
                         <th>
                             Punting
                         </th>
-                        <th>
-
-                        </th>
                     </tr>
                 </thead>
                 <tbody>
@@ -61,8 +61,20 @@
                         echo '<td>';
                         echo "Week " . $fetchGameData['Week'] . " vs " . opponentLookup($fetchGameData['Vs']);
                         echo '</td>';
-
-
+                        echo '<td>';
+                        echo '<button
+                                   class="btn btn-success" 
+                                   data-gameID="', $fetchGameData['GM_ID'], '"
+                                   data-week="', $fetchGameData['Week'], '" 
+                                   data-opp="', opponentLookup($fetchGameData['Vs']), '"
+                                   data-fname="', getPlayerFieldByRow("First_Name", $inputAddPlayer), '" 
+                                   data-lname="', getPlayerFieldByRow("Last_Name", $inputAddPlayer), '" 
+                                   data-season="', $Input_Season, '"
+                                   data-toggle="modal" 
+                                   data-target="#addStatModal">
+                                   <span class="oi oi-plus"></span>
+                              </button>';
+                        echo '</td>';
                         echo '<td>';
                         echo gameStatExists($fetchGameData['GM_ID'], $inputAddPlayer, 'passing', $fetchGameData['Week'], getPlayerFieldByRow("First_Name", $inputAddPlayer), getPlayerFieldByRow("Last_Name", $inputAddPlayer), $Input_Season);
                         echo '</td>';
@@ -84,21 +96,6 @@
                         echo '<td>';
                         echo gameStatExists($fetchGameData['GM_ID'], $inputAddPlayer, 'punting', $fetchGameData['Week'], getPlayerFieldByRow("First_Name", $inputAddPlayer), getPlayerFieldByRow("Last_Name", $inputAddPlayer), $Input_Season);
                         echo '</td>';
-                        echo '<td>';
-                        echo '<button
-                                   class="btn btn-success" 
-                                   data-gameID="', $fetchGameData['GM_ID'], '"
-                                   data-week="', $fetchGameData['Week'], '" 
-                                   data-opp="',  opponentLookup($fetchGameData['Vs']),'"
-                                   data-fname="', getPlayerFieldByRow("First_Name", $inputAddPlayer), '" 
-                                   data-lname="', getPlayerFieldByRow("Last_Name", $inputAddPlayer), '" 
-                                   data-season="', $Input_Season, '"
-                                   data-toggle="modal" 
-                                   data-target="#addStatModal">
-                                   <span class="oi oi-plus"></span>
-                              </button>';
-                        echo '</td>';
-
                         echo '</tr>';
                     }
                     ?>
