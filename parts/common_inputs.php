@@ -409,6 +409,8 @@ function displayExistingPlayersSelect($season, $id) {
 
     echo '<select class="selectpicker" data-live-search="true" id="existingPlayer', $id, '">';
 
+    echo '<option><option>';  
+
     while ($fetchExistingPlayers = $getExistingPlayers->fetch_assoc()) {
 
         echo '<option value="' . $fetchExistingPlayers['Player_Row'] . '">' . $fetchExistingPlayers['Position'] . ' - ' . $fetchExistingPlayers['First_Name'] . " " . $fetchExistingPlayers['Last_Name'] . '</option>';
@@ -635,7 +637,7 @@ function displayPlayerPhotoSelect($currentPlayer) {
         }
 
         echo '>';
-        echo getPlayerFieldByMasterID('First_Name', $tag). " " . getPlayerFieldByMasterID('Last_Name', $tag);
+        echo getPlayerFieldByMasterID('First_Name', $tag) . " " . getPlayerFieldByMasterID('Last_Name', $tag);
         echo '</option>';
     }
 
@@ -670,12 +672,12 @@ function displayGamePhotoSelect($currentGame) {
 
             echo 'Selected="Selected"';
         }
-        
+
         $getGameData = db_query("SELECT * FROM `games` WHERE GM_ID='{$tag}'");
         $fetchGameData = $getGameData->fetch_assoc();
 
         echo '>';
-        echo  $fetchGameData['Date'] . " - (" . HomeAwayLookup($fetchGameData ['H_A']) . ") Vs " . opponentLookup($fetchGameData['Vs']);
+        echo $fetchGameData['Date'] . " - (" . HomeAwayLookup($fetchGameData ['H_A']) . ") Vs " . opponentLookup($fetchGameData['Vs']);
         echo '</option>';
     }
 
@@ -747,12 +749,12 @@ function displayGameVideoSelect($currentGame) {
 
             echo 'Selected="Selected"';
         }
-        
+
         $getGameData = db_query("SELECT * FROM `games` WHERE GM_ID='{$tag}'");
         $fetchGameData = $getGameData->fetch_assoc();
 
         echo '>';
-        echo  $fetchGameData['Date'] . " - (" . HomeAwayLookup($fetchGameData ['H_A']) . ") Vs " . opponentLookup($fetchGameData['Vs']);
+        echo $fetchGameData['Date'] . " - (" . HomeAwayLookup($fetchGameData ['H_A']) . ") Vs " . opponentLookup($fetchGameData['Vs']);
         echo '</option>';
     }
 
