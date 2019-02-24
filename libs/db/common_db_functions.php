@@ -923,7 +923,6 @@ function playerStatCardrow($category, $year, $master_ID) {
                 $INTs = $INTs + $fetchDefStats['INTs'];
                 $INTTDs = $INTTDs + $fetchDefStats['INT_TDs'];
                 $passDef = $passDef + $fetchDefStats['PassDef'];
-                $ff = $ff + $fetchDefStats['ForcedFumbles'];
                 $fumRec = $fumRec + $fetchDefStats['FumbleRec'];
                 $fumTDs = $fumTDs + $fetchDefStats['FumbleTDs'];
             }
