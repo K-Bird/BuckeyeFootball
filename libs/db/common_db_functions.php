@@ -724,7 +724,7 @@ function gameStatExists($gm_ID, $player_ID, $category, $week, $fname, $lname, $o
     $RowCount = mysqli_num_rows($getStatRow);
 
     if ($RowCount >= 1) {
-        return '<button class="btn btn-sm btn-secondary"><span 
+        return '<button id="' . $category . $gm_ID . $player_ID . '" class="btn btn-sm btn-secondary"><span 
            class="oi oi-comment-square existingStat"
            data-toggle="modal" 
            data-target="#editStatModal"
