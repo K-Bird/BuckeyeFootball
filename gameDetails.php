@@ -4,14 +4,14 @@ include ("libs/db/common_db_functions.php");
 //Get posted Game ID
 $GM_ID = $_POST['GM_ID'];
 
-
-//Get all of the game's data from the games table
+//Get all of the game's data from the games table   
 $getGameData = db_query("SELECT * FROM `games` WHERE GM_ID='{$GM_ID}'");
 $fetchGameData = $getGameData->fetch_assoc();
 ?>
 <html>
     <head>
-        <title>Game Details</title>
+        <title>Buckeyes - Game Details</title>
+        <link rel="shortcut icon" href="http://www.iconj.com/ico/y/f/yfuwmmd6a8.ico" type="image/x-icon" />
         <link rel="stylesheet" type="text/css" href="libs/css/bootstrap.css">
         <link rel="stylesheet" type="text/css" href="libs/css/nouislider.css">
         <link rel="stylesheet" type="text/css" href="libs/css/grid-gallery.css">
@@ -25,17 +25,20 @@ $fetchGameData = $getGameData->fetch_assoc();
         <script src="libs/js/commonFunctions.js"></script>
     </head>
     <body>
+        <!-- include main navigation bar at top of page -->
         <?php include ('nav/navBar.php'); ?>
         <div class="container">
             <div class="row" style="text-align: center">
                 <div class="col-lg-12">
                     <br>
+                    <!-- Page heading for the game being detailed -->
                     <h1><span class="badge badge-secondary"><?php echo returnGameDate($GM_ID) . " Vs " . opponentLookup($fetchGameData['Vs']); ?> - Game Details</span></h1>
                 </div>
             </div>
             <br>
             <div class="row" style="text-align: center">
                 <div class="col-lg-12">
+                    <!-- Button group to change the game details view -->
                     <div class="btn-group" role="group">
                         <button id="gmdetailsOverview" class="btn btn-secondary gmDetailNav">Overview</button>
                         <button id="gmdetailsStats" class="btn btn-secondary gmDetailNav">Stats</button>
@@ -47,6 +50,7 @@ $fetchGameData = $getGameData->fetch_assoc();
             <br>
             <div class="row">
                 <div class="col-lg-12">
+                    <!-- Based on the detail view selected the gameDetailsContent div content is created -->
                     <div id="gameDetailsContent" data-gmid="<?php echo $GM_ID; ?>">
                     </div>
                 </div>
@@ -57,7 +61,7 @@ $fetchGameData = $getGameData->fetch_assoc();
 
     $(document).ready(function () {
 
-        //Set defualts for localstorage for navigation
+        //Set defaults for localstorage for navigation
         if (localStorage.getItem('OSU_Game_Detail_View') === null) {
             localStorage.setItem('OSU_Game_Detail_View', 'Overall');
         }
@@ -116,11 +120,13 @@ $fetchGameData = $getGameData->fetch_assoc();
 
     });
 
+    //active class on all game detail navs removed
     function removeGmDetailNavActive() {
 
         $('.gmDetailNav').removeClass("active");
     }
 
+    //based on the detail view selected call the appropriate detail sub page and populate the content
     function displayGameDetailContent(display, GM_ID) {
 
         $.ajax(
@@ -140,6 +146,7 @@ $fetchGameData = $getGameData->fetch_assoc();
 
     }
 
+    //grab the game id from the content div data attribute
     function getGameID() {
 
         return $('#gameDetailsContent').attr('data-gmid');
