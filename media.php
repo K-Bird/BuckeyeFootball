@@ -4,7 +4,8 @@ include ('parts/common_inputs.php');
 ?>
 <html>
     <head>
-        <title>OSU - Media</title>
+        <title>Buckeyes - Media</title>
+        <link rel="shortcut icon" href="http://www.iconj.com/ico/y/f/yfuwmmd6a8.ico" type="image/x-icon" />
         <link rel="stylesheet" type="text/css" href="libs/css/bootstrap.css">
         <link rel="stylesheet" type="text/css" href="libs/css/nouislider.css">
         <link rel="stylesheet" type="text/css" href="libs/css/common.css">
@@ -24,10 +25,12 @@ include ('parts/common_inputs.php');
         <script src="libs/js/commonFunctions.js"></script>
     </head>
     <body>
+        <!-- include main navigation bar at top of page -->
         <?php include ('nav/navBar.php'); ?>
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">
+                    <!-- show the media navigation bar under the main nav bar -->
                     <?php include ('parts/media/topMediaNav.php'); ?>
                 </div>
             </div>
@@ -832,7 +835,7 @@ include ('parts/common_inputs.php');
                         data: {miscID: miscID, video_id: video_id},
                         success: function (data, textStatus, jqXHR)
                         {
-                           $('#miscTagExistingResultsv' + video_id).append(data);
+                            $('#miscTagExistingResultsv' + video_id).append(data);
                         },
                         error: function (jqXHR, textStatus, errorThrown)
                         {
