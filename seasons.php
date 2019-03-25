@@ -4,7 +4,8 @@ include ("parts/common_inputs.php");
 ?>
 <html>
     <head>
-        <title>OSU - SEA</title>
+        <title>Buckeyes - Seasons</title>
+        <link rel="shortcut icon" href="http://www.iconj.com/ico/y/f/yfuwmmd6a8.ico" type="image/x-icon" />
         <link rel="stylesheet" type="text/css" href="libs/css/bootstrap.css">
         <link rel="stylesheet" type="text/css" href="libs/css/nouislider.css">
         <link rel="stylesheet" type="text/css" href="libs/css/open-iconic-bootstrap.css">
@@ -18,6 +19,7 @@ include ("parts/common_inputs.php");
         <script src="libs/js/wNumb.js"></script>
     </head>
     <body>
+        <!-- include main navigation bar at top of page -->
         <?php include ('nav/navBar.php'); ?>
         <div class="loaderText" style="text-align: center"><br><br><h2><span class="badge badge-secondary">Loading Season Data</span></h2></div>
         <div class="loaderIcon"></div>
