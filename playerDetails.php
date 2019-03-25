@@ -10,7 +10,8 @@ $fetch_PlayerDataHeader = $getPlayerDataHeader->fetch_assoc();
 ?>
 <html>
     <head>
-        <title>Player Details</title>
+        <title>Buckeyes - Player Details</title>
+        <link rel="shortcut icon" href="http://www.iconj.com/ico/y/f/yfuwmmd6a8.ico" type="image/x-icon" />
         <link rel="stylesheet" type="text/css" href="libs/css/bootstrap.css">
         <link rel="stylesheet" type="text/css" href="libs/css/nouislider.css">
         <link rel="stylesheet" type="text/css" href="libs/css/grid-gallery.css">
@@ -24,6 +25,7 @@ $fetch_PlayerDataHeader = $getPlayerDataHeader->fetch_assoc();
         <script src="libs/js/commonFunctions.js"></script>
     </head>
     <body>
+        <!-- include main navigation bar at top of page -->
         <?php include ('nav/navBar.php'); ?>
         <div class="container">
             <div class="row" style="text-align: center">
@@ -77,7 +79,7 @@ $fetch_PlayerDataHeader = $getPlayerDataHeader->fetch_assoc();
         $("#playerdetailsOverview").click(function () {
 
             localStorage.setItem('OSU_Player_Detail_View', 'Overall');
-            removeGmDetailNavActive();
+            removePlayerDetailNavActive();
             $('#playerdetailsOverview').addClass('active');
             displayPlayerDetailContent('overview', getPlayerID());
         });
@@ -85,7 +87,7 @@ $fetch_PlayerDataHeader = $getPlayerDataHeader->fetch_assoc();
         $("#playerdetailsStats").click(function () {
 
             localStorage.setItem('OSU_Player_Detail_View', 'Stats');
-            removeGmDetailNavActive();
+            removePlayerDetailNavActive();
             $('#playerdetailsStats').addClass('active');
             displayPlayerDetailContent('stats', getPlayerID());
         });
@@ -93,7 +95,7 @@ $fetch_PlayerDataHeader = $getPlayerDataHeader->fetch_assoc();
         $("#playerdetailsPhotos").click(function () {
 
             localStorage.setItem('OSU_Player_Detail_View', 'Photos');
-            removeGmDetailNavActive();
+            removePlayerDetailNavActive();
             $('#playerdetailsPhotos').addClass('active');
             displayPlayerDetailContent('photos', getPlayerID());
 
@@ -102,19 +104,21 @@ $fetch_PlayerDataHeader = $getPlayerDataHeader->fetch_assoc();
         $("#playerdetailsVideos").click(function () {
 
             localStorage.setItem('OSU_Player_Detail_View', 'Videos');
-            removeGmDetailNavActive();
+            removePlayerDetailNavActive();
             $('#playerdetailsVideos').addClass('active');
             displayPlayerDetailContent('videos', getPlayerID());
 
         });
 
     });
-
-    function removeGmDetailNavActive() {
+    
+    //remove active class from all player detail nav buttons
+    function removePlayerDetailNavActive() {
 
         $('.playerDetailNav').removeClass("active");
     }
 
+    //display the player deail view content based on nav selection
     function displayPlayerDetailContent(display, Master_ID) {
 
         $.ajax(
@@ -134,9 +138,9 @@ $fetch_PlayerDataHeader = $getPlayerDataHeader->fetch_assoc();
 
     }
 
+    //return the player ID from the selected player's detail button
     function getPlayerID() {
 
         return $('#playerDetailsContent').attr('data-playerid');
     }
-
 </script>
