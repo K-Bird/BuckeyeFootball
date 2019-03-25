@@ -10,7 +10,8 @@ $oppGMdata = db_query("SELECT * FROM `games` WHERE VS='{$OppID}'");
 
 <html>
     <head>
-        <title>Vs Details</title>
+        <title>Buckeyes - Opponent Details</title>
+        <link rel="shortcut icon" href="http://www.iconj.com/ico/y/f/yfuwmmd6a8.ico" type="image/x-icon" />
         <link rel="stylesheet" type="text/css" href="libs/css/bootstrap.css">
         <link rel="stylesheet" type="text/css" href="libs/css/nouislider.css"s>
         <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.0-beta/css/bootstrap-select.min.css">
@@ -23,11 +24,13 @@ $oppGMdata = db_query("SELECT * FROM `games` WHERE VS='{$OppID}'");
         <script src="libs/js/commonFunctions.js"></script>
     </head>
     <body>
+        <!-- include main navigation bar at top of page -->
         <?php include ('nav/navBar.php'); ?>
         <div class="container" style="text-align: center">
             <div class="row">
                 <div class="col-lg-12">
                     <br>
+                     <!-- create page title based on the opponent -->
                     <h1><span class="badge badge-secondary">Opponent Details - Ohio State vs <?php echo opponentLookup($OppID); ?></span></h1>
                 </div>
             </div>
@@ -37,6 +40,7 @@ $oppGMdata = db_query("SELECT * FROM `games` WHERE VS='{$OppID}'");
                 </div>
                 <div class="col-lg-4">
                     <span class="badge badge-secondary">Change Opponent:</span><br>
+                    <!-- display dropdown of opponents that ohio state has played -->
                     <select id="changeOppSelect" class="selectpicker" data-live-search="true"  name="ChageOppSelect">
                         <?php
                         $getPlayedOpps = db_query("SELECT DISTINCT Vs FROM `games` ORDER BY VS ASC");
@@ -111,8 +115,8 @@ $oppGMdata = db_query("SELECT * FROM `games` WHERE VS='{$OppID}'");
                                 <tr>
                                     <td>OSU Total<br><?php echo number_format(returnOppSummaryItem($OppID, 'OSUTotalFor')); ?></td>
                                     <td><?php opponentLookup($OppID); ?> Total<br><?php echo number_format(returnOppSummaryItem($OppID, 'OppTotalFor')); ?></td>
-                                    <td>Average OSU<br><?php echo number_format(returnOppSummaryItem($OppID, 'OSUAvgFor'),1); ?></td>
-                                    <td>Average <?php echo opponentLookup($OppID); ?><br><?php echo number_format(returnOppSummaryItem($OppID, 'OppAvgFor'),1); ?></td>
+                                    <td>Average OSU<br><?php echo number_format(returnOppSummaryItem($OppID, 'OSUAvgFor'), 1); ?></td>
+                                    <td>Average <?php echo opponentLookup($OppID); ?><br><?php echo number_format(returnOppSummaryItem($OppID, 'OppAvgFor'), 1); ?></td>
                                 </tr>
                                 <tr>
                                     <td colspan="4">#1 vs #2 Games</td>
@@ -188,7 +192,7 @@ $oppGMdata = db_query("SELECT * FROM `games` WHERE VS='{$OppID}'");
 
     });
 
-
+    //When a new oppoenent is selected to view reload the page with the new opponents details
     $('#changeOppSelect').change(function () {
 
         var newOpp = $(this).val();
@@ -204,5 +208,5 @@ $oppGMdata = db_query("SELECT * FROM `games` WHERE VS='{$OppID}'");
         form.appendChild(input);
         form.submit();
     });
-    
+
 </script>
