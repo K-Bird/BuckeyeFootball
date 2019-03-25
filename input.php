@@ -2,7 +2,8 @@
 <?php include ('parts/common_inputs.php'); ?>
 <html>
     <head>
-        <title>OSU - Input</title>
+        <title>Buckeyes - Input</title>
+        <link rel="shortcut icon" href="http://www.iconj.com/ico/y/f/yfuwmmd6a8.ico" type="image/x-icon" />
         <link rel="stylesheet" type="text/css" href="libs/css/bootstrap.css">
         <link rel="stylesheet" type="text/css" href="libs/css/nouislider.css">
         <link rel="stylesheet" type="text/css" href="libs/css/bootstrap-datepicker.css">
@@ -15,38 +16,37 @@
         <script src="libs/js/bootstrap-datepicker.js"></script>
         <script src="libs/js/bootstrap-select.min.js"></script>
         <script src="libs/js/wNumb.js"></script>
-        <style>
-            .listInputTable {
-                width: 50%; margin: 0 auto; text-align: left
-            }
-        </style>
     </head>
     <body>
+        <!-- include main navigation bar at top of page -->
         <?php include ('nav/navBar.php'); ?>
         <div class="container-fluid" style="text-align: center">
             <br><br>
             <div class="row">
                 <?php
+                //Get the current input view
                 $get_InputView = db_query("SELECT * FROM `Controls` WHERE Control='Input_View'");
                 $fetch_InputView = $get_InputView->fetch_assoc();
                 $Input_View = $fetch_InputView['Value'];
 
+                //get the current input season
                 $get_InputSeason = db_query("SELECT * FROM `Controls` WHERE Control='Input_Season'");
                 $fetch_InputSeason = $get_InputSeason->fetch_assoc();
                 $Input_Season = $fetch_InputSeason['Value'];
 
+                //Get the season ID of the input season
                 $Season_ID = getSeason_ID($Input_Season);
 
+                //Get all data for the input season using the season ID
                 $getSeasonData = db_query("SELECT * FROM `seasons` Where Season_ID='{$Season_ID}'");
                 $fetchSeasonData = $getSeasonData->fetch_assoc();
 
-
-
+                //add the input controls to the page
                 include ('parts/input/input_controls.php');
                 ?>
             </div>
             <div class="row">
-                <!-- Check Stat Input View Control -->          
+                <!-- check stat input view control and display the appropriate view -->          
                 <?php
                 if ($Input_View === 'Seasons') {
                     include ('parts/input/input_seasons.php');
@@ -65,9 +65,11 @@
         </div>
     </body>
 </html>
+<!-- include the modal that allows for adding a season -->
 <?php include ('parts/input/input_modal_addSeason.php'); ?>
 <script>
     /* Interaction Functions */
+    //When input view seasons button is clicked update the database to the new view
     $("#input_seasons_btn").click(function () {
         $.ajax(
                 {
@@ -85,6 +87,7 @@
                 });
         e.preventDefault();
     });
+    //When input view players button is clicked update the database to the new view
     $("#input_players_btn").click(function () {
         $.ajax(
                 {
@@ -102,6 +105,7 @@
                 });
         e.preventDefault();
     });
+    //When input view stats button is clicked update the database to the new view
     $("#input_stats_btn").click(function () {
         $.ajax(
                 {
@@ -119,7 +123,7 @@
                 });
         e.preventDefault();
     });
-
+    //When input view lists button is clicked update the database to the new view
     $("#input_lists_btn").click(function () {
         $.ajax(
                 {
@@ -137,7 +141,7 @@
                 });
         e.preventDefault();
     });
-
+    //When a new season is clicked update the database to the new season
     $(".inputSeason").click(function () {
 
         var season = this.id;
@@ -157,7 +161,7 @@
                 });
         e.preventDefault();
     });
-
+    //When a new date is selected for a game update the database
     $('.weekDate').change(function (e) {
 
         var gameID = this.id;
@@ -178,7 +182,7 @@
                 });
         e.preventDefault();
     });
-
+    //When home or away is selected for a game update the database
     $('.gameHA').change(function () {
 
         var gameID = this.id;
@@ -199,6 +203,7 @@
                 });
         e.preventDefault();
     });
+    //When a new location is selected for a game update the database
     $('.gameLoc').change(function () {
 
         var gameID = this.id;
@@ -219,6 +224,7 @@
                 });
         e.preventDefault();
     });
+    //When a new opponent is selected for a game update the database
     $('.gameOpp').change(function () {
 
         var gameID = this.id;
@@ -239,6 +245,7 @@
                 });
         e.preventDefault();
     });
+    //When a new game type is selected for a game update the database
     $('.gameType').change(function () {
 
         var gameID = this.id;
@@ -259,7 +266,11 @@
                 });
         e.preventDefault();
     });
+
+    //create a timer to track time for keboard related events
     var timer = null;
+
+    //When OSU score is entered for a game update the database
     $('.OSUScore').keydown(function (e) {
         clearTimeout(timer);
         timer = setTimeout(function () {
@@ -283,6 +294,7 @@
             e.preventDefault();
         }, 1000);
     });
+    //When Opponent score is entered for a game update the database
     $('.OppScore').keydown(function (e) {
         clearTimeout(timer);
         timer = setTimeout(function () {
@@ -306,6 +318,7 @@
             e.preventDefault();
         }, 1000);
     });
+    //When OSU AP rank is entered for a game update the database
     $('.osuAP').keydown(function (e) {
         clearTimeout(timer);
         timer = setTimeout(function () {
@@ -329,6 +342,7 @@
             e.preventDefault();
         }, 1000);
     });
+    //When OSU CFP rank is entered for a game update the database
     $('.osuCFP').keydown(function (e) {
         clearTimeout(timer);
         timer = setTimeout(function () {
@@ -352,6 +366,7 @@
             e.preventDefault();
         }, 1000);
     });
+    //When opponent AP rank is entered for a game update the database
     $('.oppAP').keydown(function (e) {
         clearTimeout(timer);
         timer = setTimeout(function () {
@@ -375,6 +390,7 @@
             e.preventDefault();
         }, 1000);
     });
+    //When opponent CPF rank is entered for a game update the database
     $('.oppCFP').keydown(function (e) {
         clearTimeout(timer);
         timer = setTimeout(function () {
@@ -398,6 +414,7 @@
             e.preventDefault();
         }, 1000);
     });
+    //When conference game status is selected for a game update the database
     $('.confGM').change(function () {
 
         var change = '';
@@ -423,6 +440,7 @@
                     }
                 });
     });
+    //When divisional game status is selected for a game update the database
     $('.divGM').change(function () {
 
         var change = '';
@@ -448,6 +466,7 @@
                     }
                 });
     });
+    //When OSU post game AP rank is entered for a game update the database
     $('.postAP').keydown(function (e) {
         clearTimeout(timer);
         timer = setTimeout(function () {
@@ -471,6 +490,7 @@
             e.preventDefault();
         }, 1000);
     });
+    //When OSU post game CFP rank is entered for a game update the database
     $('.postCFP').keydown(function (e) {
         clearTimeout(timer);
         timer = setTimeout(function () {
@@ -494,6 +514,7 @@
             e.preventDefault();
         }, 1000);
     });
+    //When the button to add a new week is clicked add the game row to the database
     $("#addWeek").click(function () {
 
         var season = $(this).attr("data-season");
@@ -513,6 +534,7 @@
                 });
         e.preventDefault();
     });
+    //When the button to remove a week is clicked remove the game row from the database
     $("#removeWeek").click(function () {
 
         var gmID = $(this).attr("data-game");
@@ -532,6 +554,7 @@
                 });
         e.preventDefault();
     });
+    //When setting the displayed seasons details: when a new decade is selected update the database
     $('#DecadeSelect').change(function () {
 
         var seasonID = $(this).attr('data-season');
@@ -552,6 +575,7 @@
                 });
         e.preventDefault();
     });
+    //When setting the displayed seasons details: when a new conference is selected update the database
     $('#ConfSelect').change(function () {
 
         var seasonID = $(this).attr('data-season');
@@ -572,6 +596,7 @@
                 });
         e.preventDefault();
     });
+    //When setting the displayed seasons details: when a new division is selected update the database
     $('#DivSelect').change(function () {
 
         var seasonID = $(this).attr('data-season');
@@ -592,6 +617,7 @@
                 });
         e.preventDefault();
     });
+    //When setting the displayed seasons details: when conference champions is changed update the database
     $('#ConfChampSelect').change(function () {
 
         var seasonID = $(this).attr('data-season');
@@ -612,7 +638,8 @@
                 });
         e.preventDefault();
     });
-        $('#NatChampSelect').change(function () {
+    //When setting the displayed seasons details: when national champions is changed update the database
+    $('#NatChampSelect').change(function () {
 
         var seasonID = $(this).attr('data-season');
         var newChamp = $(this).val();
@@ -632,6 +659,7 @@
                 });
         e.preventDefault();
     });
+    //When setting the displayed seasons details: when final AP rank is changed update the database
     $('#finalAP').keydown(function (e) {
         clearTimeout(timer);
         timer = setTimeout(function () {
@@ -655,6 +683,7 @@
             e.preventDefault();
         }, 1000);
     });
+    //When setting the displayed seasons details: when final CFP rank is changed update the database
     $('#finalCFP').keydown(function (e) {
         clearTimeout(timer);
         timer = setTimeout(function () {
@@ -678,6 +707,7 @@
             e.preventDefault();
         }, 1000);
     });
+    //When setting the displayed seasons details: when head coach is changed update the database
     $('#HCSelect').change(function () {
 
         var seasonID = $(this).attr('data-season');
@@ -698,6 +728,7 @@
                 });
         e.preventDefault();
     });
+    //When setting the displayed seasons details: when the type of depth chart is changed update the database
     $('#DepthSelect').change(function () {
 
         var seasonID = $(this).attr('data-season');
@@ -718,6 +749,7 @@
                 });
         e.preventDefault();
     });
+    //When entering player input details: when player first name is changed update the database
     $('.playerFirstName').keydown(function (e) {
         clearTimeout(timer);
         timer = setTimeout(function () {
@@ -741,6 +773,7 @@
             e.preventDefault();
         }, 1000);
     });
+    //When entering player input details: when player last name is changed update the database
     $('.playerLastName').keydown(function (e) {
         clearTimeout(timer);
         timer = setTimeout(function () {
@@ -764,6 +797,7 @@
             e.preventDefault();
         }, 1000);
     });
+    //When entering player input details: when player number is changed update the database
     $('.playerNum').keydown(function (e) {
         clearTimeout(timer);
         timer = setTimeout(function () {
@@ -787,6 +821,7 @@
             e.preventDefault();
         }, 1000);
     });
+    //When entering player input details: when player depth chart position is changed update the database
     $('.playerDepth').keydown(function (e) {
         clearTimeout(timer);
         timer = setTimeout(function () {
@@ -811,6 +846,7 @@
             e.preventDefault();
         }, 1000);
     });
+    //When entering player input details: when player height is changed update the database
     $('.playerHt').keydown(function (e) {
         clearTimeout(timer);
         timer = setTimeout(function () {
@@ -834,6 +870,7 @@
             e.preventDefault();
         }, 1000);
     });
+    //When entering player input details: when player weight is changed update the database
     $('.playerWt').keydown(function (e) {
         clearTimeout(timer);
         timer = setTimeout(function () {
@@ -857,6 +894,7 @@
             e.preventDefault();
         }, 1000);
     });
+    //When entering player input details: when player class is changed update the database
     $('.playerClass').change(function () {
 
         var player_row = this.id;
@@ -877,6 +915,7 @@
                 });
         e.preventDefault();
     });
+    //When entering player input details: when player hometown is changed update the database
     $('.playerHometown').keydown(function (e) {
         clearTimeout(timer);
         timer = setTimeout(function () {
@@ -900,6 +939,7 @@
             e.preventDefault();
         }, 1000);
     });
+    //When entering player input details: when the remove player button is clicked remove the player row from the database
     $(".removePlayer").click(function () {
 
         var playerRow = $(this).attr('data-playerRow');
@@ -920,6 +960,7 @@
                 });
         e.preventDefault();
     });
+    //When entering player input details: when add player button for in focus position is clicked add the player row to the database
     $(".addPlayer").click(function () {
 
         var season = $(this).attr('data-season');
@@ -940,6 +981,7 @@
                 });
         e.preventDefault();
     });
+    //When entering player input details: when player position group is changed update the database
     $(".chgPosGroup").click(function () {
 
         var posGroup = this.id;
@@ -959,6 +1001,7 @@
                 });
         e.preventDefault();
     });
+    //When entering player input details: when player secondary position group is changed update the database
     $("#addSecondaryPosition").submit(function (e) {
 
         e.preventDefault();
@@ -980,6 +1023,7 @@
                     }
                 });
     });
+    //When the add season button on the add seson modal is clicked add the season to the database
     $("#addSeasonBtn").click(function (e) {
 
         var season = $("#addSeasonSelect").val();
@@ -998,6 +1042,7 @@
                     }
                 });
     });
+    //When entering player input details: when player primary position is changed update the database
     $('.playerPOSPrimary').change(function () {
 
         var player_row = this.id;
@@ -1018,6 +1063,7 @@
                 });
         e.preventDefault();
     });
+    //When entering player input details: when player secondary position is changed update the database
     $('.playerPOSSecondary').change(function () {
 
         var player_row = this.id;
@@ -1038,6 +1084,7 @@
                 });
         e.preventDefault();
     });
+    //When entering player stats: when add a new player is selected for current year update the database control
     $('#existingPlayeraddStats').change(function () {
 
         var player_row = $(this).val();
@@ -1057,9 +1104,10 @@
                 });
         e.preventDefault();
     });
-
+    //When the add stat modal is shown populate the title and check for existing statas
     $('#addStatModal').on('show.bs.modal', function (event) {
 
+        //grab data attributes from add stat button
         var addWeek = $(event.relatedTarget).data('week');
         var addfname = $(event.relatedTarget).data('fname');
         var opp = $(event.relatedTarget).data('opp');
@@ -1068,46 +1116,52 @@
         var addseason = $(event.relatedTarget).data('season');
         var game_ID = $(event.relatedTarget).data('gameid');
 
+        //update hidden form value to the game stats are being added for
         $("#Stat_GM_ID").val(game_ID);
+        //update modal title
         $('#AddStatTitle').append('Add Stat for ' + addfname + " " + addlname + " - " + addseason + ' - Week ' + addWeek + ' Vs ' + opp);
+        //hide all stat labels so the chosen stat cateogry's labels will be shown
         $('.statLabel').hide();
         $('.statInput').hide();
 
+        //If a stat already exists in a stat category for the given player and game then disable the ability to select that stat category
         if ($('#passing' + game_ID + masterID).length) {
-            $('#statOptionPassing').prop( "disabled", true );
+            $('#statOptionPassing').prop("disabled", true);
         }
         if ($('#rushing' + game_ID + masterID).length) {
-            $('#statOptionRushing').prop( "disabled", true );
+            $('#statOptionRushing').prop("disabled", true);
         }
         if ($('#rec' + game_ID + masterID).length) {
-            $('#statOptionRec').prop( "disabled", true );
+            $('#statOptionRec').prop("disabled", true);
         }
         if ($('#def' + game_ID + masterID).length) {
-            $('#statOptionDef').prop( "disabled", true );
+            $('#statOptionDef').prop("disabled", true);
         }
         if ($('#ret' + game_ID + masterID).length) {
-            $('#statOptionRet').prop( "disabled", true );
+            $('#statOptionRet').prop("disabled", true);
         }
         if ($('#kicking' + game_ID + masterID).length) {
-            $('#statOptionKicking').prop( "disabled", true );
+            $('#statOptionKicking').prop("disabled", true);
         }
         if ($('#punting' + game_ID + masterID).length) {
-            $('#statOptionPunting').prop( "disabled", true );
+            $('#statOptionPunting').prop("disabled", true);
         }
     });
 
+    //When add stat modal is closed clear the title and reset the disabled stat categories
     $('#addStatModal').on('hidden.bs.modal', function (event) {
 
         $('#AddStatTitle').empty();
-        $('#statOptionPassing').prop( "disabled", false);
-        $('#statOptionRushing').prop( "disabled", false);
-        $('#statOptionRec').prop( "disabled", false);
-        $('#statOptionDef').prop( "disabled", false);
-        $('#statOptionRet').prop( "disabled", false);
-        $('#statOptionKicking').prop( "disabled", false);
-        $('#statOptionPunting').prop( "disabled", false);
+        $('#statOptionPassing').prop("disabled", false);
+        $('#statOptionRushing').prop("disabled", false);
+        $('#statOptionRec').prop("disabled", false);
+        $('#statOptionDef').prop("disabled", false);
+        $('#statOptionRet').prop("disabled", false);
+        $('#statOptionKicking').prop("disabled", false);
+        $('#statOptionPunting').prop("disabled", false);
     });
 
+    //When a stat category on the add stat model is selected show the appropriate labels and inputs
     $('#statCategory').change(function () {
 
         var newCategory = $(this).val();
@@ -1156,6 +1210,7 @@
         }
     });
 
+    //When the add stat form is submitted send data to the database to create a new stat row for that player and game
     $("#addStatCategoryForm").submit(function (e) {
 
         $statFormData = $(this).serialize();
@@ -1174,11 +1229,6 @@
                     }
                 });
         e.preventDefault();
-    });
-
-    $(".existingStat").hover(function () {
-        $(this).addClass('existingStatHover');
-        $(this).removeClass('existingStatHover');
     });
 
     //On Edit Stat Modal Show: Get data from clicked edit icon and update the control table
@@ -1239,6 +1289,7 @@
 
     });
 
+    //when the remove stat button for a player game combo is selected remove the stat row from the database
     $(".removeStat").click(function () {
 
         var gameID = $(this).data("game");
@@ -1262,7 +1313,7 @@
         e.preventDefault();
 
     });
-
+    //On the input lists section: when a new list is selected from the list dropdown update the database control
     $(".listEditDD").click(function () {
 
         var option = $(this).data('option');
@@ -1284,6 +1335,7 @@
         e.preventDefault();
 
     });
+    //On the input lists section: when the remove big ten division button is clicked remove the division row from the database
     $(".removeb10Div").click(function (e) {
 
         var divID = $(e.target).data('id');
@@ -1305,7 +1357,7 @@
         e.preventDefault();
 
     });
-
+    //On the input lists section: when the add big ten division button is clicked add the division row to the database
     $("#addb10div").click(function (e) {
 
         var newDiv = $("#addb10divName").val();
@@ -1327,7 +1379,7 @@
         e.preventDefault();
 
     });
-
+    //On the input lists section: when the add a new location form button is clicked add the new location to the database
     $("#addLocationForm").submit(function (e) {
 
         e.preventDefault();
@@ -1352,7 +1404,7 @@
                 });
 
     });
-
+    //On the input lists section: when the remove a location button is clicked remove the location from the database
     $(".removeLoc").click(function (e) {
 
         var locID = $(e.target).data('id');
@@ -1374,7 +1426,7 @@
         e.preventDefault();
 
     });
-
+    //On the input lists section: when the add a new opponent form button is clicked add the new opponent to the database
     $("#addOppForm").submit(function (e) {
 
         e.preventDefault();
@@ -1399,6 +1451,7 @@
                 });
 
     });
+    //On the input lists section: when the remove a opponent button is clicked remove the opponent from the database
     $(".removeOpp").click(function (e) {
 
         var oppID = $(e.target).data('id');
@@ -1420,6 +1473,7 @@
         e.preventDefault();
 
     });
+    //When entering game details: when the overtime checkbox is changed update the overtime status of the game in the database
     $('.OTGM').change(function () {
 
         var change = '';
@@ -1445,6 +1499,7 @@
                     }
                 });
     });
+    //When entering game details: when the overtime number input is changed update the overtime status of the game in the database
     $('.OTNum').keydown(function (e) {
         clearTimeout(timer);
         timer = setTimeout(function () {
@@ -1468,6 +1523,7 @@
             e.preventDefault();
         }, 1000);
     });
+    //On the input lists section: when the add a new coach form button is clicked add the new coach to the database
     $("#addCoachForm").submit(function (e) {
 
         e.preventDefault();
@@ -1492,6 +1548,7 @@
                 });
 
     });
+    //On the input lists section: when the remove a coach button is clicked remove the coach from the database
     $(".removeCoach").click(function (e) {
 
         var coachID = $(e.target).data('id');
@@ -1513,6 +1570,7 @@
         e.preventDefault();
 
     });
+    //On the input lists section: when the add a new conference form button is clicked add the new conference to the database
     $("#addConfForm").submit(function (e) {
 
         e.preventDefault();
@@ -1536,6 +1594,7 @@
                 });
 
     });
+    //On the input lists section: when the remove a conference button is clicked remove the conference from the database
     $(".removeConf").click(function (e) {
 
         var confID = $(e.target).data('id');
@@ -1557,6 +1616,7 @@
         e.preventDefault();
 
     });
+    //On the input lists section: when the add a new decade form button is clicked add the new decade to the database
     $("#addDecadeForm").submit(function (e) {
 
         e.preventDefault();
@@ -1580,6 +1640,7 @@
                 });
 
     });
+    //On the input lists section: when the remove a decade button is clicked remove the decade from the database
     $(".removeDecade").click(function (e) {
 
         var ID = $(e.target).data('id');
@@ -1601,6 +1662,7 @@
         e.preventDefault();
 
     });
+    //On the input lists section: when the add a new game type form button is clicked add the new game type to the database
     $("#addGameTypeForm").submit(function (e) {
 
         e.preventDefault();
@@ -1625,6 +1687,7 @@
                 });
 
     });
+    //On the input lists section: when the remove a game type button is clicked remove the game type from the database
     $(".removeGMtype").click(function (e) {
 
         var ID = $(e.target).data('id');
@@ -1646,6 +1709,7 @@
         e.preventDefault();
 
     });
+    //On the input lists section: when any field is updated from any list then update the database
     $('.editListItem').keydown(function (e) {
         clearTimeout(timer);
         timer = setTimeout(function () {
