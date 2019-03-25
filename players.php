@@ -14,7 +14,8 @@ $DepthForm = $fetchDepthForm['DepthChart'];
 ?>
 <html>
     <head>
-        <title>OSU - PLA</title>
+        <title>Buckeyes - Players</title>
+        <link rel="shortcut icon" href="http://www.iconj.com/ico/y/f/yfuwmmd6a8.ico" type="image/x-icon" />
         <link rel="stylesheet" type="text/css" href="libs/css/bootstrap.css">
         <link rel="stylesheet" type="text/css" href="libs/css/nouislider.css">
         <link rel="stylesheet" type="text/css" href="libs/css/open-iconic-bootstrap.css">
