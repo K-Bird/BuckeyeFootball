@@ -8,6 +8,8 @@
         <link rel="stylesheet" type="text/css" href="libs/css/nouislider.css">
         <link rel="stylesheet" type="text/css" href="libs/css/bootstrap-datepicker.css">
         <link rel="stylesheet" type="text/css" href="libs/css/bootstrap-select.min.css">
+        <link rel="stylesheet" type="text/css" href="libs/css/grid-gallery.css">
+        <link rel="stylesheet" type="text/css" href="libs/css/lightbox.css">
         <link rel="stylesheet" type="text/css" href="libs/css/open-iconic-bootstrap.css">
         <link rel="stylesheet" type="text/css" href="libs/css/common.css">
         <script src="libs/js/jquery.js"></script>
@@ -15,6 +17,8 @@
         <script src="libs/js/nouislider.js"></script>
         <script src="libs/js/bootstrap-datepicker.js"></script>
         <script src="libs/js/bootstrap-select.min.js"></script>
+        <script src="libs/js/grid-gallery.js"></script>
+        <script src="libs/js/lightbox.js"></script>
         <script src="libs/js/wNumb.js"></script>
     </head>
     <body>
@@ -59,6 +63,9 @@
                 }
                 if ($Input_View === 'Lists') {
                     include ('parts/input/input_lists.php');
+                }
+                if ($Input_View === 'Media') {
+                    include ('parts/input/input_media.php');
                 }
                 ?>
             </div>
@@ -130,6 +137,24 @@
                     url: "libs/ajax/update_input_view.php",
                     type: "POST",
                     data: {new_view: "Lists"},
+                    success: function (data, textStatus, jqXHR)
+                    {
+                        location.reload();
+                    },
+                    error: function (jqXHR, textStatus, errorThrown)
+                    {
+                        alert("Form Did Not Process: " + errorThrown);
+                    }
+                });
+        e.preventDefault();
+    });
+    //When input view lists button is clicked update the database to the new view
+    $("#input_media_btn").click(function () {
+        $.ajax(
+                {
+                    url: "libs/ajax/update_input_view.php",
+                    type: "POST",
+                    data: {new_view: "Media"},
                     success: function (data, textStatus, jqXHR)
                     {
                         location.reload();

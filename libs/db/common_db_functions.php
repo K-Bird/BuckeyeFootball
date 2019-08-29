@@ -1493,7 +1493,6 @@ function buildEditTagsBody($ID, $type) {
               <div id="miscTagExistingResults' . $i . '" class="editAddMiscTagResults" data-num="' . $i . '"></div>';
             echo '</li>';
         }
-        echo '</div>';
 
         $i++;
     }

@@ -1,6 +1,9 @@
 <div class="row">
-    <div class="col-lg-12">
-        <br><br>
+    <div class="col-lg-4">
+        
+    </div>
+    <div class="col-lg-8">
+        <br><br><br><br><br>
         <table id="webLinksTable" class="table-sm table-hover text-center tablesorter">
             <thead>
                 <tr>
@@ -22,5 +25,8 @@
                 ?>
             </tbody>
         </table>
+    </div>
+    <div class="col-lg-4">
+        
     </div>
 </div>

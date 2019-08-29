@@ -1,5 +1,5 @@
 <?php
-include ("../../libs/db/common_db_functions.php");
+include ("../../../libs/db/common_db_functions.php");
 
 $refreshType = $_GET['type'];
 

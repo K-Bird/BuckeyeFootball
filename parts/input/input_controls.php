@@ -23,6 +23,11 @@
             echo 'bg-dark';
         }
         ?>" >Lists</button>
+        <button id="input_media_btn"type="button" class="btn btn-secondary <?php
+        if ($Input_View === 'Media') {
+            echo 'bg-dark';
+        }
+        ?>" >Media</button>
     </div>
 </div>
 <div class="col-lg-9">
