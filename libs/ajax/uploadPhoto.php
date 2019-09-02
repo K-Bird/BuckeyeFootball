@@ -80,8 +80,8 @@ if (isset($_POST['submit'])) {
         $errors[] = "This file extension is not allowed. Please upload a JPEG or PNG file";
     }
 
-    if ($fileSize > 2000000) {
-        $errors[] = "This file is more than 2MB. Sorry, it has to be less than or equal to 2MB";
+    if ($fileSize > 9000000) {
+        $errors[] = "This file is more than 9MB. Sorry, it has to be less than or equal to 9MB";
     }
 
     if (empty($errors)) {
