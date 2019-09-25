@@ -37,4 +37,4 @@ while ($fetchGames = $getGames->fetch_assoc()) {
 }
 
 
-echo 'Record During Displayed Years: ' . $wins . ' Wins - ' . $losses . ' Losses - ' . $ties . ' Ties';
+echo $wins . ' Wins - ' . $losses . ' Losses - ' . $ties . ' Ties';

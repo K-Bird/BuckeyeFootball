@@ -1328,6 +1328,7 @@
                     data: {gameID: gameID, playerID: playerID, category: category},
                     success: function (data, textStatus, jqXHR)
                     {
+                        alert(data);
                         location.reload();
                     },
                     error: function (jqXHR, textStatus, errorThrown)

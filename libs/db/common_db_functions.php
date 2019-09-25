@@ -1983,3 +1983,12 @@ function isGameDiv($GM_ID) {
     }
     
 }
+
+function getSeasonIDbyGameID ($GameID) {
+    
+    $getGameData = db_query("SELECT * FROM `games` WHERE GM_ID={$GameID}");
+    $fecthGameData=$getGameData->fetch_assoc();
+    $seasonID = $fecthGameData['Season_ID'];
+    return $seasonID;
+    
+}

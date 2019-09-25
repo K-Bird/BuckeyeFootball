@@ -522,7 +522,7 @@ include ("parts/common_inputs.php");
                     data: {start: start, end: end},
                     success: function (data, textStatus, jqXHR)
                     {
-                        $('#programWins').text(data);
+                        $('#programWins').text("Record During Displayed Years: " + data);
                     },
                     error: function (jqXHR, textStatus, errorThrown)
                     {
