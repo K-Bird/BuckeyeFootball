@@ -28,7 +28,7 @@ function returnStatLeaderHeadings($stat) {
     /* Passing Stats */
     if ($stat === "passComp" || $stat === "passAtt" || $stat === "passYards" || $stat === "passTDs" || $stat === "passINTs") {
 
-        echo '<th>Rank ', $stat, '</th>';
+        echo '<th>Rank</th>';
         echo '<th>Player</th>';
         echo '<th data-sort="int" data-sort-default="desc"';
         if ($stat === 'passComp') {
