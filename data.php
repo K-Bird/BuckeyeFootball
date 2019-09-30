@@ -195,6 +195,15 @@
                 localStorage['endYearData'] = currYear;
 
             }
+            if (decade === 'currYear') {
+
+                var currYear = (new Date()).getFullYear()
+
+                slider.noUiSlider.set([currYear, currYear]);
+                localStorage['startYearData'] = currYear;
+                localStorage['endYearData'] = currYear;
+
+            }
             returnStatLeaders(localStorage['dataLeaderStat'], localStorage['startYearData'], localStorage['endYearData']);
 
         });

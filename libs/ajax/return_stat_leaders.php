@@ -401,7 +401,7 @@ function returnStatLeaderBody($stat, $start, $end) {
                 echo ' class="table-secondary" ';
             }
             echo '>';
-            echo $fetchDef['defSacks'];
+            echo number_format($fetchDef['defSacks'],1);
             echo '</td>';
             echo '<td';
             if ($stat === 'defINTs') {

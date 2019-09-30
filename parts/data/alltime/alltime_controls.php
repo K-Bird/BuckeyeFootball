@@ -151,6 +151,7 @@
         <button class="btn btn-secondary dataDecadeSlider" data-decade="1990s">1990s</button>
         <button class="btn btn-secondary dataDecadeSlider" data-decade="2000s">2000s</button>
         <button class="btn btn-secondary dataDecadeSlider" data-decade="2010s">2010s</button>
+        <button class="btn btn-secondary dataDecadeSlider" data-decade="currYear">Current Season</button>
     </div>
     <div class="col-lg-2">
 
