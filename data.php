@@ -225,7 +225,7 @@
     });
 
     function returnLeadersTitle(stat) {
-        
+
         /* Passing Stats */
         if (stat === "passComp") {
             return '<div id="leadersTitle" class="card"><div class="card-body"><h6>Passing Completion Leaders</h6></div></div>';
@@ -235,6 +235,9 @@
         }
         if (stat === "passYards") {
             return '<div id="leadersTitle" class="card"><div class="card-body"><h6>Passing Yards Leaders</h6></div></div>';
+        }
+        if (stat === "passPerc") {
+            return '<div id="leadersTitle" class="card"><div class="card-body"><h6>Completion Percentage Leaders</h6></div></div>';
         }
         if (stat === "passTDs") {
             return '<div id="leadersTitle" class="card"><div class="card-body"><h6>Passing TDs Leaders</h6></div></div>';
@@ -252,6 +255,9 @@
         if (stat === "rushTDs") {
             return '<div id="leadersTitle" class="card"><div class="card-body"><h6>Rush TDs Leaders</h6></div></div>';
         }
+        if (stat === "rushYPC") {
+            return '<div id="leadersTitle" class="card"><div class="card-body"><h6>Rush Yard Per Attempt Leaders</h6></div></div>';
+        }
         /* Recieving Stats */
         if (stat === "recRec") {
             return '<div id="leadersTitle" class="card"><div class="card-body"><h6>Receptions Leaders</h6></div></div>';
@@ -261,6 +267,9 @@
         }
         if (stat === "recTDs") {
             return '<div id="leadersTitle" class="card"><div class="card-body"><h6>Receiving TDs Leaders</h6></div></div>';
+        }
+        if (stat === "recYPC") {
+            return '<div id="leadersTitle" class="card"><div class="card-body"><h6>Receiving Yards Per Catch Leaders</h6></div></div>';
         }
         /* Defensive Stats */
         if (stat === "defTackles") {
@@ -272,13 +281,63 @@
         if (stat === "defSacks") {
             return '<div id="leadersTitle" class="card"><div class="card-body"><h6>Sack Leaders</h6></div></div>';
         }
+        /* Return Stats */
+        if (stat === "KR_Att") {
+            return '<div id="leadersTitle" class="card"><div class="card-body"><h6>Kick Return Attempts Leaders</h6></div></div>';
+        }
+        if (stat === "KR_Yards") {
+            return '<div id="leadersTitle" class="card"><div class="card-body"><h6>Kick Return Yard Leaders</h6></div></div>';
+        }
+        if (stat === "KR_AVG") {
+            return '<div id="leadersTitle" class="card"><div class="card-body"><h6>Kick Return Average Leaders</h6></div></div>';
+        }
+        if (stat === "KR_TDs") {
+            return '<div id="leadersTitle" class="card"><div class="card-body"><h6>Kick Return TD Leaders</h6></div></div>';
+        }
+        if (stat === "PR_Att") {
+            return '<div id="leadersTitle" class="card"><div class="card-body"><h6>Punt Return Attempts Leaders</h6></div></div>';
+        }
+        if (stat === "PR_Yards") {
+            return '<div id="leadersTitle" class="card"><div class="card-body"><h6>Punt Return Yard Leaders</h6></div></div>';
+        }
+        if (stat === "PR_AVG") {
+            return '<div id="leadersTitle" class="card"><div class="card-body"><h6>Punt Return Average Leaders</h6></div></div>';
+        }
+        if (stat === "PR_TDs") {
+            return '<div id="leadersTitle" class="card"><div class="card-body"><h6>Punt Return TD Leaders</h6></div></div>';
+        }
         /* Kicking Stats */
+        if (stat === "kickFGA") {
+            return '<div id="leadersTitle" class="card"><div class="card-body"><h6>Most Field Goal Attempts</h6></div></div>';
+        }
         if (stat === "kickFGM") {
             return '<div id="leadersTitle" class="card"><div class="card-body"><h6>Most Field Goals Made</h6></div></div>';
         }
+        if (stat === "kickFGP") {
+            return '<div id="leadersTitle" class="card"><div class="card-body"><h6>Highest Field Goal Percentage</h6></div></div>';
+        }
+        if (stat === "kickLong") {
+            return '<div id="leadersTitle" class="card"><div class="card-body"><h6>Longest Field Goal</h6></div></div>';
+        }
         /* Punting Stats */
+        if (stat === "puntAtt") {
+            return '<div id="leadersTitle" class="card"><div class="card-body"><h6>Punt Attempt Leaders</h6></div></div>';
+        }
         if (stat === "puntYards") {
             return '<div id="leadersTitle" class="card"><div class="card-body"><h6>Punt Yard Leaders</h6></div></div>';
+        }
+        if (stat === "puntAVG") {
+            return '<div id="leadersTitle" class="card"><div class="card-body"><h6>Punt Average Leaders</h6></div></div>';
+        }
+        if (stat === "puntLong") {
+            return '<div id="leadersTitle" class="card"><div class="card-body"><h6>Longest Punt</h6></div></div>';
+        }
+        /* Misc Stats */
+        if (stat === "rushYardsQB") {
+            return '<div id="leadersTitle" class="card"><div class="card-body"><h6>Most Rush Yards By a QB</h6></div></div>';
+        }
+        if (stat === "rushTDsQB") {
+            return '<div id="leadersTitle" class="card"><div class="card-body"><h6>Most Rush TDs By a QB</h6></div></div>';
         }
     }
 

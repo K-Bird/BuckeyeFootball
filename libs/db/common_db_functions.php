@@ -1992,3 +1992,17 @@ function getSeasonIDbyGameID ($GameID) {
     return $seasonID;
     
 }
+
+function playerWasQB($player_ID) {
+    
+    $was = false;
+    
+    $getWasQB = db_query("SELECT * FROM `players` WHERE Player_Master_ID='{$player_ID}'");
+    while ($fetchWasQB = $getWasQB->fetch_assoc()) {
+        if ($fetchWasQB['Position'] === 'QB') {
+            $was = true;
+        } else {
+        }
+    }
+    return $was;
+}

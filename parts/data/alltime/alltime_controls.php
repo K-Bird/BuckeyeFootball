@@ -14,6 +14,7 @@
                     <option></option>
                     <option value="passComp">Completions</option>
                     <option value="passAtt">Attempts</option>
+                    <option value="passPerc">Completion Percentage</option>
                     <option value="passYards">Yards</option>
                     <option value="passTDs">TDs</option>
                     <option value="passINTs">INTs</option>
@@ -30,7 +31,7 @@
                     <option value="rushAtt">Attempts</option>
                     <option value="rushYards">Yards</option>
                     <option value="rushTDs">TDs</option>
-                    <!-- <option value="rushYPC">Yards Per Carry</option> -->
+                    <option value="rushYPC">Yards Per Attempt</option>
                 </select> 
             </div>
         </div>
@@ -44,7 +45,7 @@
                     <option value="recRec">Receptions</option>
                     <option value="recYards">Yards</option>
                     <option value="recTDs">TDs</option>
-                    <!-- <option value="recYPC">Yards Per Catch</option> -->
+                    <option value="recYPC">Yards Per Catch</option>
                 </select> 
             </div>
         </div>
@@ -74,9 +75,13 @@
                 <h6 class="card-title">Returns</h6>
                 <select class="form-control dataSelect">
                     <option></option>
+                    <option value="KR_Att">Kick Return Attempts</option>
                     <option value="KR_Yards">Kick Return Yards</option>
+                    <option value="KR_AVG">Kick Return Average</option>
                     <option value="KR_TDs">Kick Return TDs</option>
+                    <option value="PR_Att">Punt Return Attempts</option>
                     <option value="PR_Yards">Punt Return Yards</option>
+                    <option value="PR_AVG">Punt Return Average</option>
                     <option value="PR_TDs">Punt Return TDs</option>
                 </select> 
             </div>
@@ -90,8 +95,8 @@
                     <option></option>
                     <option value="kickFGM">Field Goals Made</option>
                     <option value="kickFGA">Field Goals Attempts</option>
-                    <!-- <option value="kickFGP">Field Goal Percentage</option> -->
-                    <!-- <option value="kickLong">Longest Field Goals</option> -->
+                    <option value="kickFGP">Field Goal Percentage</option>
+                    <option value="kickLong">Longest Field Goal</option>
                 </select> 
             </div>
         </div>
@@ -104,8 +109,8 @@
                     <option></option>
                     <option value="puntAtt">Punt Attempts</option>
                     <option value="puntYards">Punt Yards</option>
-                    <!-- <option value="puntAVG">Punting Average</option> -->
-                    <!-- <option value="puntLong">Longest Punt</option> -->
+                    <option value="puntAVG">Punt Average</option>
+                    <option value="puntLong">Longest Punt</option>
                 </select> 
             </div>
         </div>
@@ -116,8 +121,8 @@
                 <h6 class="card-title">Misc</h6>
                 <select class="form-control dataSelect">
                     <option></option>
-                    <!-- <option value="rushYardsQB">Rush Yards By QB</option> -->
-                    <!-- <option value="rushTDsQB">Rush TDs By QB</option> -->
+                    <option value="rushYardsQB">Rush Yards By QB</option>
+                    <option value="rushTDsQB">Rush TDs By QB</option>
                 </select> 
             </div>
         </div>
