@@ -16,6 +16,7 @@ $fetch_PlayerDataHeader = $getPlayerDataHeader->fetch_assoc();
         <link rel="stylesheet" type="text/css" href="libs/css/nouislider.css">
         <link rel="stylesheet" type="text/css" href="libs/css/grid-gallery.css">
         <link rel="stylesheet" type="text/css" href="libs/css/lightbox.css">
+        <link rel="stylesheet" type="text/css" href="libs/css/common.css">
         <script src="libs/js/jquery.js"></script>
         <script src="libs/js/bootstrap.js"></script>
         <script src="libs/js/nouislider.js"></script>
@@ -27,7 +28,7 @@ $fetch_PlayerDataHeader = $getPlayerDataHeader->fetch_assoc();
     <body>
         <!-- include main navigation bar at top of page -->
         <?php include ('nav/navBar.php'); ?>
-        <div class="container">
+        <div class="container-fluid" style="width: 60%">
             <div class="row" style="text-align: center">
                 <div class="col-lg-12">
                     <br>
@@ -40,6 +41,7 @@ $fetch_PlayerDataHeader = $getPlayerDataHeader->fetch_assoc();
                     <div class="btn-group" role="group">
                         <button id="playerdetailsOverview" class="btn btn-secondary playerDetailNav">Overview</button>
                         <button id="playerdetailsStats" class="btn btn-secondary playerDetailNav">Stats</button>
+                        <button id="playerdetailsGameLog" class="btn btn-secondary playerDetailNav">Game Log</button>
                         <button id="playerdetailsPhotos" class="btn btn-secondary playerDetailNav">Photos</button>
                     </div>
                 </div>
@@ -70,6 +72,11 @@ $fetch_PlayerDataHeader = $getPlayerDataHeader->fetch_assoc();
             $('#playerdetailsStats').addClass('active');
             displayPlayerDetailContent('stats', getPlayerID());
         }
+
+        if (localStorage.getItem('OSU_Player_Detail_View') === 'Log') {
+            $('#playerdetailsGameLog').addClass('active');
+            displayPlayerDetailContent('log', getPlayerID());
+        }
         if (localStorage.getItem('OSU_Player_Detail_View') === 'Photos') {
             $('#playerdetailsPhotos').addClass('active');
             displayPlayerDetailContent('photos', getPlayerID());
@@ -92,6 +99,14 @@ $fetch_PlayerDataHeader = $getPlayerDataHeader->fetch_assoc();
             displayPlayerDetailContent('stats', getPlayerID());
         });
 
+        $("#playerdetailsGameLog").click(function () {
+
+            localStorage.setItem('OSU_Player_Detail_View', 'Log');
+            removePlayerDetailNavActive();
+            $('#playerdetailsGameLog').addClass('active');
+            displayPlayerDetailContent('log', getPlayerID());
+        });
+
         $("#playerdetailsPhotos").click(function () {
 
             localStorage.setItem('OSU_Player_Detail_View', 'Photos');
@@ -111,7 +126,7 @@ $fetch_PlayerDataHeader = $getPlayerDataHeader->fetch_assoc();
         });
 
     });
-    
+
     //remove active class from all player detail nav buttons
     function removePlayerDetailNavActive() {
 
