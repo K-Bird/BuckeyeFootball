@@ -810,7 +810,7 @@ function playerStatCardthead($cagetory) {
     }
     if ($cagetory === 'Rushing') {
 
-        return '<th></th><th>Attemps</th><th>Yards</th><th>TDs</th>';
+        return '<th></th><th>Attempts</th><th>Yards</th><th>TDs</th>';
     }
     if ($cagetory === 'rec') {
 
@@ -818,7 +818,7 @@ function playerStatCardthead($cagetory) {
     }
     if ($cagetory === 'def') {
 
-        return '<th></th><td>Tackles</td><td>For Loss</td><td>Sacks</td><td>INTs</td><td>INT TDs</td><td>Passes Defended</td><td>Forced Fumbles</td><td>Fumble Recoveries</td><td>Fumble TDs</td>';
+        return '<th></th><td>Tackles</td><td>For Loss</td><td>Sacks</td><td>INTs</td><td>INT TDs</td><td>Passes Defended</td><td>QB Hurries</td><td>Fumble Recoveries</td><td>Fumble TDs</td>';
     }
     if ($cagetory === 'ret') {
 
@@ -826,11 +826,11 @@ function playerStatCardthead($cagetory) {
     }
     if ($cagetory === 'Kicking') {
 
-        return '<th></th><td>Extra Points Made</td><td>Extra Point Attempts</td><td>Extra Point %</td><td>Field Goals Made</td><td>Field Goal Attempts</td><td>Field Goal %</td>';
+        return '<th></th><td>Extra Points Made</td><td>Extra Point Attempts</td><td>Extra Point %</td><td>Field Goals Made</td><td>Field Goal Attempts</td><td>Field Goal %</td><td>Field Goal Long</td>';
     }
     if ($cagetory === 'Punting') {
 
-        return '<th></th><td>Punts</td><td>Punt Yards</td><td>Punt Average</td>';
+        return '<th></th><td>Punts</td><td>Punt Yards</td><td>Punt Average</td><td>Punt Long</td>';
     }
 }
 
@@ -971,6 +971,7 @@ function playerStatCardrow($category, $year, $master_ID) {
         $XPA = 0;
         $FGM = 0;
         $FGA = 0;
+        $FGL = 0;
 
         $getKickingStats = db_query("SELECT * FROM `stats_kicking` WHERE Player_ID='{$master_ID}'");
         while ($fetchKickingStats = $getKickingStats->fetch_assoc()) {
@@ -981,19 +982,23 @@ function playerStatCardrow($category, $year, $master_ID) {
                 $XPA = $XPA + $fetchKickingStats['XPA'];
                 $FGM = $FGM + $fetchKickingStats['FGM'];
                 $FGA = $FGA + $fetchKickingStats['FGA'];
+                if ($fetchKickingStats['LongKick'] > $FGL) {
+                    $FGL = $fetchKickingStats['LongKick'];
+                }
             }
         }
 
         $XP_Percent = $XPM / $XPA;
         $FG_Percent = $FGM / $FGA;
 
-        echo '<td>' . $year . '</td><td>' . $XPM . '</td><td>' . $XPA . '</td><td>' . toPercent($XP_Percent) . '</td><td>' . $FGM . '</td><td>' . $FGA . '</td><td>' . toPercent($FG_Percent) . '</td>';
+        echo '<td>' . $year . '</td><td>' . $XPM . '</td><td>' . $XPA . '</td><td>' . toPercent($XP_Percent) . '</td><td>' . $FGM . '</td><td>' . $FGA . '</td><td>' . toPercent($FG_Percent) . '</td><td>' . $FGL . '</td>';
     }
 
     if ($category === 'Punting') {
 
         $punts = 0;
         $puntYards = 0;
+        $puntLong = 0;
 
         $getPuntingStats = db_query("SELECT * FROM `stats_punting` WHERE Player_ID='{$master_ID}'");
         while ($fetchPuntingStats = $getPuntingStats->fetch_assoc()) {
@@ -1002,12 +1007,15 @@ function playerStatCardrow($category, $year, $master_ID) {
 
                 $punts = $punts + $fetchPuntingStats['Att'];
                 $puntYards = $puntYards + $fetchPuntingStats['Yards'];
+                if ($fetchPuntingStats['LongPunt'] > $puntLong) {
+                    $puntLong = $fetchPuntingStats['LongPunt'];
+                }
             }
         }
 
         $punt_Avg = $puntYards / $punts;
 
-        echo '<td>' . $year . '</td><td>' . $punts . '</td><td>' . $puntYards . '</td><td>' . number_format($punt_Avg, 1) . '</td>';
+        echo '<td>' . $year . '</td><td>' . $punts . '</td><td>' . $puntYards . '</td><td>' . number_format($punt_Avg, 1) . '</td><td>' . $puntLong . '</td>';
     }
 }
 
