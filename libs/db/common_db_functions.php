@@ -368,28 +368,28 @@ function returnOppRk($GM_ID) {
         if ($opp_ap_rk === '0') {
             return '';
         } else {
-            return '#' . $opp_ap_rk;
+            return 'AP #' . $opp_ap_rk;
         }
     }
     if ($season_year >= 2014 && $week < 10) {
         if ($opp_ap_rk === '0') {
             return '';
         } else {
-            return "#" . $opp_ap_rk;
+            return "AP #" . $opp_ap_rk;
         }
     }
     if ($season_year >= 2014 && $week >= 9 && ($fetchGMdata['GM_Type'] === '41' || $fetchGMdata['GM_Type'] === '42')) {
         if ($opp_cfp_rk === '0') {
             return '';
         } else {
-            return "#" . $opp_cfp_rk;
+            return "CFP #" . $opp_cfp_rk;
         }
     }
     if ($season_year >= 2014 && $week >= 9 && ($fetchGMdata['GM_Type'] != '41' || $fetchGMdata['GM_Type'] != '42')) {
         if ($opp_ap_rk === '0') {
             return '';
         } else {
-            return "#" . $opp_ap_rk;
+            return "CFP #" . $opp_ap_rk;
         }
     }
 }
@@ -409,28 +409,28 @@ function returnOSURk($GM_ID) {
         if ($osu_ap_rk === '0') {
             return '';
         } else {
-            return '#' . $osu_ap_rk;
+            return 'AP #' . $osu_ap_rk;
         }
     }
     if ($season_year >= 2014 && $week < 10) {
         if ($osu_ap_rk === '0') {
             return '';
         } else {
-            return "#" . $osu_ap_rk;
+            return "AP #" . $osu_ap_rk;
         }
     }
     if ($season_year >= 2014 && $week >= 9 && ($fetchGMdata['GM_Type'] === '41' || $fetchGMdata['GM_Type'] === '42')) {
         if ($osu_cfp_rk === '0') {
             return '';
         } else {
-            return "#" . $osu_cfp_rk;
+            return "CFP #" . $osu_cfp_rk;
         }
     }
     if ($season_year >= 2014 && $week >= 9 && ($fetchGMdata['GM_Type'] != '41' || $fetchGMdata['GM_Type'] != '42')) {
         if ($osu_ap_rk === '0') {
             return '';
         } else {
-            return "#" . $osu_ap_rk;
+            return "CFP #" . $osu_ap_rk;
         }
     }
 }
