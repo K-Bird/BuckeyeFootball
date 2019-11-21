@@ -28,7 +28,7 @@ $fetchGameData = $getGameData->fetch_assoc();
                 <br>
                 <?php echo "Pre Game AP Ranking: " . returnOSURk($GM_ID); ?>
                 <br>
-                <?php echo " Post Game AP Ranking: " . calc_AP_RK_Diff($fetchGameData['Season_ID'], $fetchGameData['Week'], $fetchGameData['Post_AP']); ?>
+                <?php echo " Post Game AP Ranking: " . calc_AP_RK_Diff($fetchGameData['Season_ID'], $fetchGameData['Week']); ?>
             </div>
         </div>
     </div>

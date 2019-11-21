@@ -491,30 +491,6 @@
                     }
                 });
     });
-    //When OSU post game AP rank is entered for a game update the database
-    $('.postAP').keydown(function (e) {
-        clearTimeout(timer);
-        timer = setTimeout(function () {
-
-            var gameID = $(e.target).attr('id');
-            var newRK = $(e.target).val();
-            $.ajax(
-                    {
-                        url: "libs/ajax/update_game_postAP.php",
-                        type: "POST",
-                        data: {gmID: gameID, newRK: newRK},
-                        success: function (data, textStatus, jqXHR)
-                        {
-                            location.reload();
-                        },
-                        error: function (jqXHR, textStatus, errorThrown)
-                        {
-                            alert("Form Did Not Process: " + errorThrown);
-                        }
-                    });
-            e.preventDefault();
-        }, 1000);
-    });
     //When OSU post game CFP rank is entered for a game update the database
     $('.postCFP').keydown(function (e) {
         clearTimeout(timer);

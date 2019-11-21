@@ -101,7 +101,6 @@
                 <th>Opp Score</th>
                 <th>Conf GM</th>
                 <th>Div GM</th>
-                <th>Post AP</th>
                 <?php
                 if (getSeason_Year($Season_ID) >= 2014) {
                     echo '<th>Post CFP</th>';
@@ -160,9 +159,6 @@
                         echo '</td>';
                         echo '<td>';
                         displayDivGMCheckbox($fetchGamesData['Div_GM'], $fetchGamesData['GM_ID']);
-                        echo '</td>';
-                        echo '<td>';
-                        echo '<input id="', $fetchGamesData['GM_ID'], '" type="text" class="form-control postAP" placeholder="', $fetchGamesData['Post_AP'], '" style="width: 50px">';
                         echo '</td>';
                         if (getSeason_Year($Season_ID) >= 2014) {
                             echo '<td>';

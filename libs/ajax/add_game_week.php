@@ -27,12 +27,11 @@ db_query("INSERT INTO `games` (
     `Opp_Score`, 
     `Conf_GM`, 
     `Div_GM`, 
-    `Post_AP`, 
     `Post_CFP`)
     
 VALUES 
 
-('{$season}', '{$nextWeek}', '', '', '0', '0', '0', '43', '0', '0', '0', '0', '0', 'N', 'N', '0', '0')");
+('{$season}', '{$nextWeek}', '', '', '0', '0', '0', '43', '0', '0', '0', '0', '0', 'N', 'N', '0')");
 
 $lastGameID = returnMaxGameID();
 

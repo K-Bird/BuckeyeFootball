@@ -434,27 +434,53 @@ function returnOSURk($GM_ID) {
         }
     }
 }
+//Given the season and week calcuate and display the following week's AP ranking
+function calc_AP_RK_Diff($season, $week) {
 
-function calc_AP_RK_Diff($season, $week, $Post_AP) {
+    //Get the given (current) week's AP ranking
+    $getCurr_AP_RK = db_query("SELECT * FROM `games` WHERE Week='{$week}' and Season_ID={$season}");
+    $fetchCurr_AP_RK = $getCurr_AP_RK->fetch_assoc();
+    $curr_AP_RK = $fetchCurr_AP_RK['OSU_AP_RK'];
 
+    //If the season is prior to 1936 return the poll not existing 
     if ($season < 47) {
         return 'AP Poll Did Not Exist';
     }
-    if ($Post_AP === '0') {
-        return '<span class="badge badge-secondary">Not Ranked</span>';
-    }
+    //If the week is one then display the starting AP rank, if not calculate the differece between the current week's AP rank and the following week's AP rank
     if ($week === '1') {
-        return '#' . $Post_AP;
+        return '#' . $curr_AP_RK;
     } else {
-        $prevWeek = $week - 1;
-        $getPrevAP_RK = db_query("SELECT * FROM `games` WHERE Week='{$prevWeek}' and Season_ID={$season}");
-        $fetchPrevAP_RK = $getPrevAP_RK->fetch_assoc();
-        $Prev_AP = $fetchPrevAP_RK['Post_AP'];
-        $diff = $Post_AP - $Prev_AP;
-        if ($Prev_AP === '0') {
-            return '#' . $Post_AP . " " . returnNRDiff($diff);
+        //Select game from next week of the given season
+        $nextWeek = $week + 1;
+        $getNext_AP_RK = db_query("SELECT * FROM `games` WHERE Week='{$nextWeek}' and Season_ID={$season}");
+
+        //If the next week doesn't exist (the result is empty) then find the final AP ranking to display on the last week of the season
+        if (mysqli_num_rows($getNext_AP_RK) === 0) {
+
+            $getFinal_AP_RK = db_query("SELECT * FROM `seasons` WHERE Season_ID={$season}");
+            $fetchFinal_AP_RK = $getFinal_AP_RK->fetch_assoc();
+            $final_AP_RK = $fetchFinal_AP_RK['AP_Final'];
+            //If the final AP rank is not ranked (0) then display not ranked
+            if ($final_AP_RK === '0') {
+                return '<span class="badge badge-secondary">Not Ranked</span>';
+            } else {
+                $diff = $final_AP_RK - $curr_AP_RK;
+                return '#' . $final_AP_RK . " " . returnDiff($diff);
+            }
+        }
+        //If the next week does exist then calucate the difference between the rankings
+        $fetchNext_AP_RK = $getNext_AP_RK->fetch_assoc();
+        $next_AP_RK = $fetchNext_AP_RK['OSU_AP_RK'];
+        //If the team is not ranked for the next week then display not ranked 
+        if ($next_AP_RK === '0') {
+            return '<span class="badge badge-secondary">Not Ranked</span>';
+        }
+        //If the team was previously not ranked (0) then display the new ranking. If they were ranked calculate the normal difference (returnDiff function)
+        if ($curr_AP_RK === '0') {
+            return '#' . $next_AP_RK;
         } else {
-            return '#' . $Post_AP . " " . returnDiff($diff);
+            $diff = $next_AP_RK - $curr_AP_RK;
+            return '#' . $next_AP_RK . " " . returnDiff($diff);
         }
     }
 }
@@ -498,19 +524,6 @@ function returnDiff($diff) {
     }
     if ($diff < 0) {
         return '<span class=text-success>(' . $diff . ')</span>';
-    }
-}
-
-function returnNRDiff($diff) {
-
-    if ($diff === 0) {
-        return '<span class=text-warning>(' . $diff . ')</span>';
-    }
-    if ($diff > 0) {
-        return '<span class=text-success>(+' . $diff . ')</span>';
-    }
-    if ($diff < 0) {
-        return '<span class=text-danger>(' . $diff . ')</span>';
     }
 }
 
@@ -2132,7 +2145,7 @@ function returnGameLog($Master_ID) {
                 if ($seasonID === $season) {
                     echo '<tr>';
                     if ($position === 'LT' || $position === 'RT' || $position === 'LG' || $position === 'RG' || $position === 'C' || $position === 'OL' || $position === 'H' || $position === 'LS') {
-                       
+                        
                     } else {
                         echo '<td>' . returnGameFieldByGameID('Date', $fetchStats['Game_ID']) . '</td>';
                         echo '<td>' . returnVsAtN(returnGameFieldByGameID('H_A', $fetchStats['Game_ID'])) . " " . opponentLookup(returnGameFieldByGameID('Vs', $fetchStats['Game_ID'])) . '</td>';
