@@ -1,7 +1,7 @@
 <div id="Season_Panels">
 
     <?php
-    $get_SeasonData = db_query("SELECT * FROM `seasons` ORDER BY Year ASC");
+    $get_SeasonData = db_query("SELECT * FROM `seasons` ORDER BY Year DESC");
 
     while ($fetch_SeasonData = $get_SeasonData->fetch_assoc()) {
 
