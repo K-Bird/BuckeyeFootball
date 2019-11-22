@@ -491,30 +491,6 @@
                     }
                 });
     });
-    //When OSU post game CFP rank is entered for a game update the database
-    $('.postCFP').keydown(function (e) {
-        clearTimeout(timer);
-        timer = setTimeout(function () {
-
-            var gameID = $(e.target).attr('id');
-            var newRK = $(e.target).val();
-            $.ajax(
-                    {
-                        url: "libs/ajax/update_game_postCFP.php",
-                        type: "POST",
-                        data: {gmID: gameID, newRK: newRK},
-                        success: function (data, textStatus, jqXHR)
-                        {
-                            location.reload();
-                        },
-                        error: function (jqXHR, textStatus, errorThrown)
-                        {
-                            alert("Form Did Not Process: " + errorThrown);
-                        }
-                    });
-            e.preventDefault();
-        }, 1000);
-    });
     //When the button to add a new week is clicked add the game row to the database
     $("#addWeek").click(function () {
 
@@ -749,6 +725,30 @@
                     }
                 });
         e.preventDefault();
+    });
+    //When setting the displayed seasons details: when CFP rankings start week is changed update the database
+    $('#CFPStart').keydown(function (e) {
+        clearTimeout(timer);
+        timer = setTimeout(function () {
+
+            var seasonID = $(e.target).attr('data-season');
+            var newStart = $(e.target).val();
+            $.ajax(
+                    {
+                        url: "libs/ajax/update_season_CFPStart.php",
+                        type: "POST",
+                        data: {seasonID: seasonID, newStart: newStart},
+                        success: function (data, textStatus, jqXHR)
+                        {
+                            location.reload();
+                        },
+                        error: function (jqXHR, textStatus, errorThrown)
+                        {
+                            alert("Form Did Not Process: " + errorThrown);
+                        }
+                    });
+            e.preventDefault();
+        }, 1000);
     });
     //When entering player input details: when player first name is changed update the database
     $('.playerFirstName').keydown(function (e) {

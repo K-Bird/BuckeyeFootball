@@ -104,7 +104,7 @@
                 echo '<td>', $Opp_Score, '</td>';
                 echo '<td>( ', $SeasonWins, ' - ', $SeasonLosses, ' - ', $SeasonTies, ' )</td>';
                 echo '<td>', calc_AP_RK_Diff($fetch_SeasonData['Season_ID'], $fetch_gameData['Week']), '</td>';
-                echo '<td>', calc_CFP_RK_Diff($fetch_SeasonData['Season_ID'], $fetch_gameData['Week'], $fetch_gameData['Post_CFP'], $fetch_gameData['GM_ID']), '</td>';
+                echo '<td>', calc_CFP_RK_Diff($fetch_SeasonData['Season_ID'], $fetch_gameData['Week'], $fetch_gameData['GM_ID']), '</td>';
                 echo '<td><span class="badge badge-secondary"><a href="#" class="badge badge-secondary gameDetail" data-gmid="',$fetch_gameData['GM_ID'],'">Details</a></span><td>';
                 echo '</tr>';
             }

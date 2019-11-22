@@ -434,6 +434,7 @@ function returnOSURk($GM_ID) {
         }
     }
 }
+
 //Given the season and week calcuate and display the following week's AP ranking
 function calc_AP_RK_Diff($season, $week) {
 
@@ -485,32 +486,50 @@ function calc_AP_RK_Diff($season, $week) {
     }
 }
 
-function calc_CFP_RK_Diff($season, $week, $Post_CFP, $GM_ID) {
+function calc_CFP_RK_Diff($season, $week, $GM_ID) {
 
+    //Get the given (current) week's CFP ranking
+    $getCurr_CFP_RK = db_query("SELECT * FROM `games` WHERE Week='{$week}' and Season_ID={$season}");
+    $fetchCurr_CFP_RK = $getCurr_CFP_RK->fetch_assoc();
+    $curr_CFP_RK = $fetchCurr_CFP_RK['OSU_CFP_RK'];
+
+    //Get the given (current) season's week that the CFP rankings began
+    $get_CFP_RK_Start = db_query("SELECT * FROM `seasons` WHERE Season_ID={$season}");
+    $fetch_CFP_RK_Start = $get_CFP_RK_Start->fetch_assoc();
+    $CFP_RK_Start = $fetch_CFP_RK_Start['CFP_RK_Start'];
+
+
+    //If season is less than 2014 display that the CFP rankings did not exist
     if ($season < 125) {
         return 'CFP Rankings Begin 2014';
     }
-    if ($week === '9' || return_game_type_ID($GM_ID) === '40') {
-        return '#' . $Post_CFP;
+    //If the week is equal to the start of the CFP rankings for that year just display the CFP ranking for that week 
+    if ($week === $CFP_RK_Start) {
+        return '#' . $curr_CFP_RK;
     }
-    if ($week < '9') {
-        return 'First Rankings Week 9';
+    //If the week is earlier than the CFP rankings start week then display that the rankings start the week the first rankings come out
+    if ($week < $CFP_RK_Start) {
+        return 'First Rankings Week ' . $CFP_RK_Start;
     }
-    if ($week >= 13) {
+    //If the week is afer the start week of the CFP rankings but not a CFP game then calcuate the difference between the current week's CFP ranking and the following week's CFP ranking
+    if ($week >= $CFP_RK_Start) {
+
+        //If the game is the CFP Semis or CFP Finals then just display the CFP seeding (last CFP rank)
         if (return_game_type_ID($GM_ID) === '41' || return_game_type_ID($GM_ID) === '42') {
-            return 'CFP #' . $Post_CFP . ' Seed';
-        } else {
+            return 'CFP #' . $curr_CFP_RK . ' Seed';
+        }
+        //If the game is a bowl then display that the CFP rankings are complete
+        if (return_game_type_by_ID($GM_ID) === 'Bowl') {
             return 'CFP Rankings Complete';
         }
-    }
+        
+        $nextWeek = $week + 1;
+        $getNextCFP_RK = db_query("SELECT * FROM `games` WHERE Week='{$nextWeek}'and Season_ID={$season}");
+        $fetchNextCFP_RK = $getNextCFP_RK->fetch_assoc();
+        $Next_CFP = $fetchNextCFP_RK['OSU_CFP_RK'];
 
-    if ($week >= 9 && $week <= 13) {
-        $prevWeek = $week - 1;
-        $getPrevCFP_RK = db_query("SELECT * FROM `games` WHERE Week='{$prevWeek}'and Season_ID={$season}");
-        $fetchPrevCFP_RK = $getPrevCFP_RK->fetch_assoc();
-
-        $diff = $Post_CFP - $fetchPrevCFP_RK['Post_CFP'];
-        return '#' . $Post_CFP . " " . returnDiff($diff);
+        $diff = $Next_CFP - $curr_CFP_RK;
+        return '#' . $Next_CFP . " " . returnDiff($diff);
     }
 }
 
@@ -1084,6 +1103,18 @@ function return_game_type_ID($GM_ID) {
     $fetchGameTypeData = $getGameTypeData->fetch_assoc();
 
     return $fetchGameTypeData['GM_Type'];
+}
+
+function return_game_type_by_ID($GM_ID) {
+
+    $getGameTypeData = db_query("SELECT * FROM `games` WHERE GM_ID='{$GM_ID}'");
+    $fetchGameTypeData = $getGameTypeData->fetch_assoc();
+    $GM_Type = $fetchGameTypeData['GM_Type'];
+    
+    $getGameType = db_query("SELECT * FROM `game_types` WHERE Type_ID={$GM_Type}");
+    $fetchGameType = $getGameType->fetch_assoc();
+    $type = $fetchGameType['Type'];
+    return $type;
 }
 
 function returnSeasonAP($AP_RK, $season_ID) {
