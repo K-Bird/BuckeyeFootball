@@ -263,61 +263,66 @@ function formatDepthNumber($DepthNum) {
 
 function returnRecord($season, $recordType, $recordLevel) {
 
-    $getRecordData = db_query("SELECT * FROM `games` WHERE Season_ID='{$season}' AND VS <> 129");
+    $getRecordData = db_query("SELECT * FROM `games` WHERE Season_ID='{$season}' AND GM_Type <> 52");
 
     //Set count of record to 0
     $recordCount = 0;
 
     while ($fetchRecordData = $getRecordData->fetch_assoc()) {
 
-        //Calculate OVR Record block
-        if ($recordType === 'W' && $recordLevel === 'Ovr') {
-            if ($fetchRecordData['OSU_Score'] > $fetchRecordData['Opp_Score']) {
-                $recordCount++;
+        //If both scores are 0 then skip calculation [game has not been played]
+        if ($fetchRecordData['OSU_Score'] === '0' && $fetchRecordData['Opp_Score'] === '0') {
+            
+        } else {
+            //Calculate OVR Record block
+            if ($recordType === 'W' && $recordLevel === 'Ovr') {
+                if ($fetchRecordData['OSU_Score'] > $fetchRecordData['Opp_Score']) {
+                    $recordCount++;
+                }
             }
-        }
-        if ($recordType === 'L' && $recordLevel === 'Ovr') {
-            if ($fetchRecordData['OSU_Score'] < $fetchRecordData['Opp_Score']) {
-                $recordCount++;
+            if ($recordType === 'L' && $recordLevel === 'Ovr') {
+                if ($fetchRecordData['OSU_Score'] < $fetchRecordData['Opp_Score']) {
+                    $recordCount++;
+                }
             }
-        }
-        if ($recordType === 'T' && $recordLevel === 'Ovr') {
-            if ($fetchRecordData['OSU_Score'] == $fetchRecordData['Opp_Score']) {
-                $recordCount++;
+            if ($recordType === 'T' && $recordLevel === 'Ovr') {
+                if ($fetchRecordData['OSU_Score'] == $fetchRecordData['Opp_Score']) {
+                    $recordCount++;
+                }
             }
-        }
 
-        //Calculate Conf Record block
-        if ($recordType === 'W' && $recordLevel === 'Conf') {
-            if ($fetchRecordData['OSU_Score'] > $fetchRecordData['Opp_Score'] && $fetchRecordData['Conf_GM'] === 'Y') {
-                $recordCount++;
+            //Calculate Conf Record block
+            if ($recordType === 'W' && $recordLevel === 'Conf') {
+                if ($fetchRecordData['OSU_Score'] > $fetchRecordData['Opp_Score'] && $fetchRecordData['Conf_GM'] === 'Y') {
+                    $recordCount++;
+                }
             }
-        }
-        if ($recordType === 'L' && $recordLevel === 'Conf') {
-            if ($fetchRecordData['OSU_Score'] < $fetchRecordData['Opp_Score'] && $fetchRecordData['Conf_GM'] === 'Y') {
-                $recordCount++;
+            if ($recordType === 'L' && $recordLevel === 'Conf') {
+                if ($fetchRecordData['OSU_Score'] < $fetchRecordData['Opp_Score'] && $fetchRecordData['Conf_GM'] === 'Y') {
+                    $recordCount++;
+                }
             }
-        }
-        if ($recordType === 'T' && $recordLevel === 'Conf') {
-            if ($fetchRecordData['OSU_Score'] == $fetchRecordData['Opp_Score'] && $fetchRecordData['Conf_GM'] === 'Y') {
-                $recordCount++;
+            if ($recordType === 'T' && $recordLevel === 'Conf') {
+                if ($fetchRecordData['OSU_Score'] == $fetchRecordData['Opp_Score'] && $fetchRecordData['Conf_GM'] === 'Y') {
+                    $recordCount++;
+                }
             }
-        }
 
-        //Calculate Div Record block
-        if ($recordType === 'W' && $recordLevel === 'Div') {
-            if ($fetchRecordData['OSU_Score'] > $fetchRecordData['Opp_Score'] && $fetchRecordData['Div_GM'] === 'Y') {
-                $recordCount++;
+            //Calculate Div Record block
+            if ($recordType === 'W' && $recordLevel === 'Div') {
+                if ($fetchRecordData['OSU_Score'] > $fetchRecordData['Opp_Score'] && $fetchRecordData['Div_GM'] === 'Y') {
+                    $recordCount++;
+                }
             }
-        }
-        if ($recordType === 'L' && $recordLevel === 'Div') {
-            if ($fetchRecordData['OSU_Score'] < $fetchRecordData['Opp_Score'] && $fetchRecordData['Div_GM'] === 'Y') {
-                $recordCount++;
+            if ($recordType === 'L' && $recordLevel === 'Div') {
+                if ($fetchRecordData['OSU_Score'] < $fetchRecordData['Opp_Score'] && $fetchRecordData['Div_GM'] === 'Y') {
+                    $recordCount++;
+                }
             }
-        }
-        if ($recordType === 'T' && $recordLevel === 'Div') {
-            if ($fetchRecordData['OSU_Score'] == $fetchRecordData['Opp_Score'] && $fetchRecordData['Div_GM'] === 'Y') {
-                $recordCount++;
+            if ($recordType === 'T' && $recordLevel === 'Div') {
+                if ($fetchRecordData['OSU_Score'] == $fetchRecordData['Opp_Score'] && $fetchRecordData['Div_GM'] === 'Y') {
+                    $recordCount++;
+                }
             }
         }
     }
@@ -509,7 +514,7 @@ function calc_CFP_RK_Diff($season, $week, $GM_ID) {
     }
     //If the week is earlier than the CFP rankings start week then display that the rankings start the week the first rankings come out
     if ($week < $CFP_RK_Start) {
-        return 'First Rankings Week ' . $CFP_RK_Start;
+        return 'Start Week ' . $CFP_RK_Start;
     }
     //If the week is afer the start week of the CFP rankings but not a CFP game then calcuate the difference between the current week's CFP ranking and the following week's CFP ranking
     if ($week >= $CFP_RK_Start) {
@@ -522,7 +527,7 @@ function calc_CFP_RK_Diff($season, $week, $GM_ID) {
         if (return_game_type_by_ID($GM_ID) === 'Bowl') {
             return 'CFP Rankings Complete';
         }
-        
+
         $nextWeek = $week + 1;
         $getNextCFP_RK = db_query("SELECT * FROM `games` WHERE Week='{$nextWeek}'and Season_ID={$season}");
         $fetchNextCFP_RK = $getNextCFP_RK->fetch_assoc();
@@ -1110,7 +1115,7 @@ function return_game_type_by_ID($GM_ID) {
     $getGameTypeData = db_query("SELECT * FROM `games` WHERE GM_ID='{$GM_ID}'");
     $fetchGameTypeData = $getGameTypeData->fetch_assoc();
     $GM_Type = $fetchGameTypeData['GM_Type'];
-    
+
     $getGameType = db_query("SELECT * FROM `game_types` WHERE Type_ID={$GM_Type}");
     $fetchGameType = $getGameType->fetch_assoc();
     $type = $fetchGameType['Type'];
@@ -1181,7 +1186,10 @@ function HomeAwayLookup($H_A) {
 }
 
 function returnGameOutcome($OSU_Score, $Opp_Score) {
-
+    
+    if ($OSU_Score === '0' && $Opp_Score === '0') {
+        return 'Not Played';
+    }
     if ($OSU_Score > $Opp_Score) {
         return 'Won';
     }

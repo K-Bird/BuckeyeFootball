@@ -84,7 +84,7 @@ echo "(", returnRecord($Season_ID, 'W', 'Ovr'), "-", returnRecord($Season_ID, 'L
         </div>
     </div>
     <div class="row">
-<?php $getGamesData = db_query("SELECT * FROM `games` WHERE Season_ID='{$Season_ID}'"); ?>
+<?php $getGamesData = db_query("SELECT * FROM `games` WHERE Season_ID='{$Season_ID}' ORDER BY Week ASC"); ?>
         <form>
             <table class="table table-sm" style="text-align: center">
                 <thead>

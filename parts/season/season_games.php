@@ -32,10 +32,10 @@
 
 
         echo '<table class="table-sm" style="font-size:small">';
-        echo '<thead><th>Week</th><th>Date</th><th>Location</th><th>Game Type</th><th>Home/Away</th><th>Opponent</th><th>Result</th><th>OSU Score</th><th>Opp Score</th><th>Running Record</th><th>New AP Rank</th><th>New CFP Rank</th><th></th></thead>';
+        echo '<thead><th>Week</th><th>Date</th><th>Location</th><th>Game Type</th><th>Home/Away</th><th>Opponent</th><th>Result</th><th>Score</th><th>Running Record</th><th>New AP Rank</th><th>New CFP Rank</th><th></th></thead>';
 
         //Grab Each Season's Games
-        $get_GameData = db_query("SELECT * FROM `games` WHERE Season_ID={$fetch_SeasonData['Season_ID']}");
+        $get_GameData = db_query("SELECT * FROM `games` WHERE Season_ID={$fetch_SeasonData['Season_ID']} ORDER BY WEEK ASC");
 
         //Set W-L-T Counters
         $SeasonWins = 0;
@@ -73,40 +73,60 @@
                 $OSU_Score = $fetch_gameData['OSU_Score'];
                 $Opp_Score = $fetch_gameData['Opp_Score'];
 
-                $game_Result = '';
-                if ($OSU_Score > $Opp_Score) {
-                    $game_Result = 'Won';
-                    $SeasonWins++;
+                if ($fetch_gameData['GM_Type'] === '52') {
+                    
+                } else {
+                    $game_Result = '';
+                    if ($OSU_Score > $Opp_Score) {
+                        $game_Result = 'Won';
+                        $SeasonWins++;
+                    }
+                    if ($OSU_Score < $Opp_Score) {
+                        $game_Result = 'Lost';
+                        $SeasonLosses++;
+                    }
+                    if ($OSU_Score === $Opp_Score) {
+                        if ($OSU_Score === '0' && $Opp_Score === '0') {
+                            $game_Result = 'Not Played';
+                        } else {
+                            $game_Result = 'Tied';
+                            $SeasonTies++;
+                        }
+                    }
                 }
-                if ($OSU_Score < $Opp_Score) {
-                    $game_Result = 'Lost';
-                    $SeasonLosses++;
-                }
-                if ($OSU_Score === $Opp_Score) {
-                    $game_Result = 'Tied';
-                    $SeasonTies++;
-                }
-                
+
+
                 //Lookup Overtime Results
                 $OT = checkOT($fetch_gameData['GM_ID']);
 
-                echo '<tr>';
-                echo '<td>', $fetch_gameData['Week'], '</td>';
-                echo '<td>', $fetch_gameData['Date'], '</td>';
-                echo '<td>', locationLookup($fetch_gameData['Location']), '</td>';
-                echo '<td>', gameTypeLookup($fetch_gameData['GM_Type']), '</td>';
-                echo '<td style="text-align: center"><span class="badge badge-secondary">', returnOSURk($fetch_gameData['GM_ID']),'</span> ', $HorA, '</td>';
-                echo '<td>';
-                echo '<span class="badge badge-secondary">',returnOppRk($fetch_gameData['GM_ID']),'</span><a href="#" class="badge badge-secondary oppDetail" data-oppid="',$fetch_Opp['Team_ID'],'">', $fetch_Opp['School'], '</a>';
-                echo '</td>';
-                echo '<td>', $game_Result, ' ', $OT, '</td>';
-                echo '<td>', $OSU_Score, '</td>';
-                echo '<td>', $Opp_Score, '</td>';
-                echo '<td>( ', $SeasonWins, ' - ', $SeasonLosses, ' - ', $SeasonTies, ' )</td>';
-                echo '<td>', calc_AP_RK_Diff($fetch_SeasonData['Season_ID'], $fetch_gameData['Week']), '</td>';
-                echo '<td>', calc_CFP_RK_Diff($fetch_SeasonData['Season_ID'], $fetch_gameData['Week'], $fetch_gameData['GM_ID']), '</td>';
-                echo '<td><span class="badge badge-secondary"><a href="#" class="badge badge-secondary gameDetail" data-gmid="',$fetch_gameData['GM_ID'],'">Details</a></span><td>';
-                echo '</tr>';
+                if ($fetch_gameData['GM_Type'] === '52') {
+                    echo '<tr>';
+                    echo '<td>', $fetch_gameData['Week'], '</td>';
+                    echo '<td colspan="2"></td>';
+                    echo '<td>', gameTypeLookup($fetch_gameData['GM_Type']), '</td>';
+                    echo '<td colspan="4"></td>';
+                    echo '<td>( ', $SeasonWins, ' - ', $SeasonLosses, ' - ', $SeasonTies, ' )</td>';
+                    echo '<td>', calc_AP_RK_Diff($fetch_SeasonData['Season_ID'], $fetch_gameData['Week']), '</td>';
+                    echo '<td>', calc_CFP_RK_Diff($fetch_SeasonData['Season_ID'], $fetch_gameData['Week'], $fetch_gameData['GM_ID']), '</td>';
+                    echo '</tr>';
+                } else {
+                    echo '<tr>';
+                    echo '<td>', $fetch_gameData['Week'], '</td>';
+                    echo '<td>', $fetch_gameData['Date'], '</td>';
+                    echo '<td>', locationLookup($fetch_gameData['Location']), '</td>';
+                    echo '<td>', gameTypeLookup($fetch_gameData['GM_Type']), '</td>';
+                    echo '<td style="text-align: center"><span class="badge badge-secondary">', returnOSURk($fetch_gameData['GM_ID']), '</span> ', $HorA, '</td>';
+                    echo '<td>';
+                    echo '<span class="badge badge-secondary">', returnOppRk($fetch_gameData['GM_ID']), '</span><a href="#" class="badge badge-secondary oppDetail" data-oppid="', $fetch_Opp['Team_ID'], '">', $fetch_Opp['School'], '</a>';
+                    echo '</td>';
+                    echo '<td>', $game_Result, ' ', $OT, '</td>';
+                    echo '<td>', $OSU_Score, '-' ,$Opp_Score, '</td>';
+                    echo '<td>( ', $SeasonWins, ' - ', $SeasonLosses, ' - ', $SeasonTies, ' )</td>';
+                    echo '<td>', calc_AP_RK_Diff($fetch_SeasonData['Season_ID'], $fetch_gameData['Week']), '</td>';
+                    echo '<td>', calc_CFP_RK_Diff($fetch_SeasonData['Season_ID'], $fetch_gameData['Week'], $fetch_gameData['GM_ID']), '</td>';
+                    echo '<td><span class="badge badge-secondary"><a href="#" class="badge badge-secondary gameDetail" data-gmid="', $fetch_gameData['GM_ID'], '">Details</a></span><td>';
+                    echo '</tr>';
+                }
             }
         }
 
