@@ -102,7 +102,8 @@
                 if ($fetch_gameData['GM_Type'] === '52') {
                     echo '<tr>';
                     echo '<td>', $fetch_gameData['Week'], '</td>';
-                    echo '<td colspan="2"></td>';
+                    echo '<td>', $fetch_gameData['Date'], '</td>';
+                    echo '<td></td>';
                     echo '<td>', gameTypeLookup($fetch_gameData['GM_Type']), '</td>';
                     echo '<td colspan="4"></td>';
                     echo '<td>( ', $SeasonWins, ' - ', $SeasonLosses, ' - ', $SeasonTies, ' )</td>';
