@@ -207,6 +207,58 @@ $DepthForm = $fetchDepthForm['DepthChart'];
             }
         });
 
+        //Filter Player Table By Status Status Once a Dropdown Item Is Selected
+        $('#playerStatusFilter').change(function () {
+
+            //Filter elements on selected option
+            $('#playerTable tr td.player-filter-status').each(function (e) {
+                $(this).closest('tr').show();
+            });
+            var selectedStatus = $(this).val();
+
+            if (selectedStatus === '0') {
+                $('#playerTable tr td.player-filter-status').each(function (e) {
+                    $(this).closest('tr').show();
+                });
+            } else {
+
+                $('#playerTable tr td.player-filter-status').each(function (e) {
+                    var rowStatus = $(this).data('seasonval');
+
+                    if (rowStatus === selectedStatus) {
+                    } else {
+                        $(this).closest('tr').hide();
+                    }
+                });
+            }
+        });
+
+        //Filter Player Table By Offseason Status Once a Dropdown Item Is Selected
+        $('#playerOffseasonFilter').change(function () {
+
+            //Filter elements on selected option
+            $('#playerTable tr td.player-filter-offseason').each(function (e) {
+                $(this).closest('tr').show();
+            });
+            var selectedStatus = $(this).val();
+
+            if (selectedStatus === '0') {
+                $('#playerTable tr td.player-filter-offseason').each(function (e) {
+                    $(this).closest('tr').show();
+                });
+            } else {
+
+                $('#playerTable tr td.player-filter-offseason').each(function (e) {
+                    var rowStatus = $(this).data('offseasonval');
+
+                    if (rowStatus === selectedStatus) {
+                    } else {
+                        $(this).closest('tr').hide();
+                    }
+                });
+            }
+        });
+
         //Filter Player Table By Class Once a Dropdown Item Is Selected
         $('#playerClassFilter').change(function () {
 
@@ -223,6 +275,32 @@ $DepthForm = $fetchDepthForm['DepthChart'];
             } else {
 
                 $('#playerTable tr td.player-filter-class').each(function (e) {
+                    var rowClass = $(this).data('classval');
+
+                    if (rowClass === selectedClass) {
+                    } else {
+                        $(this).closest('tr').hide();
+                    }
+                });
+            }
+        });
+
+        //Filter Player Table By Status Once a Dropdown Item Is Selected
+        $('#playerStatusFilter').change(function () {
+
+            //Filter elements on selected option
+            $('#playerTable tr td.player-filter-status').each(function (e) {
+                $(this).closest('tr').show();
+            });
+            var selectedClass = $(this).val();
+
+            if (selectedClass === '0') {
+                $('#playerTable tr td.player-filter-status').each(function (e) {
+                    $(this).closest('tr').show();
+                });
+            } else {
+
+                $('#playerTable tr td.player-filter-status').each(function (e) {
                     var rowClass = $(this).data('classval');
 
                     if (rowClass === selectedClass) {

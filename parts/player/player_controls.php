@@ -209,6 +209,8 @@ $Player_Compare_PosGroup = $fetch_PlayerComparePosGroup['Value'];
                 <?php
                 displayPlayerPositionFilterSelect();
                 displayPlayerClassFilterSelect();
+                displayPlayerStatusFilterSelect();
+                displayPlayerOffseasonFilterSelect();
                 ?>
             </div>
         </div>

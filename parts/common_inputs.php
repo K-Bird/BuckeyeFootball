@@ -409,7 +409,7 @@ function displayExistingPlayersSelect($season, $id) {
 
     echo '<select class="selectpicker" data-live-search="true" id="existingPlayer', $id, '">';
 
-    echo '<option><option>';  
+    echo '<option><option>';
 
     while ($fetchExistingPlayers = $getExistingPlayers->fetch_assoc()) {
 
@@ -771,6 +771,111 @@ function displayVideoMiscSelect() {
 
 
         echo '<option value="' . $fetchVidMiscTag['Tag_ID'] . '">' . $fetchVidMiscTag['Tag_Name'] . '</option>';
+    }
+
+    echo '</select>';
+}
+
+//Build player season status select
+function playerStatusSelect($currentStatus, $player_row) {
+
+    echo '<select id="', $player_row, '" class="form-control playerStatusSelect" style="width: 175px">';
+    
+    echo '<option value=""';
+    if ($currentStatus === "") {
+        echo 'selected';
+    } echo '></option>';
+    
+    echo '<option value="On Team"';
+    if ($currentStatus === "On Team") {
+        echo 'selected';
+    } echo '>On Team</option>';
+
+    echo '<option value="Recruit"';
+    if ($currentStatus === "Recruit") {
+        echo 'selected';
+    } echo '>Recruit</option>';
+
+    echo '<option value="Transfer"';
+    if ($currentStatus === "Transfer") {
+        echo 'selected';
+    } echo '>Transfer</option>';
+
+    echo '<option value="Walk On"';
+    if ($currentStatus === "Walk On") {
+        echo 'selected';
+    } echo '>Walk On</option>';
+    
+        echo '<option value="JUCO"';
+    if ($currentStatus === "JUCO") {
+        echo 'selected';
+    } echo '>JUCO</option>';
+
+    echo '</select>';
+}
+
+//Build player offeson status select
+function playerOffseasonSelect($currentStatus, $player_row) {
+
+    echo '<select id="', $player_row, '" class="form-control playerOffseasonSelect" style="width: 175px">';
+    
+    echo '<option value=""';
+    if ($currentStatus === "") {
+        echo 'selected';
+    } echo '></option>';
+    
+    echo '<option value="Stayed"';
+    if ($currentStatus === "Stayed") {
+        echo 'selected';
+    } echo '>Stayed</option>';
+
+    echo '<option value="Transferred"';
+    if ($currentStatus === "Transferred") {
+        echo 'selected';
+    } echo '>Transferred</option>';
+
+    echo '<option value="Graduated"';
+    if ($currentStatus === "Graduated") {
+        echo 'selected';
+    } echo '>Graduated</option>';
+
+    echo '<option value="Left for Draft"';
+    if ($currentStatus === "Left for Draft") {
+        echo 'selected';
+    } echo '>Left for Draft</option>';
+
+    echo '</select>';
+}
+
+function displayPlayerStatusFilterSelect() {
+
+    $selectUniquePlayerStatus = db_query("SELECT DISTINCT Team_Status from `players`");
+
+    echo '<select id="playerStatusFilter" class="form-control">';
+    echo '<option selected=selected>Filter Season Status...</option>';
+    echo '<option value="0">Show All Statuses</option>';
+
+    while ($fetchUniquePlayerStatus = $selectUniquePlayerStatus->fetch_assoc()) {
+
+
+        echo '<option value="' . $fetchUniquePlayerStatus['Team_Status'] . '">' . $fetchUniquePlayerStatus['Team_Status'] . '</option>';
+    }
+
+    echo '</select>';
+}
+
+function displayPlayerOffseasonFilterSelect() {
+
+    $selectUniquePlayerOffseason = db_query("SELECT DISTINCT Post_Season_Status from `players`");
+
+    echo '<select id="playerOffseasonFilter" class="form-control">';
+    echo '<option selected=selected>Filter Season Offseason Status...</option>';
+    echo '<option value="0">Show All Statuses</option>';
+
+    while ($fetchUniquePlayerOffseason = $selectUniquePlayerOffseason->fetch_assoc()) {
+
+
+        echo '<option value="' . $fetchUniquePlayerOffseason['Post_Season_Status'] . '">' . $fetchUniquePlayerOffseason['Post_Season_Status'] . '</option>';
     }
 
     echo '</select>';

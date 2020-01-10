@@ -128,6 +128,8 @@ $InputPosGroup = $fetchInputPosGroupControl['Value'];
                     <th>Weight</th>
                     <th>Class</th>
                     <th>Hometown</th>
+                    <th>Season Status</th>
+                    <th>Offseason Status</th>
                     <th></th>
                 </tr>
             </thead>
@@ -172,6 +174,8 @@ $InputPosGroup = $fetchInputPosGroupControl['Value'];
                 echo '<td><input id="', $fetch_PlayerData['Player_Row'], '" type="text" class="form-control playerWt" placeholder="', $fetch_PlayerData['Weight'], '" style="width: 75px"></td>';
                 echo '<td>', displayClassSelect($fetch_PlayerData['Class'], $fetch_PlayerData['Player_Row']), '</td>';
                 echo '<td><input id="', $fetch_PlayerData['Player_Master_ID'], '" type="text" class="form-control playerHometown" placeholder="', $fetch_PlayerData['Hometown'], '"></td>';
+                echo  '<td>',playerStatusSelect($fetch_PlayerData['Team_Status'], $fetch_PlayerData['Player_Row']),'</td>';
+                echo  '<td>',playerOffseasonSelect($fetch_PlayerData['Post_Season_Status'], $fetch_PlayerData['Player_Row']),'</td>';
                 echo '<td><button class="btn btn-danger removePlayer" data-playerRow="', $fetch_PlayerData['Player_Row'], '" data-PorS="Primary"><span class="oi oi-minus removePlayer" data-playerRow="', $fetch_PlayerData['Player_Row'], '" data-PorS="Primary"></span></button></td>';
                 echo '</tr>';
             }

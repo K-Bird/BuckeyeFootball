@@ -291,10 +291,8 @@
                 });
         e.preventDefault();
     });
-
     //create a timer to track time for keboard related events
     var timer = null;
-
     //When OSU score is entered for a game update the database
     $('.OSUScore').keydown(function (e) {
         clearTimeout(timer);
@@ -1116,7 +1114,6 @@
         var addlname = $(event.relatedTarget).data('lname');
         var addseason = $(event.relatedTarget).data('season');
         var game_ID = $(event.relatedTarget).data('gameid');
-
         //update hidden form value to the game stats are being added for
         $("#Stat_GM_ID").val(game_ID);
         //update modal title
@@ -1124,7 +1121,6 @@
         //hide all stat labels so the chosen stat cateogry's labels will be shown
         $('.statLabel').hide();
         $('.statInput').hide();
-
         //If a stat already exists in a stat category for the given player and game then disable the ability to select that stat category
         if ($('#passing' + game_ID + masterID).length) {
             $('#statOptionPassing').prop("disabled", true);
@@ -1148,7 +1144,6 @@
             $('#statOptionPunting').prop("disabled", true);
         }
     });
-
     //When add stat modal is closed clear the title and reset the disabled stat categories
     $('#addStatModal').on('hidden.bs.modal', function (event) {
 
@@ -1161,7 +1156,6 @@
         $('#statOptionKicking').prop("disabled", false);
         $('#statOptionPunting').prop("disabled", false);
     });
-
     //When a stat category on the add stat model is selected show the appropriate labels and inputs
     $('#statCategory').change(function () {
 
@@ -1210,7 +1204,6 @@
             $('.puntInput').show();
         }
     });
-
     //When the add stat form is submitted send data to the database to create a new stat row for that player and game
     $("#addStatCategoryForm").submit(function (e) {
 
@@ -1231,7 +1224,6 @@
                 });
         e.preventDefault();
     });
-
     //On Edit Stat Modal Show: Get data from clicked edit icon and update the control table
     $('#editStatModal').on('show.bs.modal', function (event) {
 
@@ -1243,7 +1235,6 @@
         var fname = $(event.relatedTarget).data('fname');
         var lname = $(event.relatedTarget).data('lname');
         var season = $(event.relatedTarget).data('season');
-
         $.ajax(
                 {
                     url: "libs/ajax/input_edit_stat_controls.php",
@@ -1261,13 +1252,11 @@
                     }
                 });
     });
-
     //On Edit Stat Model Close, Empty the Title Field
     $('#editStatModal').on('hidden.bs.modal', function (event) {
 
         $('#EditStatTitle').empty();
     });
-
     //On the Edit Passing Stats form submit: send new values to db
     $(document).on('submit', 'form.editStatForm', function (e) {
 
@@ -1287,16 +1276,13 @@
                     }
                 });
         e.preventDefault();
-
     });
-
     //when the remove stat button for a player game combo is selected remove the stat row from the database
     $(".removeStat").click(function () {
 
         var gameID = $(this).data("game");
         var playerID = $(this).data("player");
         var category = $(this).data("cat");
-
         $.ajax(
                 {
                     url: "libs/ajax/remove_stat_row.php",
@@ -1313,13 +1299,11 @@
                     }
                 });
         e.preventDefault();
-
     });
     //On the input lists section: when a new list is selected from the list dropdown update the database control
     $(".listEditDD").click(function () {
 
         var option = $(this).data('option');
-
         $.ajax(
                 {
                     url: "libs/ajax/update_input_list.php",
@@ -1335,13 +1319,11 @@
                     }
                 });
         e.preventDefault();
-
     });
     //On the input lists section: when the remove big ten division button is clicked remove the division row from the database
     $(".removeb10Div").click(function (e) {
 
         var divID = $(e.target).data('id');
-
         $.ajax(
                 {
                     url: "libs/ajax/remove_input_b10div.php",
@@ -1357,13 +1339,11 @@
                     }
                 });
         e.preventDefault();
-
     });
     //On the input lists section: when the add big ten division button is clicked add the division row to the database
     $("#addb10div").click(function (e) {
 
         var newDiv = $("#addb10divName").val();
-
         $.ajax(
                 {
                     url: "libs/ajax/add_input_b10div.php",
@@ -1379,7 +1359,6 @@
                     }
                 });
         e.preventDefault();
-
     });
     //On the input lists section: when the add a new location form button is clicked add the new location to the database
     $("#addLocationForm").submit(function (e) {
@@ -1388,8 +1367,6 @@
         var Stadium = $("input[name=addLocStadium]").val();
         var City = $("input[name=addLocCity]").val();
         var State = $("input[name=addLocState]").val();
-
-
         $.ajax(
                 {
                     url: "libs/ajax/add_input_location.php",
@@ -1404,13 +1381,11 @@
                         alert("Form Did Not Process: " + errorThrown);
                     }
                 });
-
     });
     //On the input lists section: when the remove a location button is clicked remove the location from the database
     $(".removeLoc").click(function (e) {
 
         var locID = $(e.target).data('id');
-
         $.ajax(
                 {
                     url: "libs/ajax/remove_input_location.php",
@@ -1426,7 +1401,6 @@
                     }
                 });
         e.preventDefault();
-
     });
     //On the input lists section: when the add a new opponent form button is clicked add the new opponent to the database
     $("#addOppForm").submit(function (e) {
@@ -1435,8 +1409,6 @@
         var School = $("input[name=addOppSchool]").val();
         var Nickname = $("input[name=addOppNickname]").val();
         var State = $("input[name=addOppState]").val();
-
-
         $.ajax(
                 {
                     url: "libs/ajax/add_input_opponent.php",
@@ -1451,13 +1423,11 @@
                         alert("Form Did Not Process: " + errorThrown);
                     }
                 });
-
     });
     //On the input lists section: when the remove a opponent button is clicked remove the opponent from the database
     $(".removeOpp").click(function (e) {
 
         var oppID = $(e.target).data('id');
-
         $.ajax(
                 {
                     url: "libs/ajax/remove_input_opponent.php",
@@ -1473,7 +1443,6 @@
                     }
                 });
         e.preventDefault();
-
     });
     //When entering game details: when the overtime checkbox is changed update the overtime status of the game in the database
     $('.OTGM').change(function () {
@@ -1532,8 +1501,6 @@
         var FName = $("input[name=addCoachFName]").val();
         var LName = $("input[name=addCoachLName]").val();
         var Type = $("#addCoachType option:selected").text();
-
-
         $.ajax(
                 {
                     url: "libs/ajax/add_input_coach.php",
@@ -1548,13 +1515,11 @@
                         alert("Form Did Not Process: " + errorThrown);
                     }
                 });
-
     });
     //On the input lists section: when the remove a coach button is clicked remove the coach from the database
     $(".removeCoach").click(function (e) {
 
         var coachID = $(e.target).data('id');
-
         $.ajax(
                 {
                     url: "libs/ajax/remove_input_coach.php",
@@ -1570,7 +1535,6 @@
                     }
                 });
         e.preventDefault();
-
     });
     //On the input lists section: when the add a new conference form button is clicked add the new conference to the database
     $("#addConfForm").submit(function (e) {
@@ -1578,8 +1542,6 @@
         e.preventDefault();
         var Conf_Name = $("input[name=addConfName]").val();
         var Conf_Abbrev = $("input[name=addConfAbbrev]").val();
-
-
         $.ajax(
                 {
                     url: "libs/ajax/add_input_conf.php",
@@ -1594,13 +1556,11 @@
                         alert("Form Did Not Process: " + errorThrown);
                     }
                 });
-
     });
     //On the input lists section: when the remove a conference button is clicked remove the conference from the database
     $(".removeConf").click(function (e) {
 
         var confID = $(e.target).data('id');
-
         $.ajax(
                 {
                     url: "libs/ajax/remove_input_conf.php",
@@ -1616,7 +1576,6 @@
                     }
                 });
         e.preventDefault();
-
     });
     //On the input lists section: when the add a new decade form button is clicked add the new decade to the database
     $("#addDecadeForm").submit(function (e) {
@@ -1625,7 +1584,6 @@
         var Decade_Name = $("input[name=addDecadeName]").val();
         var Decade_Start = $("input[name=addDecadeStart]").val();
         var Decade_End = $("input[name=addDecadeEnd]").val();
-
         $.ajax(
                 {
                     url: "libs/ajax/add_input_decade.php",
@@ -1640,13 +1598,11 @@
                         alert("Form Did Not Process: " + errorThrown);
                     }
                 });
-
     });
     //On the input lists section: when the remove a decade button is clicked remove the decade from the database
     $(".removeDecade").click(function (e) {
 
         var ID = $(e.target).data('id');
-
         $.ajax(
                 {
                     url: "libs/ajax/remove_input_decade.php",
@@ -1662,7 +1618,6 @@
                     }
                 });
         e.preventDefault();
-
     });
     //On the input lists section: when the add a new game type form button is clicked add the new game type to the database
     $("#addGameTypeForm").submit(function (e) {
@@ -1671,8 +1626,6 @@
         var Name = $("input[name=addGameTypeName]").val();
         var Type = $("input[name=addGameType]").val();
         var SubType = $("#addGameSubType option:selected").text();
-
-
         $.ajax(
                 {
                     url: "libs/ajax/add_input_gameType.php",
@@ -1687,13 +1640,11 @@
                         alert("Form Did Not Process: " + errorThrown);
                     }
                 });
-
     });
     //On the input lists section: when the remove a game type button is clicked remove the game type from the database
     $(".removeGMtype").click(function (e) {
 
         var ID = $(e.target).data('id');
-
         $.ajax(
                 {
                     url: "libs/ajax/remove_input_gametype.php",
@@ -1709,7 +1660,6 @@
                     }
                 });
         e.preventDefault();
-
     });
     //On the input lists section: when any field is updated from any list then update the database
     $('.editListItem').keydown(function (e) {
@@ -1722,7 +1672,6 @@
             var table = $(e.target).data('table');
             var datacol = $(e.target).data('datacol');
             var idcol = $(e.target).data('idcol');
-
             $.ajax(
                     {
                         url: "libs/ajax/update_input_ListItem.php",
@@ -1738,7 +1687,48 @@
                         }
                     });
             e.preventDefault();
-
         }, 1000);
+    });
+    //When updating a players season status, send new status to the db
+    $('.playerStatusSelect').change(function () {
+
+        var player_row = $(this).attr('id');
+        var newStatus = $(this).val();
+        $.ajax(
+                {
+                    url: "libs/ajax/update_player_season_status.php",
+                    type: "POST",
+                    data: {player_row: player_row, newStatus: newStatus},
+                    success: function (data, textStatus, jqXHR)
+                    {
+                        $(this).val(newStatus);
+                    },
+                    error: function (jqXHR, textStatus, errorThrown)
+                    {
+                        alert("Form Did Not Process: " + errorThrown);
+                    }
+                });
+
+    });
+    //When updating a players offseason status, send new status to the db
+    $('.playerOffseasonSelect').change(function () {
+
+        var player_row = $(this).attr('id');
+        var newStatus = $(this).val();
+        $.ajax(
+                {
+                    url: "libs/ajax/update_player_offseason_status.php",
+                    type: "POST",
+                    data: {player_row: player_row, newStatus: newStatus},
+                    success: function (data, textStatus, jqXHR)
+                    {
+                        $(this).val(newStatus);
+                    },
+                    error: function (jqXHR, textStatus, errorThrown)
+                    {
+                        alert("Form Did Not Process: " + errorThrown);
+                    }
+                });
+
     });
 </script>

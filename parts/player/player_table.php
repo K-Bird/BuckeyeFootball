@@ -12,6 +12,8 @@
                 <th>Weight</th>
                 <th>Class</th>
                 <th>Hometown</th>
+                <th>Season Status</th>
+                <th>Offseason Status</th>
                 <th>Details</th>
             </tr>
         </thead>
@@ -39,6 +41,8 @@
                 echo '<td class="player-sort-wt">', $fetch_PlayerData['Weight'], '</td>';
                 echo '<td class="player-filter-class" data-classval="', $fetch_PlayerData['Class'], '">', $fetch_PlayerData['Class'], '</td>';
                 echo '<td class="player-sort-hometown">', $fetch_PlayerData['Hometown'], '</td>';
+                echo '<td class="player-filter-status" data-seasonval="', $fetch_PlayerData['Team_Status'], '">', $fetch_PlayerData['Team_Status'], '</td>';
+                echo '<td class="player-filter-offseason" data-offseasonval="', $fetch_PlayerData['Post_Season_Status'], '">', $fetch_PlayerData['Post_Season_Status'], '</td>';
                 echo '<td>';
                 echo '<form action="playerDetails.php" method="POST">';
                 echo '<button class="btn btn-secondary btn-sm" type="submit">View Details</button>';
