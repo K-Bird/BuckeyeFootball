@@ -780,12 +780,12 @@ function displayVideoMiscSelect() {
 function playerStatusSelect($currentStatus, $player_row) {
 
     echo '<select id="', $player_row, '" class="form-control playerStatusSelect" style="width: 175px">';
-    
+
     echo '<option value=""';
     if ($currentStatus === "") {
         echo 'selected';
     } echo '></option>';
-    
+
     echo '<option value="On Team"';
     if ($currentStatus === "On Team") {
         echo 'selected';
@@ -805,11 +805,26 @@ function playerStatusSelect($currentStatus, $player_row) {
     if ($currentStatus === "Walk On") {
         echo 'selected';
     } echo '>Walk On</option>';
-    
-        echo '<option value="JUCO"';
+
+    echo '<option value="JUCO"';
     if ($currentStatus === "JUCO") {
         echo 'selected';
     } echo '>JUCO</option>';
+
+    echo '<option value="Dismissed"';
+    if ($currentStatus === "Dismissed") {
+        echo 'selected';
+    } echo '>Dismissed</option>';
+
+    echo '<option value="Injured"';
+    if ($currentStatus === "Injured") {
+        echo 'selected';
+    } echo '>Injured</option>';
+
+    echo '<option value="Redshirt"';
+    if ($currentStatus === "Redshirt") {
+        echo 'selected';
+    } echo '>Redshirt</option>';
 
     echo '</select>';
 }
@@ -818,12 +833,12 @@ function playerStatusSelect($currentStatus, $player_row) {
 function playerOffseasonSelect($currentStatus, $player_row) {
 
     echo '<select id="', $player_row, '" class="form-control playerOffseasonSelect" style="width: 175px">';
-    
+
     echo '<option value=""';
     if ($currentStatus === "") {
         echo 'selected';
     } echo '></option>';
-    
+
     echo '<option value="Stayed"';
     if ($currentStatus === "Stayed") {
         echo 'selected';
@@ -843,6 +858,11 @@ function playerOffseasonSelect($currentStatus, $player_row) {
     if ($currentStatus === "Left for Draft") {
         echo 'selected';
     } echo '>Left for Draft</option>';
+
+    echo '<option value="Not On Team"';
+    if ($currentStatus === "Not On Team") {
+        echo 'selected';
+    } echo '>Not On Team</option>';
 
     echo '</select>';
 }
