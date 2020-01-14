@@ -675,11 +675,11 @@ function incrementPlayerRow() {
 function returnPosGroupSelectStatement($posGroup, $season) {
 
     if ($posGroup === 'OL') {
-        return "SELECT * FROM `players` WHERE (Position='{$posGroup}' OR Position='LT' OR Position='LG' OR Position='C' OR Position='RG' OR Position='RT' OR Position_2='{$posGroup}' OR Position_2='LT' OR Position_2='LG' OR Position_2='C' OR Position_2='RG' OR Position_2='RT') AND Season='{$season}' ORDER BY Last_Name ASC";
+        return "SELECT * FROM `players` WHERE (Position='{$posGroup}' OR Position='LT' OR Position='LG' OR Position='C' OR Position='RG' OR Position='RT' OR Position_2='{$posGroup}' OR Position_2='LT' OR Position_2='LG' OR Position_2='C' OR Position_2='RG' OR Position_2='RT') AND Season='{$season}' ORDER BY FIELD(Position, 'LT', 'LG', 'C', 'RG', 'RT', 'OL'), Last_Name ASC";
     } elseif ($posGroup === 'DL') {
-        return "SELECT * FROM `players` WHERE (Position='{$posGroup}' OR Position='DE' OR Position='DT' OR Position_2='DE' OR Position_2='DT') AND Season='{$season}' ORDER BY Last_Name ASC";
+        return "SELECT * FROM `players` WHERE (Position='{$posGroup}' OR Position='DE' OR Position='DT' OR Position_2='DE' OR Position_2='DT') AND Season='{$season}' ORDER BY FIELD(Position, 'DE','DT','DL'), Last_Name ASC";
     } elseif ($posGroup === 'LB') {
-        return "SELECT * FROM `players` WHERE (Position='{$posGroup}' OR Position='OLB' OR Position='MLB' OR Position_2='OLB' OR Position_2='MLB') AND Season='{$season}' ORDER BY Last_Name ASC";
+        return "SELECT * FROM `players` WHERE (Position='{$posGroup}' OR Position='OLB' OR Position='MLB' OR Position_2='OLB' OR Position_2='MLB') AND Season='{$season}' ORDER BY FIELD(Position, 'MLB', 'OLB', 'LB'), Last_Name ASC";
     } elseif ($posGroup === 'KR' || $posGroup === 'PR' || $posGroup === 'H') {
         return "SELECT * FROM `players` WHERE (Position='{$posGroup}' OR Position_2='{$posGroup}') AND Season='{$season}' ORDER BY Last_Name ASC";
     } else {
