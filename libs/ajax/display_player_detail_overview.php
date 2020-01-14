@@ -12,7 +12,7 @@ $Master_ID = $_POST['Master_ID'];
                 <table class="table table-hover">
                     <thead>
                         <tr>
-                            <th>Year</th><th>Class</th><th>Position</th>
+                            <th>Year</th><th>Season Status</th><th>Position</th><th>Class</th><th>Offseason Status</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -35,7 +35,7 @@ $Master_ID = $_POST['Master_ID'];
                             echo getSeason_Year($fetch_PlayerData['Season']);
                             echo '</td>';
                             echo '<td>';
-                            echo $fetch_PlayerData['Class'];
+                            echo $fetch_PlayerData['Team_Status'];
                             echo '</td>';
                             echo '<td>';
                             if (checkForStarter($fetch_PlayerData['Position'], $fetch_PlayerData['Depth']) === true) {
@@ -43,6 +43,12 @@ $Master_ID = $_POST['Master_ID'];
                             } else {
                                 echo $fetch_PlayerData['Position'] . $DepthPOS;
                             }
+                            echo '</td>';
+                            echo '<td>';
+                            echo $fetch_PlayerData['Class'];
+                            echo '</td>';
+                            echo '<td>';
+                            echo $fetch_PlayerData['Post_Season_Status'];
                             echo '</td>';
                             echo '</tr>';
                         }
