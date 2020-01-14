@@ -821,11 +821,6 @@ function playerStatusSelect($currentStatus, $player_row) {
         echo 'selected';
     } echo '>Injured</option>';
 
-    echo '<option value="Redshirt"';
-    if ($currentStatus === "Redshirt") {
-        echo 'selected';
-    } echo '>Redshirt</option>';
-
     echo '</select>';
 }
 
@@ -849,15 +844,20 @@ function playerOffseasonSelect($currentStatus, $player_row) {
         echo 'selected';
     } echo '>Transferred</option>';
 
+    echo '<option value="Redshirt"';
+    if ($currentStatus === "Redshirt") {
+        echo 'selected';
+    } echo '>Redshirt</option>';
+
     echo '<option value="Graduated"';
     if ($currentStatus === "Graduated") {
         echo 'selected';
     } echo '>Graduated</option>';
 
-    echo '<option value="Left for Draft"';
-    if ($currentStatus === "Left for Draft") {
+    echo '<option value="Left For Draft"';
+    if ($currentStatus === "Left For Draft") {
         echo 'selected';
-    } echo '>Left for Draft</option>';
+    } echo '>Left For Draft</option>';
 
     echo '<option value="Not On Team"';
     if ($currentStatus === "Not On Team") {

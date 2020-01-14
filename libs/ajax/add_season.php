@@ -30,7 +30,9 @@ db_query("INSERT INTO `players` (
     `Height`, 
     `Weight`, 
     `Class`, 
-    `Hometown`)
+    `Hometown`,
+    `Team_Status`,
+    `Post_Season_Status`)
     
 SELECT
 
@@ -46,7 +48,9 @@ SELECT
     `Height`, 
     `Weight`, 
     `Class`, 
-    `Hometown`
+    `Hometown`,
+    `Team_Status`,
+    `Post_Season_Status`
     
 FROM `players` WHERE Season='{$previousSeasonID}'");
 
@@ -54,17 +58,59 @@ FROM `players` WHERE Season='{$previousSeasonID}'");
 $nextSeason = getSeason_ID($season);
 db_query("UPDATE `players` SET Season='{$nextSeason}' WHERE Season='0'");
 
-//Remove SR, SR (RS) and GR Players in Next Season
-db_query("DELETE FROM `players` WHERE Season='{$nextSeason}' AND (Class='SR' or Class='SR (RS)' or Class='GR')");
-
-/*Loop through each player for Next Season and increment class */
+/* Loop through each player for Next Season to increment class and apply appropriate transition */
 $getNextYearPlayers = db_query("SELECT * FROM `players` WHERE Season='{$nextSeason}'");
 
 while ($fetchNextYearPlayers = $getNextYearPlayers->fetch_assoc()) {
-    
-    $currentClass = $fetchNextYearPlayers['Class'];
-    $nextClass = incrementPlayerClass($currentClass);
-    db_query("UPDATE `players` SET Class='{$nextClass}' WHERE Player_Row='{$fetchNextYearPlayers['Player_Row']}'");
-    
-}
 
+    $playerRow = $fetchNextYearPlayers['Player_Row'];
+    $currentClass = $fetchNextYearPlayers['Class'];
+    $teamStatus = $fetchNextYearPlayers['Team_Status'];
+    $offseasonStatus = $fetchNextYearPlayers['Post_Season_Status'];
+
+    if ($offseasonStatus === 'Redshirt') {
+
+        if ($class === 'FR') {
+            db_query("UPDATE `players` SET Class = 'FR (RS)' WHERE Player_Row = '{$playerRow}'");
+        }
+        if ($class === 'SO') {
+            db_query("UPDATE `players` SET Class = 'SO (RS)' WHERE Player_Row = '{$playerRow}'");
+        }
+        if ($class === 'JR') {
+            db_query("UPDATE `players` SET Class = 'JR (RS)' WHERE Player_Row = '{$playerRow}'");
+        }
+        if ($class === 'SR') {
+            db_query("UPDATE `players` SET Class = 'SR (RS)' WHERE Player_Row = '{$playerRow}'");
+        }
+    } else {
+
+        //Non Red Shirt Track
+        if ($currentClass === 'FR') {
+            db_query("UPDATE `players` SET Class = 'SO' WHERE Player_Row = '{$playerRow}'");
+        }
+        if ($currentClass === 'SO') {
+            db_query("UPDATE `players` SET Class = 'JR' WHERE Player_Row = '{$playerRow}'");
+        }
+        if ($currentClass === 'JR') {
+            db_query("UPDATE `players` SET Class = 'SR' WHERE Player_Row = '{$playerRow}'");
+        }
+
+        //Red Shirt Track
+        if ($currentClass === 'FR (RS)') {
+            db_query("UPDATE `players` SET Class = 'SO (RS)' WHERE Player_Row = '{$playerRow}'");
+        }
+        if ($currentClass === 'SO (RS)') {
+            db_query("UPDATE `players` SET Class = 'JR (RS)' WHERE Player_Row = '{$playerRow}'");
+        }
+        if ($currentClass === 'JR (RS)') {
+            db_query("UPDATE `players` SET Class = 'SR (RS)' WHERE Player_Row = '{$playerRow}'");
+        }
+    }
+
+    if ($offseasonStatus === 'Transfer' || $offseasonStatus === 'Graduated' || $offseasonStatus === 'Left For Draft' || $offseasonStatus === 'Not On Team') {
+        db_query("DELETE FROM `players` WHERE Player_Row ='{$playerRow}'");
+    } else {
+        db_query("UPDATE `players` SET Team_Status= 'On Team' WHERE Player_Row = '{$playerRow}'");
+        db_query("UPDATE `players` SET Post_Season_Status= 'Stayed' WHERE Player_Row = '{$playerRow}'");
+    }
+}

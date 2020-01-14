@@ -703,31 +703,6 @@ function returnMaxSeasonDecade() {
     return $maxDecade;
 }
 
-function incrementPlayerClass($prevClass) {
-
-    //Non Red Shirt Track
-    if ($prevClass === 'FR') {
-        return 'SO';
-    }
-    if ($prevClass === 'SO') {
-        return 'JR';
-    }
-    if ($prevClass === 'JR') {
-        return 'SR';
-    }
-
-    //Red Shirt Track
-    if ($prevClass === 'FR (RS)') {
-        return 'SO (RS)';
-    }
-    if ($prevClass === 'SO (RS)') {
-        return 'JR (RS)';
-    }
-    if ($prevClass === 'JR (RS)') {
-        return 'SR (RS)';
-    }
-}
-
 function getPlayerFieldByRow($field, $player_row) {
 
     $getAttribute = db_query("SELECT * FROM `players` WHERE Player_Row='{$player_row}'");
