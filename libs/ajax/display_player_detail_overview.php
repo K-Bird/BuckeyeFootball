@@ -52,6 +52,21 @@ $Master_ID = $_POST['Master_ID'];
                             echo '</td>';
                             echo '</tr>';
                         }
+                        
+                        $recruitNum = mysqli_num_rows(db_query("SELECT * FROM `recruits` WHERE Player_ID = '{$Master_ID}'"));
+                        if ($recruitNum > 0) {
+                            $getRecruitDetails = db_query("SELECT * FROM `recruits` WHERE Player_ID = '{$Master_ID}'");
+                            $fetchRecruitDetails = $getRecruitDetails->fetch_assoc();
+                            echo '<tr>';
+                            echo '<td colspan="2">';
+                            echo '<h5><span class="badge badge-secondary">' . $fetchRecruitDetails['Class'] . ' Recruiting Class </span></h5></td>' .
+                                 '<td><h5><span class="badge badge-secondary">'. $fetchRecruitDetails['Stars'] . " Star Recruit - " . $fetchRecruitDetails['Score'] . '</div></h5></td>' .
+                                 '<td colspan="2"><h5><span class="badge badge-secondary"> National Rank: ' .
+                                 $fetchRecruitDetails['Nat_RK']. " | Position Rank: " .
+                                 $fetchRecruitDetails['Pos_RK']. " | State Rank: " . 
+                                 $fetchRecruitDetails['State_RK'] . "</div></h5></td>";
+                            echo '</td>';
+                        }
                         ?>
                     </tbody>
                 </table>

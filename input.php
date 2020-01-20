@@ -33,6 +33,11 @@
                 $fetch_InputView = $get_InputView->fetch_assoc();
                 $Input_View = $fetch_InputView['Value'];
 
+                //Get the current recruiting class input view
+                $get_ClassView = db_query("SELECT * FROM `Controls` WHERE Control='recruit_input_season'");
+                $fetch_ClassView = $get_ClassView->fetch_assoc();
+                $Class_View = $fetch_ClassView['Value'];
+
                 //get the current input season
                 $get_InputSeason = db_query("SELECT * FROM `Controls` WHERE Control='Input_Season'");
                 $fetch_InputSeason = $get_InputSeason->fetch_assoc();
@@ -54,6 +59,9 @@
                 <?php
                 if ($Input_View === 'Seasons') {
                     include ('parts/input/input_seasons.php');
+                }
+                if ($Input_View === 'Recruits') {
+                    include ('parts/input/input_recruits.php');
                 }
                 if ($Input_View === 'Players') {
                     include ('parts/input/input_players.php');
@@ -101,6 +109,24 @@
                     url: "libs/ajax/update_input_view.php",
                     type: "POST",
                     data: {new_view: "Players"},
+                    success: function (data, textStatus, jqXHR)
+                    {
+                        location.reload();
+                    },
+                    error: function (jqXHR, textStatus, errorThrown)
+                    {
+                        alert("Form Did Not Process: " + errorThrown);
+                    }
+                });
+        e.preventDefault();
+    });
+    //When input view recruits button is clicked update the database to the new view
+    $("#input_recruits_btn").click(function () {
+        $.ajax(
+                {
+                    url: "libs/ajax/update_input_view.php",
+                    type: "POST",
+                    data: {new_view: "Recruits"},
                     success: function (data, textStatus, jqXHR)
                     {
                         location.reload();
@@ -1730,5 +1756,114 @@
                     }
                 });
 
+    });
+
+    //When a new input recruiting class is selected update the database to the new class view
+    $(".recruitClass").change(function () {
+
+        var recClass = $(this).val();
+
+        $.ajax(
+                {
+                    url: "libs/ajax/update_recruit_input_class_view.php",
+                    type: "POST",
+                    data: {recClass: recClass},
+                    success: function (data, textStatus, jqXHR)
+                    {
+                        location.reload();
+                    },
+                    error: function (jqXHR, textStatus, errorThrown)
+                    {
+                        alert("Form Did Not Process: " + errorThrown);
+                    }
+                });
+    });
+
+    //When entering recruit input details: when recruit field is changed update the database
+    $('.changeRecruit').keydown(function (e) {
+        clearTimeout(timer);
+        timer = setTimeout(function () {
+
+            var recruit_row = $(e.target).attr('id');
+            var field = $(e.target).data('field');
+            var newValue = $(e.target).val();
+
+            $.ajax(
+                    {
+                        url: "libs/ajax/update_recruit.php",
+                        type: "POST",
+                        data: {row: recruit_row, field: field, newValue: newValue},
+                        success: function (data, textStatus, jqXHR)
+                        {
+                            location.reload();
+                        },
+                        error: function (jqXHR, textStatus, errorThrown)
+                        {
+                            alert("Form Did Not Process: " + errorThrown);
+                        }
+                    });
+        }, 1000);
+    });
+
+    //When entering recruit input details: when add recruit button is clicked add the recruit row to the database for the in focus class
+    $("#addRecruitBtn").click(function () {
+
+        var recClass = $(this).attr('data-class');
+
+        $.ajax(
+                {
+                    url: "libs/ajax/add_recruit_row.php",
+                    type: "POST",
+                    data: {recClass: recClass},
+                    success: function (data, textStatus, jqXHR)
+                    {
+                        location.reload();
+                    },
+                    error: function (jqXHR, textStatus, errorThrown)
+                    {
+                        alert("Form Did Not Process: " + errorThrown);
+                    }
+                });
+    });
+    //When entering recruit input details: when the remove recruit button is clicked remove the recruit row from the database
+    $(".removeRecruit").click(function () {
+
+        var recruitRow = $(this).attr('id');
+
+        $.ajax(
+                {
+                    url: "libs/ajax/remove_recruit_row.php",
+                    type: "POST",
+                    data: {recruitRow: recruitRow},
+                    success: function (data, textStatus, jqXHR)
+                    {
+                        location.reload();
+                    },
+                    error: function (jqXHR, textStatus, errorThrown)
+                    {
+                        alert("Form Did Not Process: " + errorThrown);
+                    }
+                });
+    });
+    //When entering recruit input details: when import class button is clicked import the class in focus 
+    $("#importClass").click(function () {
+
+        var recClass = $(this).attr('data-class');
+
+        $.ajax(
+                {
+                    url: "libs/ajax/import_class.php",
+                    type: "POST",
+                    data: {recClass: recClass},
+                    success: function (data, textStatus, jqXHR)
+                    {
+                        alert(data);
+                        location.reload();
+                    },
+                    error: function (jqXHR, textStatus, errorThrown)
+                    {
+                        alert("Class Not Imported: " + errorThrown);
+                    }
+                });
     });
 </script>

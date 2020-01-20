@@ -620,6 +620,33 @@ function returnPositionCount($posGroup, $season) {
     return $PositionCount;
 }
 
+function returnPositionClassCount($posGroup, $class) {
+
+    if ($posGroup === 'OL') {
+        $getPositionCount = db_query("SELECT Count(*) as posCount FROM `recruits` WHERE (Position='{$posGroup}' OR Position='LT' OR Position='LG' OR Position='C' OR Position='RG' OR Position='RT') AND Class='{$class}'");
+        $fetchPositionCount = $getPositionCount->fetch_assoc();
+        $PositionCount = $fetchPositionCount['posCount'];
+    } elseif ($posGroup === 'DL') {
+        $getPositionCount = db_query("SELECT Count(*) as posCount FROM `recruits` WHERE (Position='{$posGroup}' OR Position='DE' OR Position='DT') AND Class='{$class}'");
+        $fetchPositionCount = $getPositionCount->fetch_assoc();
+        $PositionCount = $fetchPositionCount['posCount'];
+    } elseif ($posGroup === 'LB') {
+        $getPositionCount = db_query("SELECT Count(*) as posCount FROM `recruits` WHERE (Position='{$posGroup}' OR Position='OLB' OR Position='MLB') AND Class='{$class}'");
+        $fetchPositionCount = $getPositionCount->fetch_assoc();
+        $PositionCount = $fetchPositionCount['posCount'];
+    } elseif ($posGroup === 'KR' || $posGroup === 'PR' || $posGroup === 'H') {
+        $getPositionCount = db_query("SELECT Count(*) as posCount FROM `recruits` WHERE (Position='{$posGroup}' OR Position_2='{$posGroup}') AND Class='{$class}'");
+        $fetchPositionCount = $getPositionCount->fetch_assoc();
+        $PositionCount = $fetchPositionCount['posCount'];
+    } else {
+        $getPositionCount = db_query("SELECT Count(*) as posCount FROM `recruits` WHERE Position='{$posGroup}' AND Class='{$class}'");
+        $fetchPositionCount = $getPositionCount->fetch_assoc();
+        $PositionCount = $fetchPositionCount['posCount'];
+    }
+
+    return $PositionCount;
+}
+
 function returnPos_PorS($posGroup, $pos1) {
 
 

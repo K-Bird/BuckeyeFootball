@@ -305,7 +305,7 @@ include ("parts/common_inputs.php");
         /* Season Table Sorting and Filtering */
         //Use tablesorting plugin to sort table columns
         $("#seasonTable").tablesorter({
-            theme: "default",
+            theme: "default"
         });
 
 

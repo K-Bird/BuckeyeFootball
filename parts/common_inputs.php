@@ -280,6 +280,30 @@ function displayOppSelect($currentOpp, $GM_ID) {
     echo '</select>';
 }
 
+//Build Opponents Select List
+function displayRecruitClassSelect($currentClass) {
+
+    echo '<select id="', $currentClass, '" class="selectpicker recruitClass" data-live-search="true" name="recruitClass">';
+
+    $getRecruitData = db_query("SELECT DISTINCT Class FROM `recruits` ORDER BY Class ASC");
+    echo '<option></option>';
+    while ($fetchRecruitData = $getRecruitData->fetch_assoc()) {
+
+        echo '<option value="', $fetchRecruitData['Class'], '" ';
+
+        if ($currentClass === $fetchRecruitData['Class']) {
+
+            echo 'Selected="Selected"';
+        }
+
+        echo '>';
+        echo $fetchRecruitData['Class'];
+        echo '</option>';
+    }
+
+    echo '</select>';
+}
+
 //Build Game Type Select List
 function displayGMTypeSelect($currentGMType, $GM_ID) {
 
