@@ -28,7 +28,7 @@ $misc_photo_ID = $fetchPhotoMiscID['Value'];
                 <div class="row">
                     <div class="col-lg-8">
                         <?php displayPlayerPhotoSelect($player_photo_ID); ?>
-                        <button class="btn btn-warning" data-toggle="modal" data-target="#editTagsModal">Edit Tags</button>
+                        <button id="editPlayerTagsBtn" class="btn btn-warning" data-toggle="modal" data-target="#editTagsModal">Edit Tags</button>
                         <br>
                         <br>
                         <div id="playerPhotoGallery">
@@ -43,7 +43,7 @@ $misc_photo_ID = $fetchPhotoMiscID['Value'];
                 <div class="row">
                     <div class="col-lg-8">
                         <?php displayGamePhotoSelect($game_photo_ID); ?>
-                        <button class="btn btn-warning" data-toggle="modal" data-target="#editTagsModal">Edit Tags</button>
+                        <button id="editGameTagsBtn" class="btn btn-warning" data-toggle="modal" data-target="#editTagsModal">Edit Tags</button>
                         <br>
                         <br>
                         <div id="gamePhotoGallery">
@@ -58,7 +58,7 @@ $misc_photo_ID = $fetchPhotoMiscID['Value'];
                 <div class="row">
                     <div class="col-lg-8">
                         <?php displayMiscPhotoSelect($misc_photo_ID); ?>
-                        <button class="btn btn-warning" data-toggle="modal" data-target="#editTagsModal">Edit Tags</button>
+                        <button id="editMiscTagsBtn" class="btn btn-warning" data-toggle="modal" data-target="#editTagsModal">Edit Tags</button>
                         <br>
                         <br>
                         <div id="miscPhotoGallery">

@@ -10,7 +10,7 @@
     </head>
     <body>
         <!-- wrapper div enables tubular video to play over entire page minus the navigation bar -->
-        <div id="wrapper">
+        <div id="indexWrapper">
             <!-- include main navigation bar at top of page -->
             <?php include ('nav/navBar.php'); ?>
         </div>
@@ -21,6 +21,6 @@
         /* set options for tubular plugin video: video id of youtube video and start time in seconds */
         var options = {videoId: 'MI1qxsWnJJo', start: 0};
         /* player video in wrapper with the given options */
-        $('#wrapper').tubular(options);
+        $('#indexWrapper').tubular(options);
     });
 </script>

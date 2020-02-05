@@ -7,7 +7,7 @@ $CFP_RK_Start = $fetch_CFP_RK_Start['CFP_RK_Start'];
     <br><br>
     <div class="row">
         <div class="col-lg-12">
-            <form>
+            <div id="seasonFields">
                 <div class="form-row">                   
                     <div class="col-lg-1">
                         <div class="form-group">
@@ -56,7 +56,7 @@ $CFP_RK_Start = $fetch_CFP_RK_Start['CFP_RK_Start'];
 <?php echo '<input id="CFPStart" type="text" data-season="',$Season_ID,'" class="form-control" placeholder="',$CFP_RK_Start,'" style="width: 100px">'; ?>
                     </div>
                 </div>
-            </form>
+            </div>
         </div>
     </div>
     <hr />
@@ -86,7 +86,7 @@ echo "(", returnRecord($Season_ID, 'W', 'Ovr'), "-", returnRecord($Season_ID, 'L
     <div class="row">
 <?php $getGamesData = db_query("SELECT * FROM `games` WHERE Season_ID='{$Season_ID}' ORDER BY Week ASC"); ?>
         <form>
-            <table class="table table-sm" style="text-align: center">
+            <table id="seasonInputTable" class="table table-sm" style="text-align: center">
                 <thead>
                 <th>Week</th>
                 <th>Date</th>

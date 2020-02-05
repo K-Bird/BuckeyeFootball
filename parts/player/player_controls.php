@@ -23,14 +23,14 @@ $Player_Compare_PosGroup = $fetch_PlayerComparePosGroup['Value'];
 ?>
 <div class="row">
     <div class="col-lg-6">
-        <button class="btn btn-secondary" data-toggle="collapse" href="#playerViewControls">Player View &nbsp;<span id="closedPlayerViewChev" class="oi oi-chevron-right" title="icon name"></span><span id="openPlayerViewChev" class="oi oi-chevron-bottom" title="icon name"></span></button>
+        <button id="playerViewBtn" class="btn btn-secondary" data-toggle="collapse" href="#playerViewControls">Player View &nbsp;<span id="closedPlayerViewChev" class="oi oi-chevron-right" title="icon name"></span><span id="openPlayerViewChev" class="oi oi-chevron-bottom" title="icon name"></span></button>
     </div>
     <div class="col-lg-6">
         <button id="playerDataControlsBtn" class="btn btn-secondary" data-toggle="collapse" href="#playerDataControls">Player Data Controls &nbsp;<span id="closedPlayerDataChev" class="oi oi-chevron-right" title="icon name"></span><span id="openPlayerDataChev" class="oi oi-chevron-bottom" title="icon name"></span></button>
     </div>
 </div>
 <br>
-<div id="playerViewControls" style="border: 1px solid black; border-radius: 5px; padding: 15px 15px 15px 15px">
+<div id="playerViewControls" class="controlContainer">
     <div class="row" style="text-align: center">
         <div class="col-lg-3">
             <span class="badge badge-dark">Change Player View:</span><br>
@@ -59,106 +59,7 @@ $Player_Compare_PosGroup = $fetch_PlayerComparePosGroup['Value'];
         ?>>
             <span class="badge badge-dark">Select Season to View - Currently Viewing: <?php echo $Player_Season; ?></span>
             <br>
-            <div class="btn-group">
-                <button id="decade2010s" type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    2010s
-                </button>
-                <div class="dropdown-menu" aria-labelledby="decade2010s">
-                    <?php
-                    displayDecadeDropdownOptions('14', 'playerSeason');
-                    ?>
-                </div>
-            </div>
-            <div class="btn-group">
-                <button id="decade2000s" type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    2000s
-                </button>
-                <div class="dropdown-menu" aria-labelledby="decade2010s">
-                    <?php
-                    displayDecadeDropdownOptions('13', 'playerSeason');
-                    ?>
-                </div>
-            </div>
-            <div class="btn-group">
-                <button id="decade1990s" type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    1990s
-                </button>
-                <div class="dropdown-menu" aria-labelledby="decade1990s">
-                    <?php
-                    displayDecadeDropdownOptions('12', 'playerSeason');
-                    ?>
-                </div>
-            </div>
-            <div class="btn-group">
-                <button id="decade1980ss" type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    1980s
-                </button>
-                <div class="dropdown-menu" aria-labelledby="decade1980s">
-                    <?php
-                    displayDecadeDropdownOptions('11', 'playerSeason');
-                    ?>
-                </div>
-            </div>
-            <div class="btn-group">
-                <button id="decade1970s" type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    1970s
-                </button>
-                <div class="dropdown-menu" aria-labelledby="decade1970s">
-                    <?php
-                    displayDecadeDropdownOptions('10', 'playerSeason');
-                    ?>
-                </div>
-            </div>
-            <div class="btn-group">
-                <button id="decade1960s" type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    1960s
-                </button>
-                <div class="dropdown-menu" aria-labelledby="decade1960s">
-                    <?php
-                    displayDecadeDropdownOptions('9', 'playerSeason');
-                    ?>
-                </div>
-            </div>
-            <div class="btn-group">
-                <button id="decade1950s" type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    1950s
-                </button>
-                <div class="dropdown-menu" aria-labelledby="decade1950s">
-                    <?php
-                    displayDecadeDropdownOptions('8', 'playerSeason');
-                    ?>
-                </div>
-            </div>
-            <div class="btn-group">
-                <button id="decade1940s" type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    1940s
-                </button>
-                <div class="dropdown-menu" aria-labelledby="decade1940s">
-                    <?php
-                    displayDecadeDropdownOptions('7', 'playerSeason');
-                    ?>
-                </div>
-            </div>
-            <div class="btn-group">
-                <button id="decade1930s" type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    1930s
-                </button>
-                <div class="dropdown-menu" aria-labelledby="decade1930s">
-                    <?php
-                    displayDecadeDropdownOptions('6', 'playerSeason');
-                    ?>
-                </div>
-            </div>
-            <div class="btn-group">
-                <button id="decade1920s" type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    1920s
-                </button>
-                <div class="dropdown-menu" aria-labelledby="decade1920s">
-                    <?php
-                    displayDecadeDropdownOptions('5', 'playerSeason');
-                    ?>
-                </div>
-            </div>
+            <?php echo buildDecadeDropdowns('playerSeason'); ?>
         </div>
         <div class="col-lg-3" <?php
         if ($Player_View != 'Compare') {
@@ -188,7 +89,7 @@ $Player_Compare_PosGroup = $fetch_PlayerComparePosGroup['Value'];
     </div>
 </div>
 <br>
-<div id="playerDataControls" style="border: 1px solid black; border-radius: 5px; padding: 15px 15px 15px 15px">
+<div id="playerDataControls" class="controlContainer">
     <div class="row" <?php
     if ($Player_View === 'Compare') {
         echo 'style="display : none"';

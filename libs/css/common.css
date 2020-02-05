@@ -64,3 +64,11 @@ a {
 a:hover {
     color : black;
 }
+
+.controlContainer {
+    
+    border: 1px solid black;
+    border-radius: 5px;
+    padding: 15px 15px 15px 15px
+    
+}

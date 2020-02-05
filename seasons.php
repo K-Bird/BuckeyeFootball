@@ -21,7 +21,7 @@ include ("parts/common_inputs.php");
     <body>
         <!-- include main navigation bar at top of page -->
         <?php include ('nav/navBar.php'); ?>
-        <div class="loaderText" style="text-align: center"><br><br><h2><span class="badge badge-secondary">Loading Season Data</span></h2></div>
+        <div class="dataLoaderText" style="text-align: center"><br><br><h2><span class="badge badge-secondary">Loading Season Data</span></h2></div>
         <div class="loaderIcon"></div>
         <div id="seasonContent" class="container-fluid" style="width: 80%">
             <div class="row">
@@ -34,7 +34,7 @@ include ("parts/common_inputs.php");
             <div class="row">
                 <div class="col-lg-12">
                     <br>
-                    <!-- Check Season View Control -->          
+                    <!-- Check Season View Control - Display games or table view based on DB control -->          
                     <?php
                     $get_SeasonView = db_query("SELECT * FROM `Controls` WHERE Control='Season_View'");
                     $fetch_SeasonView = $get_SeasonView->fetch_assoc();
@@ -58,7 +58,7 @@ include ("parts/common_inputs.php");
         //When page is ready hide the loading text and icon then display the content
         $('#seasonContent').fadeIn(2000);
         $('.loaderIcon').hide();
-        $('.loaderText').hide();
+        $('.dataLoaderText').hide();
 
         /* Year Slider  */
         //If there is no start year, set it to 1990

@@ -282,7 +282,7 @@ include ('parts/common_inputs.php');
     function currentlyDisplayedPhoto() {
 
         var photo_id = $('#playerPhotoIndicators .carousel-item.active').attr('id');
-        if (photo_id == null || photo_id == "undefined") {
+        if (photo_id === null || photo_id === "undefined") {
             var photo_id = $('#playerPhotoIndicators .carousel-itemactive').attr('id');
         }
 

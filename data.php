@@ -1,3 +1,5 @@
+<?php include ("libs/db/common_db_functions.php"); ?>
+<?php include ('parts/common_inputs.php'); ?>
 <html>
     <head>
         <title>Buckeyes - Data</title>
@@ -190,9 +192,18 @@
 
                 var currYear = (new Date()).getFullYear()
 
-                slider.noUiSlider.set([2010, currYear]);
+                slider.noUiSlider.set([2010, 2019]);
                 localStorage['startYearData'] = 2010;
-                localStorage['endYearData'] = currYear;
+                localStorage['endYearData'] = 2019;
+
+            }
+            if (decade === '2020s') {
+
+                var currYear = (new Date()).getFullYear()
+
+                slider.noUiSlider.set([2020, currYear]);
+                localStorage['startYearData'] = 2020;
+                localStorage['endYearData'] = 2029;
 
             }
             if (decade === 'currYear') {

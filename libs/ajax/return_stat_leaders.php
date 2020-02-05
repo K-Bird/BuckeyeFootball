@@ -2,9 +2,9 @@
 
 include ("../../libs/db/common_db_functions.php");
 
-$stat = $_POST['stat'];
-$start = $_POST['start'];
-$end = $_POST['end'];
+$category = $_POST['stat'];
+$startYear = $_POST['start'];
+$endYear = $_POST['end'];
 
 
 echo '<div id="leadersDiv">';
@@ -12,258 +12,258 @@ echo '<br><br>';
 echo '<table id="leadersTable" class="table table-sm">';
 
 echo '<thead>';
-echo returnStatLeaderHeadings($stat);
+echo returnStatLeaderHeadings($category);
 echo '</thead>';
 
 echo '<tbody>';
-echo returnStatLeaderBody($stat, $start, $end);
+echo returnStatLeaderBody($category, $startYear, $endYear);
 echo '</tbody>';
 
 echo '</table>';
 
 echo '</div>';
 
-function returnStatLeaderHeadings($stat) {
+function returnStatLeaderHeadings($category) {
 
     /* Passing Stats */
-    if ($stat === "passComp" || $stat === "passAtt" || $stat === "passYards" || $stat === "passTDs" || $stat === "passINTs" || $stat === "passPerc") {
+    if ($category === "passComp" || $category === "passAtt" || $category === "passYards" || $category === "passTDs" || $category === "passINTs" || $category === "passPerc") {
 
         echo '<th>Rank</th>';
         echo '<th>Player</th>';
         echo '<th data-sort="int" data-sort-default="desc"';
-        if ($stat === 'passComp') {
+        if ($category === 'passComp') {
             echo ' class="table-secondary" ';
         }
         echo '>Completions</th>';
         echo '<th data-sort="int" data-sort-default="desc"';
-        if ($stat === 'passAtt') {
+        if ($category === 'passAtt') {
             echo ' class="table-secondary" ';
         }
         echo '>Attempts</th>';
         echo '<th data-sort="int" data-sort-default="desc"';
-        if ($stat === 'passPerc') {
+        if ($category === 'passPerc') {
             echo ' class="table-secondary" ';
         }
         echo '>Completion Percentage</th>';
         echo '<th data-sort="int" data-sort-default="desc"';
-        if ($stat === 'passYards') {
+        if ($category === 'passYards') {
             echo ' class="table-secondary" ';
         }
         echo '>Yards</th>';
         echo '<th data-sort="int" data-sort-default="desc"';
-        if ($stat === 'passTDs') {
+        if ($category === 'passTDs') {
             echo ' class="table-secondary" ';
         }
         echo '>TDs</th>';
         echo '<th data-sort="int" data-sort-default="desc"';
-        if ($stat === 'passINTs') {
+        if ($category === 'passINTs') {
             echo ' class="table-secondary" ';
         }
         echo '>INTs</th>';
     }
     /* Rushing Stats */
-    if ($stat === "rushAtt" || $stat === "rushYards" || $stat === "rushTDs" || $stat === "rushYPC") {
+    if ($category === "rushAtt" || $category === "rushYards" || $category === "rushTDs" || $category === "rushYPC") {
 
         echo '<th>Rank</th>';
         echo '<th>Player</th>';
         echo '<th data-sort="int" data-sort-default="desc"';
-        if ($stat === 'rushAtt') {
+        if ($category === 'rushAtt') {
             echo ' class="table-secondary" ';
         }
         echo '>Attempts</th>';
         echo '<th data-sort="int" data-sort-default="desc"';
-        if ($stat === 'rushYards') {
+        if ($category === 'rushYards') {
             echo ' class="table-secondary" ';
         }
         echo '>Yards</th>';
         echo '<th data-sort="int" data-sort-default="desc"';
-        if ($stat === 'rushYPC') {
+        if ($category === 'rushYPC') {
             echo ' class="table-secondary" ';
         }
         echo '>Yards Per Attempt</th>';
         echo '<th data-sort="int" data-sort-default="desc"';
-        if ($stat === 'rushTDs') {
+        if ($category === 'rushTDs') {
             echo ' class="table-secondary" ';
         }
         echo '>TDs</th>';
     }
     /* Recieving Stats */
-    if ($stat === "recRec" || $stat === "recYards" || $stat === "recTDs" || $stat === "recYPC") {
+    if ($category === "recRec" || $category === "recYards" || $category === "recTDs" || $category === "recYPC") {
 
         echo '<th>Rank</th>';
         echo '<th>Player</th>';
         echo '<th data-sort="int" data-sort-default="desc"';
-        if ($stat === 'recRec') {
+        if ($category === 'recRec') {
             echo ' class="table-secondary" ';
         }
         echo '>Receptions</th>';
         echo '<th data-sort="int" data-sort-default="desc"';
-        if ($stat === 'recYards') {
+        if ($category === 'recYards') {
             echo ' class="table-secondary" ';
         }
         echo '>Yards</th>';
         echo '<th data-sort="int" data-sort-default="desc"';
-        if ($stat === 'recYPC') {
+        if ($category === 'recYPC') {
             echo ' class="table-secondary" ';
         }
         echo '>Yards Per Catch</th>';
         echo '<th data-sort="int" data-sort-default="desc"';
-        if ($stat === 'recTDs') {
+        if ($category === 'recTDs') {
             echo ' class="table-secondary" ';
         }
         echo '>TDs</th>';
     }
     /* Defensive Stats */
-    if ($stat === "defTackles" || $stat === "defForLoss" || $stat === "defSacks" || $stat === "defINTs" || $stat === "defINT_TDs" || $stat === "defPassDef" || $stat === "defQBHurries" || $stat === "defFumbleRec" || $stat === "defFumbleTDs") {
+    if ($category === "defTackles" || $category === "defForLoss" || $category === "defSacks" || $category === "defINTs" || $category === "defINT_TDs" || $category === "defPassDef" || $category === "defQBHurries" || $category === "defFumbleRec" || $category === "defFumbleTDs") {
 
         echo '<th>Rank</th>';
         echo '<th>Player</th>';
         echo '<th data-sort="int" data-sort-default="desc"';
-        if ($stat === 'defTackles') {
+        if ($category === 'defTackles') {
             echo ' class="table-secondary" ';
         }
         echo '>Tackles</th>';
         echo '<th data-sort="int" data-sort-default="desc"';
-        if ($stat === 'defForLoss') {
+        if ($category === 'defForLoss') {
             echo ' class="table-secondary" ';
         }
         echo '>For Loss</th>';
         echo '<th data-sort="int" data-sort-default="desc"';
-        if ($stat === 'defSacks') {
+        if ($category === 'defSacks') {
             echo ' class="table-secondary" ';
         }
         echo '>Sacks</th>';
         echo '<th data-sort="int" data-sort-default="desc"';
-        if ($stat === 'defINTs') {
+        if ($category === 'defINTs') {
             echo ' class="table-secondary" ';
         }
         echo '>INTs</th>';
         echo '<th data-sort="int" data-sort-default="desc"';
-        if ($stat === 'defINT_TDs') {
+        if ($category === 'defINT_TDs') {
             echo ' class="table-secondary" ';
         }
         echo '>INT TDs</th>';
         echo '<th data-sort="int" data-sort-default="desc"';
-        if ($stat === 'defPassDef') {
+        if ($category === 'defPassDef') {
             echo ' class="table-secondary" ';
         }
         echo '>Passes Defended</th>';
         echo '<th data-sort="int" data-sort-default="desc"';
-        if ($stat === 'defQBHurries') {
+        if ($category === 'defQBHurries') {
             echo ' class="table-secondary" ';
         }
         echo '>QB Hurries</th>';
         echo '<th data-sort="int" data-sort-default="desc"';
-        if ($stat === 'defFumbleRec') {
+        if ($category === 'defFumbleRec') {
             echo ' class="table-secondary" ';
         }
         echo '>Fumble Recoveries</th>';
         echo '<th data-sort="int" data-sort-default="desc"';
-        if ($stat === 'defFumbleTDs') {
+        if ($category === 'defFumbleTDs') {
             echo ' class="table-secondary" ';
         }
         echo '>Fumble TDs</th>';
     }
     /* Return Stats */
-    if ($stat === "KR_Att" || $stat === "KR_Yards" || $stat === "KR_AVG" || $stat === "KR_TDs" || $stat === "PR_Att" || $stat === "PR_Yards" || $stat === "PR_AVG" || $stat === "PR_TDs") {
+    if ($category === "KR_Att" || $category === "KR_Yards" || $category === "KR_AVG" || $category === "KR_TDs" || $category === "PR_Att" || $category === "PR_Yards" || $category === "PR_AVG" || $category === "PR_TDs") {
 
         echo '<th>Rank</th>';
         echo '<th>Player</th>';
         echo '<th data-sort="int" data-sort-default="desc"';
-        if ($stat === 'KR_Att') {
+        if ($category === 'KR_Att') {
             echo ' class="table-secondary" ';
         }
         echo '>Kick Returns</th>';
         echo '<th data-sort="int" data-sort-default="desc"';
-        if ($stat === 'KR_Yards') {
+        if ($category === 'KR_Yards') {
             echo ' class="table-secondary" ';
         }
         echo '>Kick Return Yards</th>';
         echo '<th data-sort="int" data-sort-default="desc"';
-        if ($stat === 'KR_AVG') {
+        if ($category === 'KR_AVG') {
             echo ' class="table-secondary" ';
         }
         echo '>Kick Return Average</th>';
         echo '<th data-sort="int" data-sort-default="desc"';
-        if ($stat === 'KR_TDs') {
+        if ($category === 'KR_TDs') {
             echo ' class="table-secondary" ';
         }
         echo '>Kick Return TDs</th>';
         echo '<th data-sort="int" data-sort-default="desc"';
-        if ($stat === 'PR_Att') {
+        if ($category === 'PR_Att') {
             echo ' class="table-secondary" ';
         }
         echo '>Punt Returns</th>';
         echo '<th data-sort="int" data-sort-default="desc"';
-        if ($stat === 'PR_Yards') {
+        if ($category === 'PR_Yards') {
             echo ' class="table-secondary" ';
         }
         echo '>Punt Return Yards</th>';
         echo '<th data-sort="int" data-sort-default="desc"';
-        if ($stat === 'PR_AVG') {
+        if ($category === 'PR_AVG') {
             echo ' class="table-secondary" ';
         }
         echo '>Punt Return Average</th>';
         echo '<th data-sort="int" data-sort-default="desc"';
-        if ($stat === 'PR_TDs') {
+        if ($category === 'PR_TDs') {
             echo ' class="table-secondary" ';
         }
         echo '>Punt Return TDs</th>';
     }
     /* Kicking Stats */
-    if ($stat === "kickFGM" || $stat === 'kickFGA' || $stat == 'kickFGP' || $stat == 'kickLong') {
+    if ($category === "kickFGM" || $category === 'kickFGA' || $category == 'kickFGP' || $category == 'kickLong') {
 
         echo '<th>Rank</th>';
         echo '<th>Player</th>';
         echo '<th data-sort="int" data-sort-default="desc"';
-        if ($stat === 'kickFGM') {
+        if ($category === 'kickFGM') {
             echo ' class="table-secondary" ';
         }
         echo '>Field Goals Made</th>';
         echo '<th data-sort="int" data-sort-default="desc"';
-        if ($stat === 'kickFGA') {
+        if ($category === 'kickFGA') {
             echo ' class="table-secondary" ';
         }
         echo '>Field Goal Attempts</th>';
         echo '<th data-sort="int" data-sort-default="desc"';
-        if ($stat === 'kickFGP') {
+        if ($category === 'kickFGP') {
             echo ' class="table-secondary" ';
         }
         echo '>Field Goal Percentage</th>';
         echo '<th data-sort="int" data-sort-default="desc"';
-        if ($stat === 'kickLong') {
+        if ($category === 'kickLong') {
             echo ' class="table-secondary" ';
         }
         echo '>Longest Field Goal</th>';
     }
     /* Punting Stats */
-    if ($stat === "puntYards" || $stat === "puntAtt" || $stat === "puntAVG" || $stat === "puntLong") {
+    if ($category === "puntYards" || $category === "puntAtt" || $category === "puntAVG" || $category === "puntLong") {
 
         echo '<th>Rank</th>';
         echo '<th>Player</th>';
         echo '<th data-sort="int" data-sort-default="desc"';
-        if ($stat === 'puntAtt') {
+        if ($category === 'puntAtt') {
             echo ' class="table-secondary" ';
         }
         echo '>Punt Attempts</th>';
         echo '<th data-sort="int" data-sort-default="desc"';
-        if ($stat === 'puntYards') {
+        if ($category === 'puntYards') {
             echo ' class="table-secondary" ';
         }
         echo '>Punt Yards</th>';
         echo '<th data-sort="int" data-sort-default="desc"';
-        if ($stat === 'puntAVG') {
+        if ($category === 'puntAVG') {
             echo ' class="table-secondary" ';
         }
         echo '>Punt Average</th>';
         echo '<th data-sort="int" data-sort-default="desc"';
-        if ($stat === 'puntLong') {
+        if ($category === 'puntLong') {
             echo ' class="table-secondary" ';
         }
         echo '>Punt Long</th>';
     }
     /* Misc Stats */
-    if ($stat === "rushYardsQB") {
+    if ($category === "rushYardsQB") {
 
         echo '<th>Rank</th>';
         echo '<th>Player</th>';
@@ -271,7 +271,7 @@ function returnStatLeaderHeadings($stat) {
         echo 'Rush Yards';
         echo '</th>';
     }
-    if ($stat === "rushTDsQB") {
+    if ($category === "rushTDsQB") {
 
         echo '<th>Rank</th>';
         echo '<th>Player</th>';
@@ -281,20 +281,20 @@ function returnStatLeaderHeadings($stat) {
     }
 }
 
-function returnStatLeaderBody($stat, $start, $end) {
+function returnStatLeaderBody($category, $startYear, $endYear) {
 
     $rank = 0;
-    $start_ID = getSeason_ID($start);
-    $end_ID = getSeason_ID($end);
+    $startYear_ID = getSeason_ID($startYear);
+    $endYear_ID = getSeason_ID($endYear);
 
     $leaderQuery = "";
 
     //If a passing stat is selected create the leader table body in rank order of the stat
-    if ($stat == "passComp" || $stat === "passAtt" || $stat === "passYards" || $stat === "passTDs" || $stat === "passINTs" || $stat === "passPerc") {
+    if ($category == "passComp" || $category === "passAtt" || $category === "passYards" || $category === "passTDs" || $category === "passINTs" || $category === "passPerc") {
         $leaderQuery = "select Player_ID,sum(Comp) as passComp, sum(Att) as passAtt, sum(Yards) as passYards, sum(TDs) as passTDs, sum(INTs) as passINTs, sum(Comp) / sum(Att) as passPerc
         from stats_passing_agg
-        where Season_ID between {$start_ID} AND {$end_ID}
-        group by Player_ID order by {$stat} DESC limit 50";
+        where Season_ID between {$startYear_ID} AND {$endYear_ID}
+        group by Player_ID order by {$category} DESC limit 50";
 
         $getLeaders = db_query($leaderQuery);
         while ($fetchLeaders = $getLeaders->fetch_assoc()) {
@@ -310,42 +310,42 @@ function returnStatLeaderBody($stat, $start, $end) {
             echo '</form>';
             echo '</td>';
             echo '<td';
-            if ($stat === 'passComp') {
+            if ($category === 'passComp') {
                 echo ' class="table-secondary" ';
             }
             echo '>';
             echo $fetchLeaders['passComp'];
             echo '</td>';
             echo '<td';
-            if ($stat === 'passAtt') {
+            if ($category === 'passAtt') {
                 echo ' class="table-secondary" ';
             }
             echo '>';
             echo $fetchLeaders['passAtt'];
             echo '</td>';
             echo '<td';
-            if ($stat === 'passPerc') {
+            if ($category === 'passPerc') {
                 echo ' class="table-secondary" ';
             }
             echo '>';
             echo number_format($fetchLeaders['passPerc'] * 100, 1) . "%";
             echo '</td>';
             echo '<td';
-            if ($stat === 'passYards') {
+            if ($category === 'passYards') {
                 echo ' class="table-secondary" ';
             }
             echo '>';
             echo $fetchLeaders['passYards'];
             echo '</td>';
             echo '<td';
-            if ($stat === 'passTDs') {
+            if ($category === 'passTDs') {
                 echo ' class="table-secondary" ';
             }
             echo '>';
             echo $fetchLeaders['passTDs'];
             echo '</td>';
             echo '<td';
-            if ($stat === 'passINTs') {
+            if ($category === 'passINTs') {
                 echo ' class="table-secondary" ';
             }
             echo '>';
@@ -354,11 +354,11 @@ function returnStatLeaderBody($stat, $start, $end) {
         }
     }
     //If a rushing stat is selected create the leader table body in rank order of the stat
-    if ($stat == "rushAtt" || $stat === "rushYards" || $stat === "rushTDs" || $stat === "rushYPC") {
+    if ($category == "rushAtt" || $category === "rushYards" || $category === "rushTDs" || $category === "rushYPC") {
         $leaderQuery = "select Player_ID, sum(Att) as rushAtt, sum(Yards) as rushYards, sum(TDs) as rushTDs, (sum(Yards) / sum(Att)) as rushYPC
         from stats_rushing_agg
-        where Season_ID between {$start_ID} AND {$end_ID}
-        group by Player_ID order by {$stat} DESC limit 50";
+        where Season_ID between {$startYear_ID} AND {$endYear_ID}
+        group by Player_ID order by {$category} DESC limit 50";
 
         $getRush = db_query($leaderQuery);
         while ($fetchRush = $getRush->fetch_assoc()) {
@@ -374,28 +374,28 @@ function returnStatLeaderBody($stat, $start, $end) {
             echo '</form>';
             echo '</td>';
             echo '<td';
-            if ($stat === 'rushAtt') {
+            if ($category === 'rushAtt') {
                 echo ' class="table-secondary" ';
             }
             echo '>';
             echo $fetchRush['rushAtt'];
             echo '</td>';
             echo '<td';
-            if ($stat === 'rushYards') {
+            if ($category === 'rushYards') {
                 echo ' class="table-secondary" ';
             }
             echo '>';
             echo $fetchRush['rushYards'];
             echo '</td>';
             echo '<td';
-            if ($stat === 'rushYPC') {
+            if ($category === 'rushYPC') {
                 echo ' class="table-secondary" ';
             }
             echo '>';
             echo number_format($fetchRush['rushYPC'], 1);
             echo '</td>';
             echo '<td';
-            if ($stat === 'rushTDs') {
+            if ($category === 'rushTDs') {
                 echo ' class="table-secondary" ';
             }
             echo '>';
@@ -404,11 +404,11 @@ function returnStatLeaderBody($stat, $start, $end) {
         }
     }
     //If a recieving stat is selected create the leader table body in rank order of the stat
-    if ($stat == "recRec" || $stat === "recYards" || $stat === "recTDs" || $stat === "recYPC") {
+    if ($category == "recRec" || $category === "recYards" || $category === "recTDs" || $category === "recYPC") {
         $leaderQuery = "select Player_ID, sum(Rec) as recRec, sum(Yards) as recYards, sum(TDs) as recTDs, (sum(Yards) / sum(Rec)) as recYPC
         from stats_rec_agg
-        where Season_ID between {$start_ID} AND {$end_ID}
-        group by Player_ID order by {$stat} DESC limit 50";
+        where Season_ID between {$startYear_ID} AND {$endYear_ID}
+        group by Player_ID order by {$category} DESC limit 50";
 
         $getRec = db_query($leaderQuery);
         while ($fetchRec = $getRec->fetch_assoc()) {
@@ -424,28 +424,28 @@ function returnStatLeaderBody($stat, $start, $end) {
             echo '</form>';
             echo '</td>';
             echo '<td';
-            if ($stat === 'recRec') {
+            if ($category === 'recRec') {
                 echo ' class="table-secondary" ';
             }
             echo '>';
             echo $fetchRec['recRec'];
             echo '</td>';
             echo '<td';
-            if ($stat === 'recYards') {
+            if ($category === 'recYards') {
                 echo ' class="table-secondary" ';
             }
             echo '>';
             echo $fetchRec['recYards'];
             echo '</td>';
             echo '<td';
-            if ($stat === 'recYPC') {
+            if ($category === 'recYPC') {
                 echo ' class="table-secondary" ';
             }
             echo '>';
             echo number_format($fetchRec['recYPC'], 1);
             echo '</td>';
             echo '<td';
-            if ($stat === 'recTDs') {
+            if ($category === 'recTDs') {
                 echo ' class="table-secondary" ';
             }
             echo '>';
@@ -454,11 +454,11 @@ function returnStatLeaderBody($stat, $start, $end) {
         }
     }
     //If a defensive stat is selected create the leader table body in rank order of the stat
-    if ($stat === "defTackles" || $stat === "defForLoss" || $stat === "defSacks" || $stat === "defINTs" || $stat === "defINT_TDs" || $stat === "defPassDef" || $stat === "defQBHurries" || $stat === "defFumbleRec" || $stat === "defFumbleTDs") {
+    if ($category === "defTackles" || $category === "defForLoss" || $category === "defSacks" || $category === "defINTs" || $category === "defINT_TDs" || $category === "defPassDef" || $category === "defQBHurries" || $category === "defFumbleRec" || $category === "defFumbleTDs") {
         $leaderQuery = "select Player_ID, sum(Tackles) as defTackles, sum(ForLoss) as defForLoss, sum(Sacks) as defSacks, sum(INTs) as defINTs, sum(INT_TDs) as defINT_TDs, sum(PassDef) as defPassDef, sum(QBHurries) as defQBHurries, sum(FumbleRec) as defFumbleRec, sum(FumbleTDs) as defFumbleTDs
         from stats_def_agg
-        where Season_ID between {$start_ID} AND {$end_ID}
-        group by Player_ID order by {$stat} DESC limit 50";
+        where Season_ID between {$startYear_ID} AND {$endYear_ID}
+        group by Player_ID order by {$category} DESC limit 50";
 
         $getDef = db_query($leaderQuery);
         while ($fetchDef = $getDef->fetch_assoc()) {
@@ -474,63 +474,63 @@ function returnStatLeaderBody($stat, $start, $end) {
             echo '</form>';
             echo '</td>';
             echo '<td';
-            if ($stat === 'defTackles') {
+            if ($category === 'defTackles') {
                 echo ' class="table-secondary" ';
             }
             echo '>';
             echo $fetchDef['defTackles'];
             echo '</td>';
             echo '<td';
-            if ($stat === 'defForLoss') {
+            if ($category === 'defForLoss') {
                 echo ' class="table-secondary" ';
             }
             echo '>';
             echo $fetchDef['defForLoss'];
             echo '</td>';
             echo '<td';
-            if ($stat === 'defSacks') {
+            if ($category === 'defSacks') {
                 echo ' class="table-secondary" ';
             }
             echo '>';
             echo number_format($fetchDef['defSacks'], 1);
             echo '</td>';
             echo '<td';
-            if ($stat === 'defINTs') {
+            if ($category === 'defINTs') {
                 echo ' class="table-secondary" ';
             }
             echo '>';
             echo $fetchDef['defINTs'];
             echo '</td>';
             echo '<td';
-            if ($stat === 'defINT_TDs') {
+            if ($category === 'defINT_TDs') {
                 echo ' class="table-secondary" ';
             }
             echo '>';
             echo $fetchDef['defINT_TDs'];
             echo '</td>';
             echo '<td';
-            if ($stat === 'defPassDef') {
+            if ($category === 'defPassDef') {
                 echo ' class="table-secondary" ';
             }
             echo '>';
             echo $fetchDef['defPassDef'];
             echo '</td>';
             echo '<td';
-            if ($stat === 'defQBHurries') {
+            if ($category === 'defQBHurries') {
                 echo ' class="table-secondary" ';
             }
             echo '>';
             echo $fetchDef['defQBHurries'];
             echo '</td>';
             echo '<td';
-            if ($stat === 'defFumbleRec') {
+            if ($category === 'defFumbleRec') {
                 echo ' class="table-secondary" ';
             }
             echo '>';
             echo $fetchDef['defFumbleRec'];
             echo '</td>';
             echo '<td';
-            if ($stat === 'defFumbleTDs') {
+            if ($category === 'defFumbleTDs') {
                 echo ' class="table-secondary" ';
             }
             echo '>';
@@ -539,11 +539,11 @@ function returnStatLeaderBody($stat, $start, $end) {
         }
     }
     //If a return stat is selected create the leader table body in rank order of the stat
-    if ($stat === "KR_Att" || $stat === "KR_Yards" || $stat === "KR_AVG" || $stat === "KR_TDs" || $stat === "PR_Att" || $stat === "PR_Yards" || $stat === "PR_AVG" || $stat === "PR_TDs") {
+    if ($category === "KR_Att" || $category === "KR_Yards" || $category === "KR_AVG" || $category === "KR_TDs" || $category === "PR_Att" || $category === "PR_Yards" || $category === "PR_AVG" || $category === "PR_TDs") {
         $leaderQuery = "select Player_ID, sum(KR_Ret) as KR_Att, sum(KR_Yards) as KR_Yards, sum(KR_Yards) / sum(KR_Ret) as KR_AVG, sum(KR_TDs) as KR_TDs, sum(PR_Ret) as PR_Att, sum(PR_Yards) as PR_Yards, sum(PR_Yards) / sum(PR_Ret) as PR_AVG, sum(PR_TDs) as PR_TDs
         from stats_ret_agg
-        where Season_ID between {$start_ID} AND {$end_ID}
-        group by Player_ID order by {$stat} DESC limit 50";
+        where Season_ID between {$startYear_ID} AND {$endYear_ID}
+        group by Player_ID order by {$category} DESC limit 50";
 
         $getReturns = db_query($leaderQuery);
         while ($fetchReturns = $getReturns->fetch_assoc()) {
@@ -559,56 +559,56 @@ function returnStatLeaderBody($stat, $start, $end) {
             echo '</form>';
             echo '</td>';
             echo '<td';
-            if ($stat === 'KR_Att') {
+            if ($category === 'KR_Att') {
                 echo ' class="table-secondary" ';
             }
             echo '>';
             echo $fetchReturns['KR_Att'];
             echo '</td>';
             echo '<td';
-            if ($stat === 'KR_Yards') {
+            if ($category === 'KR_Yards') {
                 echo ' class="table-secondary" ';
             }
             echo '>';
             echo $fetchReturns['KR_Yards'];
             echo '</td>';
             echo '<td';
-            if ($stat === 'KR_AVG') {
+            if ($category === 'KR_AVG') {
                 echo ' class="table-secondary" ';
             }
             echo '>';
             echo number_format($fetchReturns['KR_AVG'], 1);
             echo '</td>';
             echo '<td';
-            if ($stat === 'KR_TDs') {
+            if ($category === 'KR_TDs') {
                 echo ' class="table-secondary" ';
             }
             echo '>';
             echo $fetchReturns['KR_TDs'];
             echo '</td>';
             echo '<td';
-            if ($stat === 'PR_Att') {
+            if ($category === 'PR_Att') {
                 echo ' class="table-secondary" ';
             }
             echo '>';
             echo $fetchReturns['PR_Att'];
             echo '</td>';
             echo '<td';
-            if ($stat === 'PR_Yards') {
+            if ($category === 'PR_Yards') {
                 echo ' class="table-secondary" ';
             }
             echo '>';
             echo $fetchReturns['PR_Yards'];
             echo '</td>';
             echo '<td';
-            if ($stat === 'PR_AVG') {
+            if ($category === 'PR_AVG') {
                 echo ' class="table-secondary" ';
             }
             echo '>';
             echo number_format($fetchReturns['PR_AVG'], 1);
             echo '</td>';
             echo '<td';
-            if ($stat === 'PR_TDs') {
+            if ($category === 'PR_TDs') {
                 echo ' class="table-secondary" ';
             }
             echo '>';
@@ -617,11 +617,11 @@ function returnStatLeaderBody($stat, $start, $end) {
         }
     }
     //If a kicking stat is selected create the leader table body in rank order of the stat
-    if ($stat === "kickFGM" || $stat === "kickFGA" || $stat == 'kickFGP' || $stat == 'kickLong') {
+    if ($category === "kickFGM" || $category === "kickFGA" || $category == 'kickFGP' || $category == 'kickLong') {
         $leaderQuery = "select Player_ID, sum(FGM) as kickFGM, sum(FGA) as kickFGA, sum(FGM) / sum(FGA) as kickFGP, max(LongKick) as kickLong
         from stats_kicking_agg
-        where Season_ID between {$start_ID} AND {$end_ID}
-        group by Player_ID order by {$stat} DESC limit 50";
+        where Season_ID between {$startYear_ID} AND {$endYear_ID}
+        group by Player_ID order by {$category} DESC limit 50";
 
         $getKicking = db_query($leaderQuery);
         while ($fetchKicking = $getKicking->fetch_assoc()) {
@@ -637,28 +637,28 @@ function returnStatLeaderBody($stat, $start, $end) {
             echo '</form>';
             echo '</td>';
             echo '<td';
-            if ($stat === 'kickFGM') {
+            if ($category === 'kickFGM') {
                 echo ' class="table-secondary" ';
             }
             echo '>';
             echo $fetchKicking['kickFGM'];
             echo '</td>';
             echo '<td';
-            if ($stat === 'kickFGA') {
+            if ($category === 'kickFGA') {
                 echo ' class="table-secondary" ';
             }
             echo '>';
             echo $fetchKicking['kickFGA'];
             echo '</td>';
             echo '<td';
-            if ($stat === 'kickFGP') {
+            if ($category === 'kickFGP') {
                 echo ' class="table-secondary" ';
             }
             echo '>';
             echo number_format($fetchKicking['kickFGP'] * 100, 0) . "%";
             echo '</td>';
             echo '<td';
-            if ($stat === 'kickLong') {
+            if ($category === 'kickLong') {
                 echo ' class="table-secondary" ';
             }
             echo '>';
@@ -667,11 +667,11 @@ function returnStatLeaderBody($stat, $start, $end) {
         }
     }
     //If a punting stat is selected create the leader table body in rank order of the stat
-    if ($stat === "puntYards" || $stat === "puntAtt" || $stat === "puntAVG" || $stat === "puntLong") {
+    if ($category === "puntYards" || $category === "puntAtt" || $category === "puntAVG" || $category === "puntLong") {
         $leaderQuery = "select Player_ID, sum(Yards) as puntYards, sum(Att) as puntAtt, sum(Yards) / sum(Att) as puntAVG, max(LongPunt) as puntLong
         from stats_punting_agg
-        where Season_ID between {$start_ID} AND {$end_ID}
-        group by Player_ID order by {$stat} DESC limit 50";
+        where Season_ID between {$startYear_ID} AND {$endYear_ID}
+        group by Player_ID order by {$category} DESC limit 50";
 
         $getPunting = db_query($leaderQuery);
         while ($fetchPunting = $getPunting->fetch_assoc()) {
@@ -687,28 +687,28 @@ function returnStatLeaderBody($stat, $start, $end) {
             echo '</form>';
             echo '</td>';
             echo '<td';
-            if ($stat === 'puntAtt') {
+            if ($category === 'puntAtt') {
                 echo ' class="table-secondary" ';
             }
             echo '>';
             echo $fetchPunting['puntAtt'];
             echo '</td>';
             echo '<td';
-            if ($stat === 'puntYards') {
+            if ($category === 'puntYards') {
                 echo ' class="table-secondary" ';
             }
             echo '>';
             echo $fetchPunting['puntYards'];
             echo '</td>';
             echo '<td';
-            if ($stat === 'puntAVG') {
+            if ($category === 'puntAVG') {
                 echo ' class="table-secondary" ';
             }
             echo '>';
             echo number_format($fetchPunting['puntAVG'], 1);
             echo '</td>';
             echo '<td';
-            if ($stat === 'puntLong') {
+            if ($category === 'puntLong') {
                 echo ' class="table-secondary" ';
             }
             echo '>';
@@ -717,10 +717,10 @@ function returnStatLeaderBody($stat, $start, $end) {
         }
     }
     //If a misc stat is selected create the leader table body in rank order of the stat
-    if ($stat == "rushYardsQB") {
+    if ($category == "rushYardsQB") {
         $leaderQuery = "select Player_ID, sum(Yards) as rushYards
         from stats_rushing_agg
-        where Season_ID between {$start_ID} AND {$end_ID}
+        where Season_ID between {$startYear_ID} AND {$endYear_ID}
         group by Player_ID order by rushYards DESC limit 50";
 
         $getRush = db_query($leaderQuery);
@@ -747,10 +747,10 @@ function returnStatLeaderBody($stat, $start, $end) {
             }
         }
     }
-    if ($stat == "rushTDsQB") {
+    if ($category == "rushTDsQB") {
         $leaderQuery = "select Player_ID, sum(TDs) as rushTDs
         from stats_rushing_agg
-        where Season_ID between {$start_ID} AND {$end_ID}
+        where Season_ID between {$startYear_ID} AND {$endYear_ID}
         group by Player_ID order by rushTDs DESC limit 50";
 
         $getRush = db_query($leaderQuery);
@@ -777,4 +777,19 @@ function returnStatLeaderBody($stat, $start, $end) {
             }
         }
     }
+}
+//Determine if given player was ever a QB
+function playerWasQB($Player_Master_ID) {
+
+    $was = false;
+
+    $getWasQB = db_query("SELECT * FROM `players` WHERE Player_Master_ID='{$Player_Master_ID}'");
+    while ($fetchWasQB = $getWasQB->fetch_assoc()) {
+        if ($fetchWasQB['Position'] === 'QB') {
+            $was = true;
+        } else {
+            
+        }
+    }
+    return $was;
 }

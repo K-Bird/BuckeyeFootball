@@ -93,4 +93,32 @@
         </div>
     </div>
 </div>
-<?php include ('parts/input/input_modal_addPlayer.php'); ?>
+<?php
+include ('parts/input/input_modal_addPlayer.php');
+//Returns the count of a player position group for a given season
+function returnPositionCount($posGroup, $season) {
+
+    if ($posGroup === 'OL') {
+        $getPositionCount = db_query("SELECT Count(*) as posCount FROM `players` WHERE (Position='{$posGroup}' OR Position='LT' OR Position='LG' OR Position='C' OR Position='RG' OR Position='RT') AND Season='{$season}'");
+        $fetchPositionCount = $getPositionCount->fetch_assoc();
+        $PositionCount = $fetchPositionCount['posCount'];
+    } elseif ($posGroup === 'DL') {
+        $getPositionCount = db_query("SELECT Count(*) as posCount FROM `players` WHERE (Position='{$posGroup}' OR Position='DE' OR Position='DT') AND Season='{$season}'");
+        $fetchPositionCount = $getPositionCount->fetch_assoc();
+        $PositionCount = $fetchPositionCount['posCount'];
+    } elseif ($posGroup === 'LB') {
+        $getPositionCount = db_query("SELECT Count(*) as posCount FROM `players` WHERE (Position='{$posGroup}' OR Position='OLB' OR Position='MLB') AND Season='{$season}'");
+        $fetchPositionCount = $getPositionCount->fetch_assoc();
+        $PositionCount = $fetchPositionCount['posCount'];
+    } elseif ($posGroup === 'KR' || $posGroup === 'PR' || $posGroup === 'H') {
+        $getPositionCount = db_query("SELECT Count(*) as posCount FROM `players` WHERE (Position='{$posGroup}' OR Position_2='{$posGroup}') AND Season='{$season}'");
+        $fetchPositionCount = $getPositionCount->fetch_assoc();
+        $PositionCount = $fetchPositionCount['posCount'];
+    } else {
+        $getPositionCount = db_query("SELECT Count(*) as posCount FROM `players` WHERE Position='{$posGroup}' AND Season='{$season}'");
+        $fetchPositionCount = $getPositionCount->fetch_assoc();
+        $PositionCount = $fetchPositionCount['posCount'];
+    }
+
+    return $PositionCount;
+}

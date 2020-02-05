@@ -38,6 +38,6 @@ foreach ($eachMiscTag as $tag) {
 db_query("Update `Photos` SET Misc_Tags ='{$reloadedTags}' WHERE Photo_ID='{$photo_id}'");
 
 echo '&nbsp;<span class="badge badge-pill badge-secondary">';
-echo returnMiscTagNameByID($miscID);
+echo returnMiscTagNameByIDphoto($miscID);
 echo '&nbsp;<span aria-hidden="true">&times;</span>';
 echo '</span>&nbsp;';

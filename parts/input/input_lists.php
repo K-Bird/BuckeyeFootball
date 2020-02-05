@@ -57,29 +57,31 @@ $inputList = $fetchInputList['Value'];
     <div class="row">
         <div class="col-lg-12">
             <br>
-            <?php
-            if ($inputList === 'b10div') {
-                include ('parts/input/list_input/b10div.php');
-            }
-            if ($inputList === 'loc') {
-                include ('parts/input/list_input/locations.php');
-            }
-            if ($inputList === 'opp') {
-                include ('parts/input/list_input/opponents.php');
-            }
-            if ($inputList === 'coach') {
-                include ('parts/input/list_input/coaches.php');
-            }
-            if ($inputList === 'conf') {
-                include ('parts/input/list_input/conferences.php');
-            }
-            if ($inputList === 'dec') {
-                include ('parts/input/list_input/decades.php');
-            }
-            if ($inputList === 'gmType') {
-                include ('parts/input/list_input/gameTypes.php');
-            }
-            ?>
+            <div id="listContent">
+                <?php
+                if ($inputList === 'b10div') {
+                    include ('parts/input/list_input/b10div.php');
+                }
+                if ($inputList === 'loc') {
+                    include ('parts/input/list_input/locations.php');
+                }
+                if ($inputList === 'opp') {
+                    include ('parts/input/list_input/opponents.php');
+                }
+                if ($inputList === 'coach') {
+                    include ('parts/input/list_input/coaches.php');
+                }
+                if ($inputList === 'conf') {
+                    include ('parts/input/list_input/conferences.php');
+                }
+                if ($inputList === 'dec') {
+                    include ('parts/input/list_input/decades.php');
+                }
+                if ($inputList === 'gmType') {
+                    include ('parts/input/list_input/gameTypes.php');
+                }
+                ?>
+            </div>
         </div>
     </div>
 </div>

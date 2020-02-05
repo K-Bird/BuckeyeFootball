@@ -62,7 +62,7 @@ $misc_photo_ID = $fetchPhotoMiscID['Value'];
                             <div id="miscPhotoGalleryBox" class="gg-box">
                                 <?php buildMiscPhotoGallery($misc_photo_ID) ?>
                             </div>
-                        </div>
+                        </div>						
                     </div>
                 </div>
             </div>

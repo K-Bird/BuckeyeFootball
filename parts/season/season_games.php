@@ -20,7 +20,7 @@
         echo '<div class="card-header" id="', $fetch_SeasonData['Year'], 'Header">';
         echo '<h5 class="mb-0">';
         echo '<button class="btn btn-link collapsed" data-toggle="collapse" data-target="#', $fetch_SeasonData['Year'], 'Body" aria-expanded="false" aria-controls="', $fetch_SeasonData['Year'], 'Header">';
-        echo '<span class="badge badge-secondary">';
+        echo '<span id="season_games_record" class="badge badge-secondary">';
         echo $fetch_SeasonData['Year'], ' ( ', returnRecord($fetch_SeasonData['Season_ID'], 'W', 'Ovr'), '-', returnRecord($fetch_SeasonData['Season_ID'], 'L', 'Ovr'), '-', returnRecord($fetch_SeasonData['Season_ID'], 'T', 'Ovr'), ' ) ';
         echo $fetch_Conf['Conf_Abbrev'], ' [ ', $fetch_Div['Div_Name'], ' ]';
         echo '</span>';

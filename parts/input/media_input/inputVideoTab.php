@@ -22,7 +22,7 @@ $display_type = $fetchVideoDisplayType['Value'];
             &nbsp;&nbsp;
             <?php displayVideoMiscSelect() ?>
             &nbsp;&nbsp;
-            <button class="btn btn-warning" data-toggle="modal" data-target="#manageVideosModal">Manage Videos</button>
+            <button id="manageVideoBtn" class="btn btn-warning" data-toggle="modal" data-target="#manageVideosModal">Manage Videos</button>
         </div>
         <br><br>
         <div class="row">

@@ -62,3 +62,16 @@ db_query("UPDATE `players` SET Position='WR' WHERE Position='ATH' AND Season='{$
 
 }
 
+//Copy recruits added the players table to the player reference table
+db_query("INSERT INTO `ref_player_lookup` (
+
+    `Player_Master_ID`, 
+    `Last_Name`, 
+    `First_Name`) SELECT
+    
+    `Player_ID`, 
+    `Last_Name`, 
+    `First_Name`
+    
+FROM `recruits` WHERE Class='{$class}'");
+    

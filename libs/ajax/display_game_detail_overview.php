@@ -33,3 +33,30 @@ $fetchGameData = $getGameData->fetch_assoc();
         </div>
     </div>
 </div>
+<?php
+//Determine if a game is a divisional game
+function isGameConf($GM_ID) {
+
+    $getGameDate = db_query("SELECT * FROM `games` WHERE GM_ID='{$GM_ID}'");
+    $fetchGameDate = $getGameDate->fetch_assoc();
+    $Conf_GM = $fetchGameDate['Conf_GM'];
+
+    if ($Conf_GM === 'Y') {
+        return true;
+    } else {
+        return false;
+    }
+}
+///Determine if a game is a conference game
+function isGameDiv($GM_ID) {
+
+    $getGameDate = db_query("SELECT * FROM `games` WHERE GM_ID='{$GM_ID}'");
+    $fetchGameDate = $getGameDate->fetch_assoc();
+    $Div_GM = $fetchGameDate['Div_GM'];
+
+    if ($Div_GM === 'Y') {
+        return true;
+    } else {
+        return false;
+    }
+}

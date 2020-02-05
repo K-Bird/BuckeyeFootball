@@ -142,20 +142,7 @@
         <br>
         <span class="badge badge-dark">Select Timeframe to View</span><br><br>
         <div id="DataYearSlider"></div>
-        <button class="btn btn-secondary dataDecadeSlider" data-decade="all">All Time</button>
-        <button class="btn btn-secondary dataDecadeSlider" data-decade="1890s">1890s</button>
-        <button class="btn btn-secondary dataDecadeSlider" data-decade="1900s">1900s</button>
-        <button class="btn btn-secondary dataDecadeSlider" data-decade="1910s">1910s</button>
-        <button class="btn btn-secondary dataDecadeSlider" data-decade="1920s">1920s</button>
-        <button class="btn btn-secondary dataDecadeSlider" data-decade="1930s">1930s</button>
-        <button class="btn btn-secondary dataDecadeSlider" data-decade="1940s">1940s</button>
-        <button class="btn btn-secondary dataDecadeSlider" data-decade="1950s">1950s</button>
-        <button class="btn btn-secondary dataDecadeSlider" data-decade="1960s">1960s</button>
-        <button class="btn btn-secondary dataDecadeSlider" data-decade="1970s">1970s</button>
-        <button class="btn btn-secondary dataDecadeSlider" data-decade="1980s">1980s</button>
-        <button class="btn btn-secondary dataDecadeSlider" data-decade="1990s">1990s</button>
-        <button class="btn btn-secondary dataDecadeSlider" data-decade="2000s">2000s</button>
-        <button class="btn btn-secondary dataDecadeSlider" data-decade="2010s">2010s</button>
+        <?php echo buildDecadeButtons('dataDecadeSlider'); ?>
         <button class="btn btn-secondary dataDecadeSlider" data-decade="currYear">Current Season</button>
     </div>
     <div class="col-lg-2">

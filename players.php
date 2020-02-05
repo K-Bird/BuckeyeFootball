@@ -563,3 +563,137 @@ $DepthForm = $fetchDepthForm['DepthChart'];
 <div id="depthPopoverDB" style="display: none">
     <?php return_depth_table_starter($season_ID, "DB") ?>
 </div>
+<?php
+//Build table for depth chart button popover displaying positional depth chart (I formation and spread)
+function return_depth_table($season, $posGroup) {
+
+    if ($posGroup === 'QB') {
+
+        $getPOSdata = db_query("SELECT * FROM `Players` WHERE Season='{$season}' AND Position='QB' ORDER BY FIELD(Depth,'1','2','3','4','5','0')");
+    }
+    if ($posGroup === 'RB') {
+
+        $getPOSdata = db_query("SELECT * FROM `Players` WHERE Season='{$season}' AND Position='RB' ORDER BY FIELD(Depth,'1','2','3','4','5','0')");
+    }
+    if ($posGroup === 'HB') {
+
+        $getPOSdata = db_query("SELECT * FROM `Players` WHERE Season='{$season}' AND Position='H-B' ORDER BY FIELD(Depth,'1','2','3','4','5','0')");
+    }
+    if ($posGroup === 'FB') {
+
+        $getPOSdata = db_query("SELECT * FROM `Players` WHERE Season='{$season}' AND Position='FB' ORDER BY FIELD(Depth,'1','2','3','4','5','0')");
+    }
+    if ($posGroup === 'C' || $posGroup === 'RT' || $posGroup === 'RG' || $posGroup === 'LG' || $posGroup === 'LT') {
+
+        $getPOSdata = db_query("SELECT * FROM `Players` WHERE Season='{$season}' AND (Position='{$posGroup}' OR Position='OL') ORDER BY FIELD(Depth,'1','2','3','4','5','0')");
+    }
+    if ($posGroup === 'TE') {
+
+        $getPOSdata = db_query("SELECT * FROM `Players` WHERE Season='{$season}' AND Position='TE' ORDER BY FIELD(Depth,'1','2','3','4','5','0')");
+    }
+    if ($posGroup === 'WR') {
+
+        $getPOSdata = db_query("SELECT * FROM `Players` WHERE Season='{$season}' AND Position='WR' ORDER BY FIELD(Depth,'1','2','3','4','5','0')");
+    }
+    if ($posGroup === 'DE' || $posGroup === 'DT') {
+
+        $getPOSdata = db_query("SELECT * FROM `Players` WHERE Season='{$season}' AND (Position='{$posGroup}' OR Position='DL') ORDER BY FIELD(Depth,'1','2','3','4','5','6','0')");
+    }
+    if ($posGroup === 'CB') {
+
+        $getPOSdata = db_query("SELECT * FROM `Players` WHERE Season='{$season}' AND (Position='CB' OR Position='DB') ORDER BY FIELD(Depth,'1','2','3','4','5','0')");
+    }
+    if ($posGroup === 'MLB' || $posGroup === 'OLB') {
+
+        $getPOSdata = db_query("SELECT * FROM `Players` WHERE Season='{$season}' AND (Position='{$posGroup}' OR Position='LB') ORDER BY FIELD(Depth,'1','2','3','4','5','6','0')");
+    }
+    if ($posGroup === 'S') {
+
+        $getPOSdata = db_query("SELECT * FROM `Players` WHERE Season='{$season}' AND (Position='S' OR Position='DB') ORDER BY FIELD(Depth,'1','2','3','4','5','0')");
+    }
+    if ($posGroup === 'K') {
+
+        $getPOSdata = db_query("SELECT * FROM `Players` WHERE Season='{$season}' AND Position='K' ORDER BY FIELD(Depth,'1','2','3','4','5','0')");
+    }
+    if ($posGroup === 'P') {
+
+        $getPOSdata = db_query("SELECT * FROM `Players` WHERE Season='{$season}' AND Position='P' ORDER BY FIELD(Depth,'1','2','3','4','5','0')");
+    }
+
+    echo '<table class="table table-sm" style="font-size: small">';
+    echo '<thead>';
+    echo '<th></th><th>Name</th><th>Class</th>';
+    echo '</thead>';
+    echo '<tbody>';
+
+    while ($fetchPOSdata = $getPOSdata->fetch_assoc()) {
+
+        $depthNum = formatDepthNumber($fetchPOSdata['Depth']);
+
+        echo '<tr>';
+        echo '<td>', $fetchPOSdata['Position'], $depthNum, '</td>';
+        echo '<td>', $fetchPOSdata['First_Name'], " ", $fetchPOSdata['Last_Name'], '</td>';
+        echo '<td>', $fetchPOSdata['Class'], '</td>';
+        echo '</tr>';
+    }
+
+    echo '</tbody>';
+    echo '</table>';
+}
+//Build table for depth chart button popover displaying positional depth chart (starters)
+function return_depth_table_starter($season, $posGroup) {
+
+
+    if ($posGroup === 'OL') {
+
+        $getPOSdata = db_query("SELECT * FROM `Players` WHERE Season='{$season}' AND Position='OL' ORDER BY FIELD(Depth,'1','2','3','4','5','0')");
+    }
+    if ($posGroup === 'DL') {
+
+        $getPOSdata = db_query("SELECT * FROM `Players` WHERE Season='{$season}' AND Position='DL' ORDER BY FIELD(Depth,'1','2','3','4','5','0')");
+    }
+    if ($posGroup === 'LB') {
+
+        $getPOSdata = db_query("SELECT * FROM `Players` WHERE Season='{$season}' AND Position='LB' ORDER BY FIELD(Depth,'1','2','3','4','5','0')");
+    }
+    if ($posGroup === 'DB') {
+
+        $getPOSdata = db_query("SELECT * FROM `Players` WHERE Season='{$season}' AND Position='DB' ORDER BY FIELD(Depth,'1','2','3','4','5','0')");
+    }
+
+
+
+    echo '<table class="table table-sm" style="font-size: small">';
+    echo '<thead>';
+    echo '<th></th><th>Name</th><th>Class</th>';
+    echo '</thead>';
+    echo '<tbody>';
+
+    while ($fetchPOSdata = $getPOSdata->fetch_assoc()) {
+
+        $depthNum = formatDepthNumber($fetchPOSdata['Depth']);
+
+        echo '<tr>';
+        echo '<td>', $fetchPOSdata['Position'];
+        if (checkForStarter($posGroup, $depthNum) === true) {
+            echo '*';
+        }
+        echo '</td>';
+        echo '<td>', $fetchPOSdata['First_Name'], " ", $fetchPOSdata['Last_Name'], '</td>';
+        echo '<td>', $fetchPOSdata['Class'], '</td>';
+        echo '</tr>';
+    }
+
+    echo '</tbody>';
+    echo '</table>';
+}
+//Format the given depth chart number
+function formatDepthNumber($DepthNum) {
+
+    if ($DepthNum === '0') {
+        return '';
+    } else {
+        return $DepthNum;
+    }
+}
+?>

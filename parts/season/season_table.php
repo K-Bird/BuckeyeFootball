@@ -69,3 +69,30 @@
         </table>
     </div>
 </div>
+<?php
+//Format AP ranking for season table display
+function returnSeasonAP($AP_RK, $season_ID) {
+
+    if ($season_ID < 45) {
+        return 'Start 1934';
+    } else {
+        if ($AP_RK === '0') {
+            return 'NR';
+        } else {
+            return $AP_RK;
+        }
+    }
+}
+//Format CFP ranking for season table display
+function returnSeasonCFP($CFP_RK, $season_ID) {
+
+    if ($season_ID < 125) {
+        return 'Start 2014';
+    } else {
+        if ($CFP_RK === '0') {
+            return 'NR';
+        } else {
+            return $CFP_RK;
+        }
+    }
+}

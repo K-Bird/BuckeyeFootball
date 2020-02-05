@@ -114,7 +114,7 @@ $InputPosGroup = $fetchInputPosGroupControl['Value'];
         </div>
     </div>
     <div class="card-body">
-        <table class="table">
+        <table id="playerInputTable" class="table">
             <thead>
                 <tr>
                     <th>Responsibility</th>
@@ -172,7 +172,7 @@ $InputPosGroup = $fetchInputPosGroupControl['Value'];
 
                 echo '<td><input id="', $fetch_PlayerData['Player_Row'], '" type="text" class="form-control playerHt" placeholder="', $fetch_PlayerData['Height'], '" style="width: 60px"></td>';
                 echo '<td><input id="', $fetch_PlayerData['Player_Row'], '" type="text" class="form-control playerWt" placeholder="', $fetch_PlayerData['Weight'], '" style="width: 75px"></td>';
-                echo '<td>', displayClassSelect($fetch_PlayerData['Class'], $fetch_PlayerData['Player_Row']), '</td>';
+                echo '<td>', displayPlayerClassSelect($fetch_PlayerData['Class'], $fetch_PlayerData['Player_Row']), '</td>';
                 echo '<td><input id="', $fetch_PlayerData['Player_Master_ID'], '" type="text" class="form-control playerHometown" placeholder="', $fetch_PlayerData['Hometown'], '"></td>';
                 echo  '<td>',playerStatusSelect($fetch_PlayerData['Team_Status'], $fetch_PlayerData['Player_Row']),'</td>';
                 echo  '<td>',playerOffseasonSelect($fetch_PlayerData['Post_Season_Status'], $fetch_PlayerData['Player_Row']),'</td>';
@@ -202,6 +202,57 @@ $InputPosGroup = $fetchInputPosGroupControl['Value'];
             echo '<button class="btn btn-success addPlayer" data-season="', $Season_ID, '" data-pos="', $InputPosGroup, '">Add ', $InputPosGroup, '</button>';
         }
         ?>
-        <button class="btn btn-success" data-toggle="modal" data-target="#addSecondaryModal">Add Secondary Position - <?php echo $InputPosGroup; ?></button>
+        <button id="addSecondaryBtn" class="btn btn-success" data-toggle="modal" data-target="#addSecondaryModal">Add Secondary Position - <?php echo $InputPosGroup; ?></button>
     </div>
 </div>
+<?php
+//Returns if a position group is primary or secondary
+function returnPos_PorS($posGroup, $pos1) {
+
+    if ($posGroup === 'OL') {
+        if ($pos1 === 'OL' || $pos1 === 'RT' || $pos1 === 'RG' || $pos1 === 'C' || $pos1 === 'LG' || $pos1 === 'LT') {
+            return 'Primary';
+        } else {
+            return 'Secondary';
+        }
+    } elseif ($posGroup === 'DL') {
+        if ($pos1 === 'DL' || $pos1 === 'DE' || $pos1 === 'DT') {
+            return 'Primary';
+        } else {
+            return 'Secondary';
+        }
+    } elseif ($posGroup === 'LB') {
+        if ($pos1 === 'LB' || $pos1 === 'OLB' || $pos1 === 'MLB') {
+            return 'Primary';
+        } else {
+            return 'Secondary';
+        }
+    } elseif ($posGroup === ('KR' || 'PR' || 'H')) {
+        if ($pos1 != ('KR' || 'PR' || 'H')) {
+            return 'Secondary';
+        } else {
+            return 'Primary';
+        }
+    } else {
+        if ($pos1 === $posGroup) {
+            return 'Primary';
+        } else {
+            return 'Secondary';
+        }
+    }
+}
+//Return a query that selects players by position group
+function returnPosGroupSelectStatement($posGroup, $season) {
+
+    if ($posGroup === 'OL') {
+        return "SELECT * FROM `players` WHERE (Position='{$posGroup}' OR Position='LT' OR Position='LG' OR Position='C' OR Position='RG' OR Position='RT' OR Position_2='{$posGroup}' OR Position_2='LT' OR Position_2='LG' OR Position_2='C' OR Position_2='RG' OR Position_2='RT') AND Season='{$season}' ORDER BY FIELD(Position, 'LT', 'LG', 'C', 'RG', 'RT', 'OL'), Last_Name ASC";
+    } elseif ($posGroup === 'DL') {
+        return "SELECT * FROM `players` WHERE (Position='{$posGroup}' OR Position='DE' OR Position='DT' OR Position_2='DE' OR Position_2='DT') AND Season='{$season}' ORDER BY FIELD(Position, 'DE','DT','DL'), Last_Name ASC";
+    } elseif ($posGroup === 'LB') {
+        return "SELECT * FROM `players` WHERE (Position='{$posGroup}' OR Position='OLB' OR Position='MLB' OR Position_2='OLB' OR Position_2='MLB') AND Season='{$season}' ORDER BY FIELD(Position, 'MLB', 'OLB', 'LB'), Last_Name ASC";
+    } elseif ($posGroup === 'KR' || $posGroup === 'PR' || $posGroup === 'H') {
+        return "SELECT * FROM `players` WHERE (Position='{$posGroup}' OR Position_2='{$posGroup}') AND Season='{$season}' ORDER BY Last_Name ASC";
+    } else {
+        return "SELECT * FROM `players` WHERE (Position='{$posGroup}' OR Position_2='{$posGroup}')  AND Season='{$season}' ORDER BY Last_Name ASC";
+    }
+}

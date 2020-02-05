@@ -6,7 +6,7 @@
             echo 'bg-dark';
         }
         ?>"  >Seasons</button>
-        
+
         <button id="input_recruits_btn" type="button" class="btn btn-secondary <?php
         if ($Input_View === 'Recruits') {
             echo 'bg-dark';
@@ -37,14 +37,17 @@
     </div>
 </div>
 <div class="col-lg-9">
-    <?php 
-        if ($Input_View === 'Recruits') {
-            echo '<h4><span class="badge badge-secondary">Select Recruiting Class to Manage:</span></h4>';
-            echo displayRecruitClassSelect($Class_View);
-        } else {
-            include ('parts/input/input_control_decades.php');
-        }
-    
+    <?php
+    if ($Input_View === 'Recruits') {
+        echo '<h4><span class="badge badge-secondary">Select Recruiting Class to Manage:</span></h4>';
+        echo displayRecruitClassSelect($Class_View);
+    } else {
+        echo '<span class="badge badge-dark">Select Season to Edit - Currently Editing: ', $Input_Season, '</span><br>';
+        echo buildDecadeDropdowns('inputSeason');
+    }
     ?>
+    <div class="btn-group">
+        <button class="btn btn-sm btn-outline-success" data-toggle="modal" data-target="#addSeasonModal">Add Season</button>
+    </div>
 </div>
 <br><br>    

@@ -1,16 +1,15 @@
 <?php
-
 //Build Decades Select List
-function displayDecadeSelect($currentDecade, $SeasonID) {
+function displayDecadeSelect($current, $Season_ID) {
 
-    echo '<select id="DecadeSelect" data-season="', $SeasonID, '" class="form-control" name="decadesSelect">';
+    echo '<select id="DecadeSelect" data-season="', $Season_ID, '" class="form-control" name="decadesSelect">';
 
     $getDecadeData = db_query("SELECT * FROM `decades`");
     while ($fetchDecadeData = $getDecadeData->fetch_assoc()) {
 
         echo '<option value="', $fetchDecadeData['Decade_Row'], '" ';
 
-        if ($currentDecade === $fetchDecadeData['Decade_Row']) {
+        if ($current === $fetchDecadeData['Decade_Row']) {
 
             echo 'Selected="Selected"';
         }
@@ -22,18 +21,17 @@ function displayDecadeSelect($currentDecade, $SeasonID) {
 
     echo '</select>';
 }
-
 //Build Conferences Select List
-function displayConfSelect($currentConf, $SeasonID) {
+function displayConfSelect($current, $Season_ID) {
 
-    echo '<select id="ConfSelect" data-season="', $SeasonID, '" class="form-control" name="confSelect">';
+    echo '<select id="ConfSelect" data-season="', $Season_ID, '" class="form-control" name="confSelect">';
 
     $getConfData = db_query("SELECT * FROM `conferences`");
     while ($fetchConfData = $getConfData->fetch_assoc()) {
 
         echo '<option value="', $fetchConfData['Conf_ID'], '" ';
 
-        if ($currentConf === $fetchConfData['Conf_ID']) {
+        if ($current === $fetchConfData['Conf_ID']) {
 
             echo 'Selected="Selected"';
         }
@@ -45,18 +43,17 @@ function displayConfSelect($currentConf, $SeasonID) {
 
     echo '</select>';
 }
-
 //Build Division Select List
-function displayDivSelect($currentDiv, $SeasonID) {
+function displayDivSelect($current, $Season_ID) {
 
-    echo '<select id="DivSelect" data-season="', $SeasonID, '" class="form-control" name="divSelect">';
+    echo '<select id="DivSelect" data-season="', $Season_ID, '" class="form-control" name="divSelect">';
 
     $getDivData = db_query("SELECT * FROM `b10_divisions`");
     while ($fetchDivData = $getDivData->fetch_assoc()) {
 
         echo '<option value="', $fetchDivData['Div_ID'], '" ';
 
-        if ($currentDiv === $fetchDivData['Div_ID']) {
+        if ($current === $fetchDivData['Div_ID']) {
 
             echo 'Selected="Selected"';
         }
@@ -68,15 +65,14 @@ function displayDivSelect($currentDiv, $SeasonID) {
 
     echo '</select>';
 }
-
 //Build Conf Champ Select List
-function displayConfChampSelect($currentConfChamp, $SeasonID) {
+function displayConfChampSelect($current, $Season_ID) {
 
-    echo '<select id="ConfChampSelect" data-season="', $SeasonID, '" class="form-control" name="ConChampSelect">';
+    echo '<select id="ConfChampSelect" data-season="', $Season_ID, '" class="form-control" name="ConChampSelect">';
 
 
     echo '<option value="Champions" ';
-    if ($currentConfChamp === 'Champions') {
+    if ($current === 'Champions') {
 
         echo 'Selected="Selected"';
     }
@@ -90,14 +86,14 @@ function displayConfChampSelect($currentConfChamp, $SeasonID) {
     echo '>Shared</option>';
 
     echo '<option value="No" ';
-    if ($currentConfChamp === 'No') {
+    if ($current === 'No') {
 
         echo 'Selected="Selected"';
     }
     echo '>No</option>';
 
     echo '<option value="N/A" ';
-    if ($currentConfChamp === 'N/A') {
+    if ($current === 'N/A') {
 
         echo 'Selected="Selected"';
     }
@@ -105,22 +101,21 @@ function displayConfChampSelect($currentConfChamp, $SeasonID) {
 
     echo '</select>';
 }
-
 //Build National Champ Select List
-function displayNatChampSelect($currentNatChamp, $SeasonID) {
+function displayNatChampSelect($current, $Season_ID) {
 
-    echo '<select id="NatChampSelect" data-season="', $SeasonID, '" class="form-control" name="NatChampSelect">';
+    echo '<select id="NatChampSelect" data-season="', $Season_ID, '" class="form-control" name="NatChampSelect">';
 
 
     echo '<option value="Yes" ';
-    if ($currentNatChamp === 'Yes') {
+    if ($current === 'Yes') {
 
         echo 'Selected="Selected"';
     }
     echo '>Yes</option>';
 
     echo '<option value="No" ';
-    if ($currentNatChamp === 'No') {
+    if ($current === 'No') {
 
         echo 'Selected="Selected"';
     }
@@ -128,18 +123,17 @@ function displayNatChampSelect($currentNatChamp, $SeasonID) {
 
     echo '</select>';
 }
-
 //Build Head Coach Select List
-function displayHCSelect($currentHC, $SeasonID) {
+function displayHCSelect($current, $Season_ID) {
 
-    echo '<select id="HCSelect" data-season="', $SeasonID, '" class="form-control" name="HCSelect">';
+    echo '<select id="HCSelect" data-season="', $Season_ID, '" class="form-control" name="HCSelect">';
 
     $getHCData = db_query("SELECT * FROM `coaches` WHERE Type='HC'");
     while ($fetchHCData = $getHCData->fetch_assoc()) {
 
         echo '<option value="', $fetchHCData['Coach_ID'], '" ';
 
-        if ($currentHC === $fetchHCData['Coach_ID']) {
+        if ($current === $fetchHCData['Coach_ID']) {
 
             echo 'Selected="Selected"';
         }
@@ -151,36 +145,35 @@ function displayHCSelect($currentHC, $SeasonID) {
 
     echo '</select>';
 }
-
 //Build Depth Chart Select List
-function displayDepthSelect($currentDepth, $SeasonID) {
+function displayDepthSelect($current, $Season_ID) {
 
-    echo '<select id="DepthSelect" data-season="', $SeasonID, '" class="form-control" name="DepthSelect">';
+    echo '<select id="DepthSelect" data-season="', $Season_ID, '" class="form-control" name="DepthSelect">';
 
 
     echo '<option value="spread" ';
-    if ($currentDepth === 'spread') {
+    if ($current === 'spread') {
 
         echo 'Selected="Selected"';
     }
     echo '>Spread</option>';
 
     echo '<option value="iform" ';
-    if ($currentDepth === 'iform') {
+    if ($current === 'iform') {
 
         echo 'Selected="Selected"';
     }
     echo '>IForm</option>';
 
     echo '<option value="starters" ';
-    if ($currentDepth === 'starters') {
+    if ($current === 'starters') {
 
         echo 'Selected="Selected"';
     }
     echo '>starters</option>';
 
     echo '<option value="none" ';
-    if ($currentDepth === 'none') {
+    if ($current === 'none') {
 
         echo 'Selected="Selected"';
     }
@@ -188,41 +181,40 @@ function displayDepthSelect($currentDepth, $SeasonID) {
 
     echo '</select>';
 }
-
 //Build Home/Away Select List
-function displayHorAselect($currentHoA, $GM_ID) {
+function displayHorAselect($current, $Game_ID) {
 
-    echo '<select id="', $GM_ID, '" class="form-control gameHA" name="HoASelect">';
+    echo '<select id="', $Game_ID, '" class="form-control gameHA" name="HoASelect">';
 
     echo '<option ';
-    if ($currentHoA === '') {
+    if ($current === '') {
 
         echo 'Selected="Selected"';
     }
     echo '></option>';
     echo '<option value="H" ';
-    if ($currentHoA === 'H') {
+    if ($current === 'H') {
 
         echo 'Selected="Selected"';
     }
     echo '>Home</option>';
 
     echo '<option value="A" ';
-    if ($currentHoA === 'A') {
+    if ($current === 'A') {
 
         echo 'Selected="Selected"';
     }
     echo '>Away</option>';
 
     echo '<option value="N" ';
-    if ($currentHoA === 'N') {
+    if ($current === 'N') {
 
         echo 'Selected="Selected"';
     }
     echo '>Neutral Site</option>';
 
     echo '<option value="B" ';
-    if ($currentHoA === 'B') {
+    if ($current === 'B') {
 
         echo 'Selected="Selected"';
     }
@@ -231,11 +223,10 @@ function displayHorAselect($currentHoA, $GM_ID) {
 
     echo '</select>';
 }
-
 //Build Location Select List
-function displayLocSelect($currentLoc, $GM_ID) {
+function displayLocSelect($current, $Game_ID) {
 
-    echo '<select id="', $GM_ID, '" class="selectpicker gameLoc" data-live-search="true" name="LocSelect">';
+    echo '<select id="', $Game_ID, '" class="selectpicker gameLoc" data-live-search="true" name="LocSelect">';
 
     $getLocData = db_query("SELECT * FROM `locations`");
     echo '<option></option>';
@@ -243,7 +234,7 @@ function displayLocSelect($currentLoc, $GM_ID) {
 
         echo '<option value="', $fetchLocData['Loc_ID'], '" ';
 
-        if ($currentLoc === $fetchLocData['Loc_ID']) {
+        if ($current === $fetchLocData['Loc_ID']) {
 
             echo 'Selected="Selected"';
         }
@@ -255,11 +246,10 @@ function displayLocSelect($currentLoc, $GM_ID) {
 
     echo '</select>';
 }
-
 //Build Opponents Select List
-function displayOppSelect($currentOpp, $GM_ID) {
+function displayOppSelect($current, $Game_ID) {
 
-    echo '<select id="', $GM_ID, '" class="selectpicker gameOpp" data-live-search="true" name="OppSelect">';
+    echo '<select id="', $Game_ID, '" class="selectpicker gameOpp" data-live-search="true" name="OppSelect">';
 
     $getOppData = db_query("SELECT * FROM `opponents` ORDER BY School ASC");
     echo '<option></option>';
@@ -267,7 +257,7 @@ function displayOppSelect($currentOpp, $GM_ID) {
 
         echo '<option value="', $fetchOppData['Team_ID'], '" ';
 
-        if ($currentOpp === $fetchOppData['Team_ID']) {
+        if ($current === $fetchOppData['Team_ID']) {
 
             echo 'Selected="Selected"';
         }
@@ -279,11 +269,10 @@ function displayOppSelect($currentOpp, $GM_ID) {
 
     echo '</select>';
 }
+//Build recruiting class select List
+function displayRecruitClassSelect($current) {
 
-//Build Opponents Select List
-function displayRecruitClassSelect($currentClass) {
-
-    echo '<select id="', $currentClass, '" class="selectpicker recruitClass" data-live-search="true" name="recruitClass">';
+    echo '<select id="', $current, '" class="selectpicker recruitClass" data-live-search="true" name="recruitClass">';
 
     $getRecruitData = db_query("SELECT DISTINCT Class FROM `recruits` ORDER BY Class ASC");
     echo '<option></option>';
@@ -291,7 +280,7 @@ function displayRecruitClassSelect($currentClass) {
 
         echo '<option value="', $fetchRecruitData['Class'], '" ';
 
-        if ($currentClass === $fetchRecruitData['Class']) {
+        if ($current === $fetchRecruitData['Class']) {
 
             echo 'Selected="Selected"';
         }
@@ -303,18 +292,17 @@ function displayRecruitClassSelect($currentClass) {
 
     echo '</select>';
 }
-
 //Build Game Type Select List
-function displayGMTypeSelect($currentGMType, $GM_ID) {
+function displayGMTypeSelect($current, $Game_ID) {
 
-    echo '<select id="', $GM_ID, '" class="selectpicker gameType" data-live-search="true" name="GMTypeSelect">';
+    echo '<select id="', $Game_ID, '" class="selectpicker gameType" data-live-search="true" name="GMTypeSelect">';
 
     $getGMTypeData = db_query("SELECT * FROM `game_types`");
     while ($fetchGMTypeData = $getGMTypeData->fetch_assoc()) {
 
         echo '<option value="', $fetchGMTypeData['Type_ID'], '" ';
 
-        if ($currentGMType === $fetchGMTypeData['Type_ID']) {
+        if ($current === $fetchGMTypeData['Type_ID']) {
 
             echo 'Selected="Selected"';
         }
@@ -326,98 +314,97 @@ function displayGMTypeSelect($currentGMType, $GM_ID) {
 
     echo '</select>';
 }
+//Build a checkbox indicating if a game was conference or not
+function displayConfGMCheckbox($current, $Game_ID) {
 
-function displayConfGMCheckbox($currentConfGM, $GM_ID) {
+    echo '<input id="', $Game_ID, '" type="checkbox" class="form-control confGM"';
 
-    echo '<input id="', $GM_ID, '" type="checkbox" class="form-control confGM"';
-
-    if ($currentConfGM === 'Y') {
+    if ($current === 'Y') {
         echo 'checked="checked"';
     }
 
     echo 'style="width: 50px">';
 }
+//Build a checkbox indicating if a game was divisional or not
+function displayDivGMCheckbox($current, $Game_ID) {
 
-function displayDivGMCheckbox($currentDivGM, $GM_ID) {
+    echo '<input id="', $Game_ID, '" type="checkbox" class="form-control divGM"';
 
-    echo '<input id="', $GM_ID, '" type="checkbox" class="form-control divGM"';
-
-    if ($currentDivGM === 'Y') {
+    if ($current === 'Y') {
         echo 'checked="checked"';
     }
 
     echo 'style="width: 50px">';
 }
+//Build a dropdown of player classes to choose from
+function displayPlayerClassSelect($current, $player_row) {
 
-function displayClassSelect($currentClass, $Player_Row) {
-
-    echo '<select id="', $Player_Row, '" class="form-control playerClass" name="ClassSelect" style="width: 100px">';
-
+    echo '<select id="', $player_row, '" class="form-control playerClass" name="ClassSelect" style="width: 100px">';
 
     echo '<option value=" " ';
-    if ($currentClass === '') {
+    if ($current === '') {
 
         echo 'Selected="Selected"';
     }
     echo '></option>';
     echo '<option value="FR" ';
-    if ($currentClass === 'FR') {
+    if ($current === 'FR') {
 
         echo 'Selected="Selected"';
     }
     echo '>FR</option>';
 
     echo '<option value="FR (RS)" ';
-    if ($currentClass === 'FR (RS)') {
+    if ($current === 'FR (RS)') {
 
         echo 'Selected="Selected"';
     }
     echo '>FR (RS)</option>';
 
     echo '<option value="SO" ';
-    if ($currentClass === 'SO') {
+    if ($current === 'SO') {
 
         echo 'Selected="Selected"';
     }
     echo '>SO</option>';
 
     echo '<option value="SO (RS)" ';
-    if ($currentClass === 'SO (RS)') {
+    if ($current === 'SO (RS)') {
 
         echo 'Selected="Selected"';
     }
     echo '>SO (RS)</option>';
 
     echo '<option value="JR" ';
-    if ($currentClass === 'JR') {
+    if ($current === 'JR') {
 
         echo 'Selected="Selected"';
     }
     echo '>JR</option>';
 
     echo '<option value="JR (RS)" ';
-    if ($currentClass === 'JR (RS)') {
+    if ($current === 'JR (RS)') {
 
         echo 'Selected="Selected"';
     }
     echo '>JR (RS)</option>';
 
     echo '<option value="SR" ';
-    if ($currentClass === 'SR') {
+    if ($current === 'SR') {
 
         echo 'Selected="Selected"';
     }
     echo '>SR</option>';
 
     echo '<option value="SR (RS)" ';
-    if ($currentClass === 'SR (RS)') {
+    if ($current === 'SR (RS)') {
 
         echo 'Selected="Selected"';
     }
     echo '>SR (RS)</option>';
 
     echo '<option value="GR" ';
-    if ($currentClass === 'GR') {
+    if ($current === 'GR') {
 
         echo 'Selected="Selected"';
     }
@@ -426,12 +413,12 @@ function displayClassSelect($currentClass, $Player_Row) {
 
     echo '</select>';
 }
+//Build a dropdown of players in a given season to choose from
+function displayExistingPlayersSelect($Season_ID, $ID) {
 
-function displayExistingPlayersSelect($season, $id) {
+    $getExistingPlayers = db_query("SELECT * FROM `players` WHERE Season='{$Season_ID}'");
 
-    $getExistingPlayers = db_query("SELECT * FROM `players` WHERE Season='{$season}'");
-
-    echo '<select class="selectpicker" data-live-search="true" id="existingPlayer', $id, '">';
+    echo '<select class="selectpicker" data-live-search="true" id="existingPlayer', $ID, '">';
 
     echo '<option><option>';
 
@@ -442,11 +429,11 @@ function displayExistingPlayersSelect($season, $id) {
 
     echo '</select>';
 }
-
-function displayPosGroupSelect($InputPosGroup) {
+//Build a dropdown of positions based on given position group 
+function displayPosGroupSelect($positionGroup) {
 
     //OL,DL,LB positions
-    if ($InputPosGroup === 'OL') {
+    if ($positionGroup === 'OL') {
 
         echo '<select id="secondaryPosSelect" class="form-control">';
         echo '<option value="OL">OL</option>';
@@ -456,14 +443,14 @@ function displayPosGroupSelect($InputPosGroup) {
         echo '<option value="RG">RG</option>';
         echo '<option value="RT">RT</option>';
         echo '</select>';
-    } elseif ($InputPosGroup === 'DL') {
+    } elseif ($positionGroup === 'DL') {
 
         echo '<select id="secondaryPosSelect" class="form-control">';
         echo '<option value="DL">DL</option>';
         echo '<option value="DE">DE</option>';
         echo '<option value="DT">DT</option>';
         echo '</select>';
-    } elseif ($InputPosGroup === 'LB') {
+    } elseif ($positionGroup === 'LB') {
 
         echo '<select id="secondaryPosSelect" class="form-control">';
         echo '<option value="LB">LB</option>';
@@ -474,19 +461,44 @@ function displayPosGroupSelect($InputPosGroup) {
         echo '<select id="secondaryPosSelect" hidden><option>N-A</option></select>';
     }
 }
+//Build a set of decade dropdowns with existing years to choose from
+function buildDecadeDropdowns($Class) {
 
-function displayDecadeDropdownOptions($DecadeID, $Class) {
+    $getDecades = db_query("SELECT * FROM `decades` ORDER BY DecadeName DESC");
+    while ($fetchDecades = $getDecades->fetch_assoc()) {
 
+        echo '<div class="btn-group">';
+        echo '<button id="decade2010s" type="button" class="btn btn-sm btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">';
+        echo $fetchDecades['DecadeName'];
+        echo '</button>';
+        echo '<div class="dropdown-menu">';
+        echo displayDecadeDropdownOptions($fetchDecades['Decade_Row'], $Class);
+        echo '</div>';
+        echo '</div>';
+        echo '&nbsp;';
+    }
+}
+//Build the years of a decade for decade dropdowns set
+function displayDecadeDropdownOptions($ID, $Class) {
 
     $get_seasonData = db_query("SELECT * FROM `seasons` ORDER BY Year DESC");
     while ($fetch_seasonData = $get_seasonData->fetch_assoc()) {
-        if ($fetch_seasonData['Decade_ID'] === $DecadeID) {
+        if ($fetch_seasonData['Decade_ID'] === $ID) {
             echo '<a id="', $fetch_seasonData['Year'], '" class="', $Class, ' dropdown-item" href="#">', $fetch_seasonData['Year'], '</a>';
         }
     }
 }
+//Build a set of decade buttons based on existing decades
+function buildDecadeButtons($Class) {
 
-function displayAllPosSelect($PorS, $currentPOS, $player_row) {
+    $getDecades = db_query("SELECT * FROM `decades` ORDER BY DecadeName ASC");
+    while ($fetchDecades = $getDecades->fetch_assoc()) {
+
+        echo '<button class="btn btn-secondary ', $Class, '" data-decade="', $fetchDecades['DecadeName'], '">', $fetchDecades['DecadeName'], '</button>&nbsp;';
+    }
+}
+//Build a dropdown of all player positions
+function displayAllPosSelect($PorS, $current, $player_row) {
 
     echo '<select id="', $player_row, '" class="form-control playerPOS', $PorS, '" style="width: 75px">';
 
@@ -496,39 +508,25 @@ function displayAllPosSelect($PorS, $currentPOS, $player_row) {
 
 
         echo '<option value="', $pos, '"';
-        if ($currentPOS === $pos) {
+        if ($current === $pos) {
             echo 'selected';
         } echo '>', $pos, '</option>';
     }
 
     echo '</select>';
 }
+//Build a checkbox indicating if a game went to overtime
+function displayOTCheckbox($current, $Game_ID) {
 
-function returnPositionArray() {
+    echo '<input id="', $Game_ID, '" type="checkbox" class="form-control OTGM"';
 
-    $posArray = array('QB', 'FB', 'H-B', 'RB', 'WR', 'TE', 'OL', 'LT', 'LG', 'C', 'RG', 'RT', 'DL', 'DE', 'DT', 'LB', 'OLB', 'MLB', 'CB', 'S', 'K', 'P', 'KR', 'PR', 'LS', 'H');
-    return $posArray;
-}
-
-function getInputPlayerAddStat() {
-
-    $getInputAddStat = db_query("SELECT * from `controls` WHERE Control='Input_Stats_Player'");
-    $fetchInputAddStat = $getInputAddStat->fetch_assoc();
-    $row = $fetchInputAddStat['Value'];
-    return $row;
-}
-
-function displayOTCheckbox($currentOT, $GM_ID) {
-
-    echo '<input id="', $GM_ID, '" type="checkbox" class="form-control OTGM"';
-
-    if ($currentOT === 'Y') {
+    if ($current === 'Y') {
         echo 'checked="checked"';
     }
 
     echo 'style="width: 50px">';
 }
-
+//Build a dropdown of conferences for filtering
 function displayConfFilterSelect() {
 
     $selectUniqueConf = db_query("SELECT DISTINCT Conf from `seasons`");
@@ -545,7 +543,7 @@ function displayConfFilterSelect() {
 
     echo '</select>';
 }
-
+//Build a dropdown of divisions for filtering
 function displayDivFilterSelect() {
 
     $selectUniqueDiv = db_query("SELECT DISTINCT Division from `seasons`");
@@ -562,7 +560,7 @@ function displayDivFilterSelect() {
 
     echo '</select>';
 }
-
+//Build a dropdown of conference championships for filtering
 function displayConfChampFilterSelect() {
 
     $selectUniqueConfChamp = db_query("SELECT DISTINCT Conf_Champ from `seasons`");
@@ -579,7 +577,7 @@ function displayConfChampFilterSelect() {
 
     echo '</select>';
 }
-
+//Build a dropdown of national championship for filtering
 function displayNationalChampFilterSelect() {
 
     $selectUniqueNationalChamp = db_query("SELECT DISTINCT NationalChamp from `seasons`");
@@ -596,7 +594,7 @@ function displayNationalChampFilterSelect() {
 
     echo '</select>';
 }
-
+//Build a dropdown of player positions for filtering
 function displayPlayerPositionFilterSelect() {
 
     $selectUniquePlayerPos = db_query("SELECT DISTINCT Position from `players`");
@@ -613,7 +611,7 @@ function displayPlayerPositionFilterSelect() {
 
     echo '</select>';
 }
-
+//Build a dropdown of player classess for filtering
 function displayPlayerClassFilterSelect() {
 
     $selectUniquePlayerClass = db_query("SELECT DISTINCT Class from `players`");
@@ -630,9 +628,8 @@ function displayPlayerClassFilterSelect() {
 
     echo '</select>';
 }
-
 //Build Players With Photos Select List
-function displayPlayerPhotoSelect($currentPlayer) {
+function displayPlayerPhotoSelect($Player_Master_ID) {
 
     $taggedPlayers = [];
     $getTaggedPlayers = db_query("SELECT * FROM `photos`");
@@ -655,7 +652,7 @@ function displayPlayerPhotoSelect($currentPlayer) {
 
         echo '<option value="', $tag, '" ';
 
-        if ($currentPlayer === $tag) {
+        if ($Player_Master_ID === $tag) {
 
             echo 'Selected="Selected"';
         }
@@ -667,9 +664,8 @@ function displayPlayerPhotoSelect($currentPlayer) {
 
     echo '</select>';
 }
-
 //Build Games With Photos Select List
-function displayGamePhotoSelect($currentGame) {
+function displayGamePhotoSelect($Game_ID) {
 
     $taggedGames = [];
     $getTaggedGames = db_query("SELECT * FROM `photos`");
@@ -686,13 +682,13 @@ function displayGamePhotoSelect($currentGame) {
     }
 
 
-    echo '<select id="gamePhotoSelect" class="selectpicker" data-live-search="true" name="playerPhotoSelect">';
+    echo '<select id="gamePhotoSelect" class="selectpicker" data-live-search="true" name="gamePhotoSelect">';
 
     foreach ($taggedGames as $tag) {
 
         echo '<option value="', $tag, '" ';
 
-        if ($currentGame === $tag) {
+        if ($Game_ID === $tag) {
 
             echo 'Selected="Selected"';
         }
@@ -707,9 +703,8 @@ function displayGamePhotoSelect($currentGame) {
 
     echo '</select>';
 }
-
 //Build Misc Tags With Photos Select List
-function displayMiscPhotoSelect($currentMisc) {
+function displayMiscPhotoSelect($Misc_ID_Photo) {
 
     $taggedMiscs = [];
     $getTaggedMiscs = db_query("SELECT * FROM `photos`");
@@ -732,21 +727,20 @@ function displayMiscPhotoSelect($currentMisc) {
 
         echo '<option value="', $tag, '" ';
 
-        if ($currentMisc === $tag) {
+        if ($Misc_ID_Photo === $tag) {
 
             echo 'Selected="Selected"';
         }
 
         echo '>';
-        echo returnMiscTagNameByID($tag);
+        echo returnMiscTagNameByIDphoto($tag);
         echo '</option>';
     }
 
     echo '</select>';
 }
-
 //Build Games With Videos Select List
-function displayGameVideoSelect($currentGame) {
+function displayGameVideoSelect($Game_ID) {
 
     $taggedGames = [];
     $getTaggedGames = db_query("SELECT * FROM `videos`");
@@ -769,7 +763,7 @@ function displayGameVideoSelect($currentGame) {
 
         echo '<option value="', $tag, '" ';
 
-        if ($currentGame === $tag) {
+        if ($Game_ID === $tag) {
 
             echo 'Selected="Selected"';
         }
@@ -784,7 +778,7 @@ function displayGameVideoSelect($currentGame) {
 
     echo '</select>';
 }
-
+//Build videos with Misc category select list
 function displayVideoMiscSelect() {
 
     $selectVidMiscTag = db_query("SELECT * from `ref_misc_video_tags`");
@@ -799,98 +793,96 @@ function displayVideoMiscSelect() {
 
     echo '</select>';
 }
-
 //Build player season status select
-function playerStatusSelect($currentStatus, $player_row) {
+function playerStatusSelect($current, $player_row) {
 
     echo '<select id="', $player_row, '" class="form-control playerStatusSelect" style="width: 175px">';
 
     echo '<option value=""';
-    if ($currentStatus === "") {
+    if ($current === "") {
         echo 'selected';
     } echo '></option>';
 
     echo '<option value="On Team"';
-    if ($currentStatus === "On Team") {
+    if ($current === "On Team") {
         echo 'selected';
     } echo '>On Team</option>';
 
     echo '<option value="Recruit"';
-    if ($currentStatus === "Recruit") {
+    if ($current === "Recruit") {
         echo 'selected';
     } echo '>Recruit</option>';
 
     echo '<option value="Transfer"';
-    if ($currentStatus === "Transfer") {
+    if ($current === "Transfer") {
         echo 'selected';
     } echo '>Transfer</option>';
 
     echo '<option value="Walk On"';
-    if ($currentStatus === "Walk On") {
+    if ($current === "Walk On") {
         echo 'selected';
     } echo '>Walk On</option>';
 
     echo '<option value="JUCO"';
-    if ($currentStatus === "JUCO") {
+    if ($current === "JUCO") {
         echo 'selected';
     } echo '>JUCO</option>';
 
     echo '<option value="Dismissed"';
-    if ($currentStatus === "Dismissed") {
+    if ($current === "Dismissed") {
         echo 'selected';
     } echo '>Dismissed</option>';
 
     echo '<option value="Injured"';
-    if ($currentStatus === "Injured") {
+    if ($current === "Injured") {
         echo 'selected';
     } echo '>Injured</option>';
 
     echo '</select>';
 }
-
 //Build player offeson status select
-function playerOffseasonSelect($currentStatus, $player_row) {
+function playerOffseasonSelect($current, $player_row) {
 
     echo '<select id="', $player_row, '" class="form-control playerOffseasonSelect" style="width: 175px">';
 
     echo '<option value=""';
-    if ($currentStatus === "") {
+    if ($current === "") {
         echo 'selected';
     } echo '></option>';
 
     echo '<option value="Stayed"';
-    if ($currentStatus === "Stayed") {
+    if ($current === "Stayed") {
         echo 'selected';
     } echo '>Stayed</option>';
 
     echo '<option value="Transferred"';
-    if ($currentStatus === "Transferred") {
+    if ($current === "Transferred") {
         echo 'selected';
     } echo '>Transferred</option>';
 
     echo '<option value="Redshirt"';
-    if ($currentStatus === "Redshirt") {
+    if ($current === "Redshirt") {
         echo 'selected';
     } echo '>Redshirt</option>';
 
     echo '<option value="Graduated"';
-    if ($currentStatus === "Graduated") {
+    if ($current === "Graduated") {
         echo 'selected';
     } echo '>Graduated</option>';
 
     echo '<option value="Left For Draft"';
-    if ($currentStatus === "Left For Draft") {
+    if ($current === "Left For Draft") {
         echo 'selected';
     } echo '>Left For Draft</option>';
 
     echo '<option value="Not On Team"';
-    if ($currentStatus === "Not On Team") {
+    if ($current === "Not On Team") {
         echo 'selected';
     } echo '>Not On Team</option>';
 
     echo '</select>';
 }
-
+//Build a dropdown of player season status for filtering
 function displayPlayerStatusFilterSelect() {
 
     $selectUniquePlayerStatus = db_query("SELECT DISTINCT Team_Status from `players`");
@@ -907,7 +899,7 @@ function displayPlayerStatusFilterSelect() {
 
     echo '</select>';
 }
-
+//Build a dropdown of player offseason status for filtering
 function displayPlayerOffseasonFilterSelect() {
 
     $selectUniquePlayerOffseason = db_query("SELECT DISTINCT Post_Season_Status from `players`");

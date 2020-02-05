@@ -13,8 +13,8 @@
     </li>
 </ul>
 <div class="tab-content" id="mediaTopNavContent">
-    <div class="tab-pane" id="mediaPhotoTab" role="tabpanel"><?php include('mediaPhotoTab.php'); ?></div>
-    <div class="tab-pane" id="mediaVideoTab" role="tabpanel"><?php include('mediaVideoTab.php'); ?></div>
+    <div class="tab-pane" id="mediaPhotoTab" role="tabpanel"><?php  include('mediaPhotoTab.php');  ?></div>
+    <div class="tab-pane" id="mediaVideoTab" role="tabpanel"><?php include('mediaVideoTab.php');  ?></div>
     <div class="tab-pane" id="mediaSocialTab" role="tabpanel"><?php include('mediaSocialTab.php'); ?></div>
     <div class="tab-pane" id="mediaWebTab" role="tabpanel"><?php include('mediaWebTab.php'); ?></div>
 

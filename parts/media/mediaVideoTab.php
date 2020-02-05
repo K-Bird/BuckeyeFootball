@@ -22,14 +22,16 @@ $display_type = $fetchVideoDisplayType['Value'];
     </div>
     <div class="col-lg-6">
         <div class="row">
-            <?php
-            if ($display_type === 'game') {
-                buildVideosDisplay($display_type, $game_video_ID);
-            }
-            if ($display_type === 'misc') {
-                buildVideosDisplay($display_type, $misc_video_ID);
-            }
-            ?>
+            <div id="videoGallery">
+                <?php
+                if ($display_type === 'game') {
+                    buildVideosDisplay($display_type, $game_video_ID);
+                }
+                if ($display_type === 'misc') {
+                    buildVideosDisplay($display_type, $misc_video_ID);
+                }
+                ?>
+            </div>
         </div>
     </div>
     <div class="col-lg-2">

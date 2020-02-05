@@ -19,7 +19,7 @@
     <br><br>
     <div class="row">
         <div class="col-lg-12">
-            <table class="table">
+            <table id="inputStatsTable" class="table">
                 <thead>
                     <tr>
                         <th>
@@ -63,7 +63,7 @@
                         echo '</td>';
                         echo '<td>';
                         echo '<button
-                                   class="btn btn-success" 
+                                   class="btn btn-success addStatBtn" 
                                    data-gameID="', $fetchGameData['GM_ID'], '"
                                    data-week="', $fetchGameData['Week'], '" 
                                    data-opp="', opponentLookup($fetchGameData['Vs']), '"
@@ -105,5 +105,28 @@
         </div>
     </div>
 </div>
-<?php include ('input_modal_addStat.php'); ?>
-<?php include ('input_modal_editStat.php'); ?>
+<?php 
+
+include ('input_modal_addStat.php');
+include ('input_modal_editStat.php');
+//If a stat exists for the given category for the given player and game build an indicator
+function gameStatExists($gm_ID, $player_ID, $category, $week, $fname, $lname, $opp, $season) {
+
+    $player_ID = returnPlayerMasterID($player_ID);
+
+    $getStatRow = db_query("SELECT * FROM `stats_{$category}` WHERE Game_ID='{$gm_ID}' AND Player_ID='{$player_ID}'");
+
+    $RowCount = mysqli_num_rows($getStatRow);
+
+    if ($RowCount >= 1) {
+        return '<button id="' . $category . $gm_ID . $player_ID . '" class="btn btn-sm btn-secondary"><span 
+           class="oi oi-comment-square existingStat"
+           data-toggle="modal" 
+           data-target="#editStatModal"
+           data-game=' . $gm_ID . ' data-player=' . $player_ID . ' data-cat=' . $category . ' data-week=' . $week . ' data-fname=' . $fname . ' data-lname=' . $lname . ' data-opp=' . opponentLookup($opp) . ' data-season=' . $season .
+                '></span ></button>
+           <button class="btn btn-sm btn-danger removeStat" data-cat="' . $category . '" data-game="' . $gm_ID . '" data-player="' . $player_ID . '"><span class="oi oi-minus"></span></button> ';
+    } else {
+        return '';
+    }
+}

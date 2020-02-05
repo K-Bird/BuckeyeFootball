@@ -1,4 +1,4 @@
-<ul class="nav nav-pills nav-justified" id="mediaTopNav" role="tablist">
+<ul class="nav nav-pills nav-justified" id="dataTopNav" role="tablist">
     <li class="nav-item">
         <a id="program-tab-mainnav" class="nav-link" data-toggle="tab" href="#dataProgramTab" role="tab">Program</a>
     </li>

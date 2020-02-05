@@ -73,3 +73,70 @@
         </div>
     </div>
 </div>
+<?php
+//Build the tags for displaying on a video of any category
+function returnVideoTags($video_id, $category) {
+
+    $getVideoTags = db_query("SELECT * FROM `videos` WHERE Video_ID='{$video_id}'");
+    $fetchVideotag = $getVideoTags->fetch_assoc();
+
+    if ($category === 'game') {
+        $gameTags = $fetchVideotag['Game_Tags'];
+
+        if ($gameTags === '') {
+            echo 'Tag Games(s) In Uploaded Video:&nbsp;&nbsp;';
+            echo '<input id="existingGamesSearchYearv' . $video_id . '" class="form-control existingGamesSearchFieldv" data-videoID="' . $video_id . '" placeholder="Search Year">';
+            echo '<input id="existingGamesSearchOppv' . $video_id . '" class="form-control existingGamesSearchFieldv" data-videoID="' . $video_id . '" placeholder="Search Opponent">';
+            echo '<input id="existingGamesSearchLocv' . $video_id . '" class="form-control existingGamesSearchFieldv" data-videoID="' . $video_id . '" placeholder="Search Location">';
+            echo '<div id="existingGameTagResultsv' . $video_id . '"></div>';
+        } else {
+
+            echo 'Tag Games(s) In Uploaded Video:&nbsp;&nbsp;';
+            echo '<input id="existingGamesSearchYearv' . $video_id . '" class="form-control existingGamesSearchFieldv" data-videoID="' . $video_id . '" placeholder="Search Year">';
+            echo '<input id="existingGamesSearchOppv' . $video_id . '" class="form-control existingGamesSearchFieldv" data-videoID="' . $video_id . '" placeholder="Search Opponent">';
+            echo '<input id="existingGamesSearchLocv' . $video_id . '" class="form-control existingGamesSearchFieldv" data-videoID="' . $video_id . '" placeholder="Search Location">';
+            echo '<div id="existingGameTagResultsv' . $video_id . '"></div>';
+
+            $eachTag = explode(',', $gameTags);
+
+            foreach ($eachTag as $tag) {
+                echo '<span class="badge badge-pill badge-secondary">';
+
+                $getGameData = db_query("SELECT * FROM `games` WHERE GM_ID='{$tag}'");
+                $fetchGameData = $getGameData->fetch_assoc();
+
+                echo $fetchGameData['Date'] . " - (" . HomeAwayLookup($fetchGameData ['H_A']) . ") Vs " . opponentLookup($fetchGameData['Vs']);
+
+                echo '&nbsp;<span aria-hidden="true" data-video="', $video_id, '" id="gtag', $tag, '" class="gameTagRemovev">&times;</span>';
+                echo '</span>';
+            }
+        }
+    }
+
+    if ($category === 'misc') {
+        $miscTags = $fetchVideotag['Misc_Tags'];
+
+        if ($miscTags === '') {
+
+            echo '<br>Misc Tag(s) In This Photo:&nbsp;&nbsp;
+              <input category="text" class="form-control miscTagSearchDisplayedv" id="editAddMiscTagSearchv', $video_id . '" data-videoID="' . $video_id . '" placeholder="Search for Misc Tag"/>
+              <div id="miscTagExistingResultsv' . $video_id . '" class="editAddMiscTagResultsv"></div>';
+        } else {
+
+            echo '<br>Misc Tag(s) In This Photo:&nbsp;&nbsp;
+              <input category="text" class="form-control miscTagSearchDisplayedv" id="editAddMiscTagSearchv', $video_id . '" data-videoID="' . $video_id . '" placeholder="Search for Misc Tag"/>
+              <div id="miscTagExistingResultsv' . $video_id . '" class="editAddMiscTagResultsv"></div>';
+
+            $eachTag = explode(',', $miscTags);
+
+            foreach ($eachTag as $tag) {
+                echo '<span class="badge badge-pill badge-secondary">';
+
+                echo returnMiscTagNameByIDvideo($tag);
+
+                echo '&nbsp;<span aria-hidden="true" data-video="', $video_id, '" id="gtag', $tag, '" class="miscTagRemovev">&times;</span>';
+                echo '</span>';
+            }
+        }
+    }
+}
