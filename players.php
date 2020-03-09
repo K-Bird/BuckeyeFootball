@@ -471,6 +471,46 @@ $DepthForm = $fetchDepthForm['DepthChart'];
                     }
                 });
     });
+    //When the subtract year to left side of comparison is clicked set the start year forward on year
+    $("#prevCompareYearLeft").click(function () {
+
+        var start = $(this).data('year');
+
+        $.ajax(
+                {
+                    url: "libs/ajax/update_player_compare_start.php",
+                    type: "POST",
+                    data: {start: start},
+                    success: function (data, textStatus, jqXHR)
+                    {
+                        location.reload();
+                    },
+                    error: function (jqXHR, textStatus, errorThrown)
+                    {
+                        alert("Form Did Not Process: " + errorThrown);
+                    }
+                });
+    });
+    //When the subtract year to right side of comparison is clicked set the start year back one year
+    $("#prevCompareYearRight").click(function () {
+
+        var end = $(this).data('year');
+
+        $.ajax(
+                {
+                    url: "libs/ajax/update_player_compare_end.php",
+                    type: "POST",
+                    data: {end : end},
+                    success: function (data, textStatus, jqXHR)
+                    {
+                        location.reload();
+                    },
+                    error: function (jqXHR, textStatus, errorThrown)
+                    {
+                        alert("Form Did Not Process: " + errorThrown);
+                    }
+                });
+    });
     //When the add year to right side of comparison is clicked set the end year one in the future
     $("#nextCompareYearRight").click(function () {
 
@@ -490,6 +530,34 @@ $DepthForm = $fetchDepthForm['DepthChart'];
                         alert("Form Did Not Process: " + errorThrown);
                     }
                 });
+    });
+
+    //When checking or unchecking a compare position group update the list of checked groups
+    $('.comparePosCheck').change(function () {
+
+        var change = '';
+        var position = $(this).data('pos');
+        if (this.checked) {
+            change = 'Check';
+        } else {
+            change = 'Uncheck';
+        }
+
+        $.ajax(
+                {
+                    url: "libs/ajax/update_player_compare_pos_groups.php",
+                    type: "POST",
+                    data: {position: position, change: change},
+                    success: function (data, textStatus, jqXHR)
+                    {
+                        location.reload();
+                    },
+                    error: function (jqXHR, textStatus, errorThrown)
+                    {
+                        alert("Form Did Not Process: " + errorThrown);
+                    }
+                });
+
     });
 </script>
 <!-- Create Player Detail Popovers for each position and hide them  -->
@@ -564,6 +632,7 @@ $DepthForm = $fetchDepthForm['DepthChart'];
     <?php return_depth_table_starter($season_ID, "DB") ?>
 </div>
 <?php
+
 //Build table for depth chart button popover displaying positional depth chart (I formation and spread)
 function return_depth_table($season, $posGroup) {
 
@@ -640,6 +709,7 @@ function return_depth_table($season, $posGroup) {
     echo '</tbody>';
     echo '</table>';
 }
+
 //Build table for depth chart button popover displaying positional depth chart (starters)
 function return_depth_table_starter($season, $posGroup) {
 
@@ -687,6 +757,7 @@ function return_depth_table_starter($season, $posGroup) {
     echo '</tbody>';
     echo '</table>';
 }
+
 //Format the given depth chart number
 function formatDepthNumber($DepthNum) {
 
