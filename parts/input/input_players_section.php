@@ -32,7 +32,7 @@ $InputPosGroup = $fetchInputPosGroupControl['Value'];
                     }
                     echo '">H-Bs</button>';
                 }
-                if ($depthType === 'iform') {
+                if ($depthType === 'iform' || $depthType === 'starters') {
 
                     echo '<button id="FB" type="button" class="btn btn-secondary chgPosGroup';
                     if ($InputPosGroup === 'FB') {
@@ -151,13 +151,13 @@ $InputPosGroup = $fetchInputPosGroupControl['Value'];
 
                 echo '<tr>';
                 echo '<td>', $POS_PorS, '</td>';
-                echo '<td>', displayAllPosSelect("Primary", $fetch_PlayerData['Position'],$fetch_PlayerData['Player_Row']), '</td>';
+                echo '<td>', displayAllPosSelect("Primary", $fetch_PlayerData['Position'], $fetch_PlayerData['Player_Row']), '</td>';
 
                 if ($fetch_PlayerData['Position_2'] === '0' || $fetch_PlayerData['Position_2'] === '') {
                     echo '<td>-</td>';
                 } else {
 
-                    echo '<td style="display: flex">', displayAllPosSelect("Secondary", $fetch_PlayerData['Position_2'],$fetch_PlayerData['Player_Row']), '<button class="btn btn-danger removePlayer" data-playerRow="', $fetch_PlayerData['Player_Row'], '" data-PorS="Secondary"><span class="oi oi-minus removePlayer" data-playerRow="', $fetch_PlayerData['Player_Row'], '" data-PorS="Secondary"></span></button></td>';
+                    echo '<td style="display: flex">', displayAllPosSelect("Secondary", $fetch_PlayerData['Position_2'], $fetch_PlayerData['Player_Row']), '<button class="btn btn-danger removePlayer" data-playerRow="', $fetch_PlayerData['Player_Row'], '" data-PorS="Secondary"><span class="oi oi-minus removePlayer" data-playerRow="', $fetch_PlayerData['Player_Row'], '" data-PorS="Secondary"></span></button></td>';
                 }
                 echo '<td><input id="', $fetch_PlayerData['Player_Master_ID'], '" type="text" class="form-control playerFirstName" placeholder="', $fetch_PlayerData['First_Name'], '"></td>';
                 echo '<td><input id="', $fetch_PlayerData['Player_Master_ID'], '" type="text" class="form-control playerLastName" placeholder="', $fetch_PlayerData['Last_Name'], '"></td>';
@@ -174,8 +174,8 @@ $InputPosGroup = $fetchInputPosGroupControl['Value'];
                 echo '<td><input id="', $fetch_PlayerData['Player_Row'], '" type="text" class="form-control playerWt" placeholder="', $fetch_PlayerData['Weight'], '" style="width: 75px"></td>';
                 echo '<td>', displayPlayerClassSelect($fetch_PlayerData['Class'], $fetch_PlayerData['Player_Row']), '</td>';
                 echo '<td><input id="', $fetch_PlayerData['Player_Master_ID'], '" type="text" class="form-control playerHometown" placeholder="', $fetch_PlayerData['Hometown'], '"></td>';
-                echo  '<td>',playerStatusSelect($fetch_PlayerData['Team_Status'], $fetch_PlayerData['Player_Row']),'</td>';
-                echo  '<td>',playerOffseasonSelect($fetch_PlayerData['Post_Season_Status'], $fetch_PlayerData['Player_Row']),'</td>';
+                echo '<td>', playerStatusSelect($fetch_PlayerData['Team_Status'], $fetch_PlayerData['Player_Row']), '</td>';
+                echo '<td>', playerOffseasonSelect($fetch_PlayerData['Post_Season_Status'], $fetch_PlayerData['Player_Row']), '</td>';
                 echo '<td><button class="btn btn-danger removePlayer" data-playerRow="', $fetch_PlayerData['Player_Row'], '" data-PorS="Primary"><span class="oi oi-minus removePlayer" data-playerRow="', $fetch_PlayerData['Player_Row'], '" data-PorS="Primary"></span></button></td>';
                 echo '</tr>';
             }
@@ -206,6 +206,7 @@ $InputPosGroup = $fetchInputPosGroupControl['Value'];
     </div>
 </div>
 <?php
+
 //Returns if a position group is primary or secondary
 function returnPos_PorS($posGroup, $pos1) {
 
@@ -241,6 +242,7 @@ function returnPos_PorS($posGroup, $pos1) {
         }
     }
 }
+
 //Return a query that selects players by position group
 function returnPosGroupSelectStatement($posGroup, $season) {
 
@@ -252,6 +254,8 @@ function returnPosGroupSelectStatement($posGroup, $season) {
         return "SELECT * FROM `players` WHERE (Position='{$posGroup}' OR Position='OLB' OR Position='MLB' OR Position_2='OLB' OR Position_2='MLB') AND Season='{$season}' ORDER BY FIELD(Position, 'MLB', 'OLB', 'LB'), Last_Name ASC";
     } elseif ($posGroup === 'KR' || $posGroup === 'PR' || $posGroup === 'H') {
         return "SELECT * FROM `players` WHERE (Position='{$posGroup}' OR Position_2='{$posGroup}') AND Season='{$season}' ORDER BY Last_Name ASC";
+    } elseif ($posGroup === 'CB' || $posGroup === 'S') {
+        return "SELECT * FROM `players` WHERE (Position='{$posGroup}' OR Position='DB') AND Season='{$season}' ORDER BY FIELD (Position, 'CB', 'S', 'DB'), Last_Name ASC";
     } else {
         return "SELECT * FROM `players` WHERE (Position='{$posGroup}' OR Position_2='{$posGroup}')  AND Season='{$season}' ORDER BY Last_Name ASC";
     }

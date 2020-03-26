@@ -19,7 +19,7 @@
                                 echo returnPositionCount('H-B', $Season_ID);
                                 echo '</span>';
                             }
-                            if ($depthType === 'iform') {
+                            if ($depthType === 'iform' || $depthType === 'starters') {
                                 echo' <span class="badge badge-secondary" >FBs:';
                                 echo returnPositionCount('FB', $Season_ID);
                                 echo '</span>';

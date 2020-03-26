@@ -503,6 +503,7 @@ function displayAllPosSelect($PorS, $current, $player_row) {
     echo '<select id="', $player_row, '" class="form-control playerPOS', $PorS, '" style="width: 75px">';
 
     $positionArray = returnPositionArray();
+    array_push($positionArray,'DB');
 
     foreach ($positionArray as $pos) {
 
