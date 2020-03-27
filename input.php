@@ -1866,4 +1866,60 @@
                     }
                 });
     });
+
+    //When link recruit to player modal is open pass recruit id
+    $('#recruitLinkModal').on('show.bs.modal', function (e) {
+        var recID = $(e.relatedTarget).data('recid');
+        $('#linkRecruitSearch').attr('data-recid', recID);
+    })
+
+    //On typing into link recruit to player searchbox genterate the tag results as buttons
+    $("#linkRecruitSearch").keyup(function () {
+
+        var name = $(this).val();
+        var recID = $(this).data('recid');
+
+        if (name === '') {
+            $("#linkRecruitSearchResults").replaceWith('<div id="linkRecruitSearchResults"></div>');
+        } else {
+
+            $.ajax(
+                    {
+                        url: "libs/ajax/search_existing_player.php",
+                        type: "POST",
+                        data: {name: name, recID: recID},
+                        success: function (data, textStatus, jqXHR)
+                        {
+                            $('#linkRecruitSearchResults').replaceWith(data);
+                        },
+                        error: function (jqXHR, textStatus, errorThrown)
+                        {
+                            alert("Results Could Not Be Loaded: " + errorThrown);
+                        }
+                    });
+        }
+    });
+
+    //When link recruit to player button is clicked, link them together
+    $(document).on("click", '.recruitLinkListItem', function (e) {
+
+        var Master_ID = $(this).attr('id');
+        var Rec_ID = $(this).data('recid');
+
+        $.ajax(
+                {
+                    url: "libs/ajax/link_recruit_to_player.php",
+                    type: "POST",
+                    data: {Master_ID: Master_ID, Rec_ID: Rec_ID},
+                    success: function (data, textStatus, jqXHR)
+                    {
+                        location.reload();
+                    },
+                    error: function (jqXHR, textStatus, errorThrown)
+                    {
+                        alert("Link Unsuccessful: " + errorThrown);
+                    }
+                });
+
+    });
 </script>
