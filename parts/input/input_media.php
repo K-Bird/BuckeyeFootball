@@ -86,15 +86,15 @@
         });
 
         //On page load, load the edit tags modal passing the last player photo ID, game ID, or Misc ID from the database depending on which tab is active (players or games)
-         if (localStorage.getItem('OSU_Media_Sub_Nav') === 'Players') {
-         $('#editTagsModalContainer').load('parts/input/media_input/editTagsModal.php?playerID=' + getPhotoPlayerID() + '&type=player');
-         }
-         if (localStorage.getItem('OSU_Media_Sub_Nav') === 'Games') {
-         $('#editTagsModalContainer').load('parts/input/media_input/editTagsModal.php?gameID=' + getPhotoGameID() + '&type=game');
-         }
-         if (localStorage.getItem('OSU_Media_Sub_Nav') === 'Misc') {
-         $('#editTagsModalContainer').load('parts/input/media_input/editTagsModal.php?miscID=' + getPhotoMiscID() + '&type=misc');
-         }
+        if (localStorage.getItem('OSU_Media_Sub_Nav') === 'Players') {
+            $('#editTagsModalContainer').load('parts/input/media_input/editTagsModal.php?playerID=' + getPhotoPlayerID() + '&type=player');
+        }
+        if (localStorage.getItem('OSU_Media_Sub_Nav') === 'Games') {
+            $('#editTagsModalContainer').load('parts/input/media_input/editTagsModal.php?gameID=' + getPhotoGameID() + '&type=game');
+        }
+        if (localStorage.getItem('OSU_Media_Sub_Nav') === 'Misc') {
+            $('#editTagsModalContainer').load('parts/input/media_input/editTagsModal.php?miscID=' + getPhotoMiscID() + '&type=misc');
+        }
 
         //When New Player is Selected From the Player Photo Dropdown Set Them to View
         $('#playerPhotoSelect').change(function () {
@@ -557,6 +557,13 @@
                         success: function (data, textStatus, jqXHR)
                         {
                             $('#gameTagSelected').append(data);
+
+                            var lockStatus = localStorage.getItem('OSU_Game_Tag_Lock');
+                            if (lockStatus === 'locked') {
+                                updateTagLockValues('game');
+                            } else {
+                                enableTagLock('game');
+                            }
                         },
                         error: function (jqXHR, textStatus, errorThrown)
                         {
@@ -1006,6 +1013,10 @@
             //remove the tag on screen
             $(this).parent().remove();
 
+            var lockStatus = localStorage.getItem('OSU_Game_Tag_Lock');
+            if (lockStatus === 'locked') {
+                updateTagLockValues('game');
+            }
         });
 
         //When game upload tag X is clicked for video, alter the form value that contains the tags to upload
@@ -1166,8 +1177,8 @@
                     });
 
         });
-        
-         //On remove web link button click, delete the site
+
+        //On remove web link button click, delete the site
         $(document).on("click", '.removeWebLink', function (event) {
             event.preventDefault();
             var ID = $(this).attr('id');
@@ -1176,7 +1187,7 @@
                     {
                         url: "libs/ajax/removeExistingSite.php",
                         type: "POST",
-                        data: {ID : ID},
+                        data: {ID: ID},
                         success: function (data, textStatus, jqXHR)
                         {
                             location.reload();
@@ -1268,4 +1279,27 @@
 
     }
 
+    function enableTagLock(type) {
+
+        if (type === 'game') {
+
+            var lockStatus = localStorage.getItem('OSU_Game_Tag_Lock');
+
+            if (lockStatus === 'locked') {
+                $('#GameTagLockStatus').replaceWith('<div id="GameTagLockStatus"><span id="gameTagLockIcon" data-status="locked" class="oi oi-lock-locked"></span>&nbsp;&nbsp;Tag Games(s) In Uploaded Photo:</div>');
+            } else {
+                $('#GameTagLockStatus').replaceWith('<div id="GameTagLockStatus"><span id="gameTagLockIcon" data-status="unlocked" class="oi oi-lock-unlocked"></span>&nbsp;&nbsp;Tag Games(s) In Uploaded Photo:</div>');
+            }
+        }
+
+
+    }
+
+    function updateTagLockValues(type) {
+
+        if (type === 'game') {
+            var gameTags = $('#gamePhotoTag').val();
+            localStorage.setItem('OSU_Game_Tag_Lock_Value', gameTags);
+        }
+    }
 </script>

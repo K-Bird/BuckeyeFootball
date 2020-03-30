@@ -85,7 +85,7 @@ $misc_photo_ID = $fetchPhotoMiscID['Value'];
                 Tagged Players:&nbsp;&nbsp;
                 <div id="playerTagSelected"></div>
                 <br>
-                Tag Games(s) In Uploaded Photo:&nbsp;&nbsp;
+                <div id="GameTagLockStatus"></div>
                 <input id="gamesSearchYear" class="form-control gamesSearchField" placeholder="Search Year">
                 <input id="gamesSearchOpp" class="form-control gamesSearchField" placeholder="Search Opponent">
                 <input id="gamesSearchLoc" class="form-control gamesSearchField" placeholder="Search Location">
