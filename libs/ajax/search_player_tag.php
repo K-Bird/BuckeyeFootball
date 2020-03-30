@@ -41,7 +41,7 @@ while ($fetchFoundNames = $returnFoundNames->fetch_assoc()) {
     echo '</button>';
 }
 
-echo '<div>';
+echo '</div>';
 
-echo '<div>';
+echo '</div>';
 

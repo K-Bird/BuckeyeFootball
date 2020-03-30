@@ -520,6 +520,8 @@
                         success: function (data, textStatus, jqXHR)
                         {
                             $('#playerTagSelected').append(data);
+                            $('#playerTagResults').replaceWith('<div id="playerTagResults"></div>');
+                            $('#playerTagSearchUpload').val('');
                         },
                         error: function (jqXHR, textStatus, errorThrown)
                         {
@@ -557,6 +559,8 @@
                         success: function (data, textStatus, jqXHR)
                         {
                             $('#gameTagSelected').append(data);
+                            $('#gameTagResults').replaceWith('<div id="gameTagResults"></div>');
+                            $('.gamesSearchField').val('');
 
                             var lockStatus = localStorage.getItem('OSU_Game_Tag_Lock');
                             if (lockStatus === 'locked') {
@@ -638,6 +642,8 @@
                         success: function (data, textStatus, jqXHR)
                         {
                             $('#miscTagSelected').append(data);
+                            $('#miscTagResults').replaceWith('<div id="miscTagResults"></div>');
+                            $('#miscTagSearchUpload').val('');
                         },
                         error: function (jqXHR, textStatus, errorThrown)
                         {
