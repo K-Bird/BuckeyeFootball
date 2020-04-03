@@ -125,7 +125,14 @@
                     echo '<td>( ', $SeasonWins, ' - ', $SeasonLosses, ' - ', $SeasonTies, ' )</td>';
                     echo '<td>', calc_AP_RK_Diff($fetch_SeasonData['Season_ID'], $fetch_gameData['Week']), '</td>';
                     echo '<td>', calc_CFP_RK_Diff($fetch_SeasonData['Season_ID'], $fetch_gameData['Week'], $fetch_gameData['GM_ID']), '</td>';
-                    echo '<td><span class="badge badge-secondary"><a href="#" class="badge badge-secondary gameDetail" data-gmid="', $fetch_gameData['GM_ID'], '">Details</a></span><td>';
+                    echo '<td>';
+                    echo '<span class="badge badge-secondary"><a href="#" class="badge badge-secondary gameDetail" data-gmid="', $fetch_gameData['GM_ID'], '">Details</a></span><td>';
+                    echo returnGameIndicator('stats', $fetch_gameData['GM_ID']);
+                    echo '&nbsp;';
+                    echo returnGameIndicator('photo', $fetch_gameData['GM_ID']);
+                    echo '&nbsp;';
+                    echo returnGameIndicator('video', $fetch_gameData['GM_ID']);
+                    echo '</td>';
                     echo '</tr>';
                 }
             }

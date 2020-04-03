@@ -1,4 +1,5 @@
 <?php
+
 /* Database Functions - database processing or field lookup */
 
 //Create a database connection
@@ -21,6 +22,7 @@ function db_connect() {
     }
     return $connection;
 }
+
 //Execute a database query
 function db_query($query) {
     // Connect to the database
@@ -31,11 +33,13 @@ function db_query($query) {
 
     return $result;
 }
+
 //Escape a database query
 function db_quote($query) {
     $connection = db_connect();
     return "'" . mysqli_real_escape_string($connection, $query) . "'";
 }
+
 //Take a season ID and return the associated year
 function getSeason_Year($Season_ID) {
 
@@ -45,6 +49,7 @@ function getSeason_Year($Season_ID) {
 
     return $Season_Year;
 }
+
 //Take a season year and return the associated ID
 function getSeason_ID($Season_Year) {
 
@@ -54,6 +59,7 @@ function getSeason_ID($Season_Year) {
 
     return $Season_ID;
 }
+
 //Return the maximum week for a given season
 function returnMaxWeek($SeasonID) {
 
@@ -61,6 +67,7 @@ function returnMaxWeek($SeasonID) {
     $fetchMaxWeek = $getMaxWeek->fetch_assoc();
     return $fetchMaxWeek['MaxWeek'];
 }
+
 //Return the largest game ID from games table
 function returnMaxGameID() {
 
@@ -70,6 +77,7 @@ function returnMaxGameID() {
 
     return $lastGameID;
 }
+
 //Return the season ID of the given game
 function getSeasonIDbyGameID($GameID) {
 
@@ -78,6 +86,7 @@ function getSeasonIDbyGameID($GameID) {
     $Season_ID = $fecthGameData['Season_ID'];
     return $Season_ID;
 }
+
 //Return what the next Player Master ID would be
 function incrementPlayerMasterID() {
 
@@ -86,6 +95,7 @@ function incrementPlayerMasterID() {
     $nextID = $fetchMaxMasterID['MaxID'] + 1;
     return $nextID;
 }
+
 //Return what the next Player row ID would be
 function incrementPlayerRow() {
 
@@ -94,6 +104,7 @@ function incrementPlayerRow() {
     $nextID = $fetchMaxPlayerRow['MaxRow'] + 1;
     return $nextID;
 }
+
 //Return the requested field from the games table
 function returnGameFieldByGameID($db_field, $GameID) {
 
@@ -102,6 +113,7 @@ function returnGameFieldByGameID($db_field, $GameID) {
     $value = $fetchGameField[$db_field];
     return $value;
 }
+
 //Return a player's master ID based on the player row
 function returnPlayerMasterID($player_row) {
 
@@ -128,6 +140,7 @@ function checkOT($Game_ID) {
         }
     }
 }
+
 //Return OSU record part based on part and level needed
 function returnRecord($Season_ID, $record_part, $record_level) {
 
@@ -197,12 +210,14 @@ function returnRecord($Season_ID, $record_part, $record_level) {
 
     return $recordCount;
 }
+
 //Return a player's first and last name together
 function returnPlayerName($Player_Master_ID) {
     $getPlayer = db_query("SELECT * FROM `players` WHERE Player_Master_ID='{$Player_Master_ID}'");
     $fetchPlayerName = $getPlayer->fetch_assoc();
     return $fetchPlayerName['First_Name'] . " " . $fetchPlayerName['Last_Name'];
 }
+
 //Build the table headings for player state card summary
 function playerStatCardthead($cagetory) {
 
@@ -235,6 +250,7 @@ function playerStatCardthead($cagetory) {
         return '<th></th><td>Punts</td><td>Punt Yards</td><td>Punt Average</td><td>Punt Long</td>';
     }
 }
+
 //Build depth chart button for given position (I formation and spread)
 function return_depth_btn($Season_ID, $position, $depth_chart_num) {
 
@@ -261,6 +277,7 @@ function return_depth_btn($Season_ID, $position, $depth_chart_num) {
         echo '</span>';
     }
 }
+
 //Calculate the years a player played for display
 function returnYearsPlayed($Player_Master_ID) {
 
@@ -315,9 +332,10 @@ function returnYearsPlayed($Player_Master_ID) {
         }
     }
 }
+
 //Returns outcome of a game based on the OSU and Opponent scores (full text)
 function returnGameOutcome($OSU_Score, $Opp_Score) {
-    
+
     if ($OSU_Score === '0' && $Opp_Score === '0') {
         return 'Not Played';
     }
@@ -331,6 +349,7 @@ function returnGameOutcome($OSU_Score, $Opp_Score) {
         return 'Tied';
     }
 }
+
 //Returns outcome of a game based on the OSU and Opponent scores (abbreviated)
 function returnGameOutcomeAbbrev($OSU_Score, $Opp_Score) {
 
@@ -344,6 +363,7 @@ function returnGameOutcomeAbbrev($OSU_Score, $Opp_Score) {
         return '<span style="color: yellow; font-weight: bold">T</span>';
     }
 }
+
 //Return the date a given game was played
 function returnGameDate($GameID) {
 
@@ -351,6 +371,7 @@ function returnGameDate($GameID) {
     $fetchGameDate = $getGameDate->fetch_assoc();
     return $fetchGameDate['Date'];
 }
+
 //Returns display text for home, away or neutral site games
 function HomeAwayLookup($HomeOrAway) {
 
@@ -364,6 +385,7 @@ function HomeAwayLookup($HomeOrAway) {
         return 'Neutral Site';
     }
 }
+
 //Display formatted home or away for given game
 function returnVsAtN($HomeOrAway) {
 
@@ -374,6 +396,7 @@ function returnVsAtN($HomeOrAway) {
         return 'at';
     }
 }
+
 //Return the tag name of a misc tag based on the Misc video Tag ID
 function returnMiscTagNameByIDphoto($Misc_ID_Photo) {
 
@@ -382,6 +405,7 @@ function returnMiscTagNameByIDphoto($Misc_ID_Photo) {
     $TagName = $fetchTagName['Tag_Name'];
     return $TagName;
 }
+
 //Return the tag name of a misc tag based on the Misc video Tag ID
 function returnMiscTagNameByIDvideo($Misc_ID_Video) {
 
@@ -390,6 +414,7 @@ function returnMiscTagNameByIDvideo($Misc_ID_Video) {
     $TagName = $fetchTagName['Tag_Name'];
     return $TagName;
 }
+
 //Build display of videos based on category given
 function buildVideosDisplay($category, $ID) {
 
@@ -408,6 +433,7 @@ function buildVideosDisplay($category, $ID) {
         echo '</div>';
     }
 }
+
 //recevie a player id and genterate all images tagged with the player ID
 function buildPlayerPhotoGallery($Player_Master_ID) {
 
@@ -424,6 +450,7 @@ function buildPlayerPhotoGallery($Player_Master_ID) {
         echo '</div>';
     }
 }
+
 //recevie a game id and genterate all images tagged with the player ID
 function buildGamePhotoGallery($Game_ID) {
 
@@ -440,6 +467,7 @@ function buildGamePhotoGallery($Game_ID) {
         echo '</div>';
     }
 }
+
 //recevie a misc tag id and genterate all images tagged with the player ID
 function buildMiscPhotoGallery($Misc_ID_Photo) {
 
@@ -456,6 +484,7 @@ function buildMiscPhotoGallery($Misc_ID_Photo) {
         echo '</div>';
     }
 }
+
 //Based on stat category return the appropriate title
 function categoryToTitle($category) {
 
@@ -486,6 +515,7 @@ function returnPTSfor($Season_ID) {
 
     return $ptsFor;
 }
+
 //return the total points opponents scored in a season
 function returnPTSaga($Season_ID) {
 
@@ -500,6 +530,7 @@ function returnPTSaga($Season_ID) {
 
     return $ptsAga;
 }
+
 //Return an opponents rank for a given game
 function returnOppRk($Game_ID) {
 
@@ -541,6 +572,7 @@ function returnOppRk($Game_ID) {
         }
     }
 }
+
 //Return OSUs rank for a given game
 function returnOSURk($Game_ID) {
 
@@ -582,6 +614,7 @@ function returnOSURk($Game_ID) {
         }
     }
 }
+
 //Given the season and week calcuate and display the following week's AP ranking difference
 function calc_AP_RK_Diff($Season_ID, $season_week) {
 
@@ -632,6 +665,7 @@ function calc_AP_RK_Diff($Season_ID, $season_week) {
         }
     }
 }
+
 //Given the season and week calcuate and display the following week's CFP ranking difference
 function calc_CFP_RK_Diff($Season_ID, $season_week, $Game_ID) {
 
@@ -679,6 +713,7 @@ function calc_CFP_RK_Diff($Season_ID, $season_week, $Game_ID) {
         return '#' . $Next_CFP . " " . returnDiff($num_diff);
     }
 }
+
 //Return the type of depth chart associated to a season
 function returnSeasonDepth($Season_ID) {
 
@@ -687,6 +722,7 @@ function returnSeasonDepth($Season_ID) {
     $depth_chart_num = $fetchDepth['DepthChart'];
     return $depth_chart_num;
 }
+
 //Return the most recent decade in existance for recorded seasons
 function returnMaxSeasonDecade() {
 
@@ -694,6 +730,46 @@ function returnMaxSeasonDecade() {
     $fetchMaxDecadeRow = $getMaxDecadeRow->fetch_assoc();
     $maxDecade = $fetchMaxDecadeRow['MaxDecade'];
     return $maxDecade;
+}
+
+//Return game indicator for given category if exists
+function returnGameIndicator($category, $Game_ID) {
+
+    if ($category === 'stats') {
+        $checkGameStatsExist = db_query("SELECT `Game_ID` FROM `stats_def` WHERE `Game_ID` = '{$Game_ID}'
+            UNION ALL
+            SELECT `Game_ID` FROM `stats_kicking` WHERE `Game_ID` = '{$Game_ID}'
+            UNION ALL
+            SELECT `Game_ID` FROM `stats_passing` WHERE `Game_ID` = '{$Game_ID}'
+            UNION ALL
+            SELECT `Game_ID` FROM `stats_punting` WHERE `Game_ID` = '{$Game_ID}'
+            UNION ALL
+            SELECT `Game_ID` FROM `stats_rec` WHERE `Game_ID` = '{$Game_ID}'
+            UNION ALL
+            SELECT `Game_ID` FROM `stats_ret` WHERE `Game_ID` = '{$Game_ID}'
+            UNION ALL
+            SELECT `Game_ID` FROM `stats_rushing` WHERE `Game_ID` = '{$Game_ID}'");
+
+        if (mysqli_num_rows($checkGameStatsExist) > 0) {
+            return '<span class="oi oi-spreadsheet" title="Stats"></span>';
+        }
+    }
+    if ($category === 'photo') {
+
+        $checkGamePhotosExist = db_query("SELECT `Game_Tags` FROM `photos` WHERE `Game_Tags` = '{$Game_ID}'");
+
+        if (mysqli_num_rows($checkGamePhotosExist) > 0) {
+            return '<span class="oi oi-image" title="Photos"></span>';
+        }
+    }
+    if ($category === 'video') {
+
+        $checkGamePhotosExist = db_query("SELECT `Game_Tags` FROM `videos` WHERE `Game_Tags` = '{$Game_ID}'");
+
+        if (mysqli_num_rows($checkGamePhotosExist) > 0) {
+            return '<span class="oi oi-video" title="Videos"></span>';
+        }
+    }
 }
 
 /* Player Functions - Player specific functions */
@@ -722,6 +798,7 @@ function checkForStarter($positionGroup, $depth_chart_num) {
         }
     }
 }
+
 //Return requested field based on a give player row
 function getPlayerFieldByRow($db_field, $player_row) {
 
@@ -730,6 +807,7 @@ function getPlayerFieldByRow($db_field, $player_row) {
     $attribute = $fetchAttribute[$db_field];
     return $attribute;
 }
+
 //Return requested field based on a Player Master ID (season doesn't matter)
 function getPlayerFieldByMasterID($db_field, $Player_Master_ID) {
 
@@ -738,6 +816,7 @@ function getPlayerFieldByMasterID($db_field, $Player_Master_ID) {
     $attribute = $fetchAttribute[$db_field];
     return $attribute;
 }
+
 //Return requested field based on a Player Master ID and Season ID
 function getPlayerFieldByMasterIDSeasonID($db_field, $Player_Master_ID, $Season_ID_ID) {
 
@@ -746,6 +825,7 @@ function getPlayerFieldByMasterIDSeasonID($db_field, $Player_Master_ID, $Season_
     $attribute = $fetchAttribute[$db_field];
     return $attribute;
 }
+
 //Return a specific players stat for a given stat category and game
 function returnGameStat($GameID, $Player_Master_ID, $category, $db_field) {
 
@@ -753,6 +833,7 @@ function returnGameStat($GameID, $Player_Master_ID, $category, $db_field) {
     $fetchGameStat = $getGameStat->fetch_assoc();
     return $fetchGameStat[$db_field];
 }
+
 //Return and array of the seasons a player played
 function returnYearsPlayedArray($Player_Master_ID) {
 
@@ -766,6 +847,7 @@ function returnYearsPlayedArray($Player_Master_ID) {
 
     return $Season_IDs;
 }
+
 //Return the current player in focus of input player stats
 function getInputPlayerAddStat() {
 
@@ -785,6 +867,7 @@ function return_game_type_ID($Game_ID) {
 
     return $fetchGameTypeData['GM_Type'];
 }
+
 //Return the type of a given game
 function return_game_type_by_ID($Game_ID) {
 
@@ -797,6 +880,7 @@ function return_game_type_by_ID($Game_ID) {
     $type = $fetchGameType['Type'];
     return $type;
 }
+
 //Returns game type name based on ID
 function gameTypeLookup($Game_Type_ID) {
 
@@ -804,6 +888,7 @@ function gameTypeLookup($Game_Type_ID) {
     $fetchGameTypeData = $getGameTypeData->fetch_assoc();
     return $fetchGameTypeData['Name'];
 }
+
 //Return the season year for a given game
 function getGameYear($Game_ID) {
 
@@ -829,6 +914,7 @@ function returnDiff($num_diff) {
         return '<span class=text-success>(' . $num_diff . ')</span>';
     }
 }
+
 //Returns formatted location based on ID
 function locationLookup($Location_ID) {
 
@@ -841,6 +927,7 @@ function locationLookup($Location_ID) {
         return $fetchLocData['Stadium'] . " (" . $fetchLocData['City'] . ", " . $fetchLocData['State'] . ")";
     }
 }
+
 //Returns conference name based on ID
 function conferenceLookup($Conference_ID) {
 
@@ -849,6 +936,7 @@ function conferenceLookup($Conference_ID) {
 
     return $fetchConfData['Conf_Name'];
 }
+
 //Returns division name based on ID
 function divisionLookup($Division_ID) {
 
@@ -857,6 +945,7 @@ function divisionLookup($Division_ID) {
 
     return $fetchDivData['Div_Name'];
 }
+
 //Return the school name of a given opponent
 function opponentLookup($opp_ID) {
 
@@ -865,11 +954,13 @@ function opponentLookup($opp_ID) {
     $oppName = $fetchOpp['School'];
     return $oppName;
 }
+
 //Convert a number to a percentage
 function toPercent($num) {
 
     return sprintf("%.0f%%", $num * 100);
 }
+
 //Return an array of photo IDs that a given category (player, game, misc)  is tagged in
 function taggedPhotoIDs($ID, $category) {
 
@@ -933,6 +1024,7 @@ function taggedPhotoIDs($ID, $category) {
         return $Misc;
     }
 }
+
 //Return an array of video IDs that a given category (player, game, misc)  is tagged in
 function taggedVideoIDs($ID, $category) {
 
@@ -976,6 +1068,7 @@ function taggedVideoIDs($ID, $category) {
         return $IDgedMisc;
     }
 }
+
 //Determine if the numbers in an array are in sequential order
 function is_array_sequential($array) {
     $delta = $array[1] - $array[0];
@@ -987,6 +1080,7 @@ function is_array_sequential($array) {
     }
     return true;
 }
+
 //Create and return an array of all player positions
 function returnPositionArray() {
 
