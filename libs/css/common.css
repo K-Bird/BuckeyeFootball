@@ -4,6 +4,10 @@
     --color-gray : #666666;
 }
 
+.color-scarlet {
+    color : var(--color-scarlet);
+}
+
 /* Loading Icon Look and Animation */
 .loaderIcon {
     position: absolute;

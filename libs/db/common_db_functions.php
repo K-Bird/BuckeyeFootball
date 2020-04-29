@@ -754,6 +754,14 @@ function returnGameIndicator($category, $Game_ID) {
             return '<span class="oi oi-spreadsheet" title="Stats"></span>';
         }
     }
+        if ($category === 'box') {
+
+        $checkGamePhotosExist = db_query("SELECT * FROM `games_box_scores` WHERE `GM_ID` = '{$Game_ID}'");
+
+        if (mysqli_num_rows($checkGamePhotosExist) > 0) {
+            return '<span class="oi oi-box" title="Box Score"></span>';
+        }
+    }
     if ($category === 'photo') {
 
         $checkGamePhotosExist = db_query("SELECT `Game_Tags` FROM `photos` WHERE `Game_Tags` = '{$Game_ID}'");
@@ -1086,4 +1094,147 @@ function returnPositionArray() {
 
     $posArray = array('QB', 'FB', 'H-B', 'RB', 'WR', 'TE', 'OL', 'LT', 'LG', 'C', 'RG', 'RT', 'DL', 'DE', 'DT', 'LB', 'OLB', 'MLB', 'CB', 'S', 'K', 'P', 'KR', 'PR', 'LS', 'H');
     return $posArray;
+}
+
+/* Box Score Functions - Box score and scoring play functions */
+
+//Take scoring play type and return full verbiage
+function returnScoringPlayTypeVerb($type, $OSU_OPP) {
+
+    if ($type === 'passTD') {
+
+        if ($OSU_OPP === 'OSU') {
+            return ' pass from ';
+        }
+        if ($OSU_OPP === 'OPP') {
+            return ' pass ';
+        }
+    }
+    if ($type === 'rushTD') {
+
+        return ' run ';
+    }
+    if ($type === 'FG') {
+
+        return ' field goal ';
+    }
+    if ($type === 'INT') {
+
+        return ' interception return ';
+    }
+    if ($type === 'Fum') {
+
+        return ' fumble recovery ';
+    }
+    if ($type === 'KR') {
+
+        return ' kickoff return ';
+    }
+    if ($type === 'PR') {
+
+        return ' punt return ';
+    }
+    if ($type === 'Saf') {
+
+        return ' Safety ';
+    }
+}
+
+//Display OSU scoring play
+function displayOSUScoringPlay($fetchScoringPlays) {
+
+    echo '<li class="list-group-item small" style="background-color : #BB0000; color: white">';
+    echo getPlayerFieldByMasterID('First_Name', $fetchScoringPlays['Scoring_Player']) . " ";
+    echo getPlayerFieldByMasterID('Last_Name', $fetchScoringPlays['Scoring_Player']) . " ";
+    echo $fetchScoringPlays['Distance'] . " Yard";
+    echo returnScoringPlayTypeVerb($fetchScoringPlays['Play_Type'], $fetchScoringPlays['OSU_OPP']);
+
+    if ($fetchScoringPlays['Play_Type'] === 'passTD') {
+
+        echo getPlayerFieldByMasterID('First_Name', $fetchScoringPlays['From_Player']) . " ";
+        echo getPlayerFieldByMasterID('Last_Name', $fetchScoringPlays['From_Player']) . " ";
+    }
+    echo " (" . $fetchScoringPlays['Time_Left'] . " Remaining)";
+    echo '&nbsp;&nbsp;<span id="', $fetchScoringPlays['Play_ID'], '" class="oi oi-circle-x removeScoringPlay" style="color: white"></span>';
+    echo '</li>';
+}
+
+//Display OPP scoring play
+function displayOPPScoringPlay($fetchScoringPlays, $oppName) {
+
+    echo '<li class="list-group-item small">';
+    echo $oppName . " ";
+    echo $fetchScoringPlays['Distance'] . " Yard";
+    echo returnScoringPlayTypeVerb($fetchScoringPlays['Play_Type'], $fetchScoringPlays['OSU_OPP']);
+
+    if ($fetchScoringPlays['Play_Type'] === 'passTD') {
+
+        echo getPlayerFieldByMasterID('First_Name', $fetchScoringPlays['From_Player']) . " ";
+        echo getPlayerFieldByMasterID('Last_Name', $fetchScoringPlays['From_Player']) . " ";
+    }
+    echo " (" . $fetchScoringPlays['Time_Left'] . " Remaining)";
+    echo '&nbsp;&nbsp;<span id="', $fetchScoringPlays['Play_ID'], '" class="oi oi-circle-x removeScoringPlay" style="color:red"></span>';
+    echo '</li>';
+}
+
+//Display OSU scoring play - light options
+function displayOSUScoringPlayLight($fetchScoringPlays) {
+
+    echo getPlayerFieldByMasterID('First_Name', $fetchScoringPlays['Scoring_Player']) . " ";
+    echo getPlayerFieldByMasterID('Last_Name', $fetchScoringPlays['Scoring_Player']) . " ";
+    echo $fetchScoringPlays['Distance'] . " Yard";
+    echo returnScoringPlayTypeVerb($fetchScoringPlays['Play_Type'], $fetchScoringPlays['OSU_OPP']);
+
+    if ($fetchScoringPlays['Play_Type'] === 'passTD') {
+
+        echo getPlayerFieldByMasterID('First_Name', $fetchScoringPlays['From_Player']) . " ";
+        echo getPlayerFieldByMasterID('Last_Name', $fetchScoringPlays['From_Player']) . " ";
+    }
+    echo '&nbsp;&nbsp;<span id="', $fetchScoringPlays['Play_ID'], '" class="oi oi-circle-x removeScoringPlay" style="color:red"></span>';
+}
+
+//Display OPP scoring play - light options
+function displayOPPScoringPlayLight($fetchScoringPlays, $oppName) {
+
+    echo $oppName . " ";
+    echo $fetchScoringPlays['Distance'] . " Yard";
+    echo returnScoringPlayTypeVerb($fetchScoringPlays['Play_Type'], $fetchScoringPlays['OSU_OPP']);
+
+    if ($fetchScoringPlays['Play_Type'] === 'passTD') {
+
+        echo getPlayerFieldByMasterID('First_Name', $fetchScoringPlays['From_Player']) . " ";
+        echo getPlayerFieldByMasterID('Last_Name', $fetchScoringPlays['From_Player']) . " ";
+    }
+    echo '&nbsp;&nbsp;<span id="', $fetchScoringPlays['Play_ID'], '" class="oi oi-circle-x removeScoringPlay" style="color:red"></span>';
+}
+
+function calculateGameFlowPoints($Score_Type, $Post_Points) {
+
+    $points = 0;
+
+    if ($Score_Type === 'passTD' || $Score_Type === 'rushTD' || $Score_Type === 'INT' || $Score_Type === 'fum' || $Score_Type === 'KR' || $Score_Type === 'PR') {
+        $points = 6 + $Post_Points;
+    }
+    if ($Score_Type === 'FG') {
+        $points = 3;
+    }
+    if ($Score_Type === 'Saf') {
+        $points = 2;
+    }
+
+    return $points;
+}
+
+function displayFlowScoreType($Score_Type) {
+
+    if ($Score_Type === 'passTD' || $Score_Type === 'rushTD' || $Score_Type === 'INT' || $Score_Type === 'fum' || $Score_Type === 'KR' || $Score_Type === 'PR') {
+        $type = 'TD';
+    }
+    if ($Score_Type === 'FG') {
+        $type = 'FG';
+    }
+    if ($Score_Type === 'Saf') {
+        $type = 'Saftey';
+    }
+    return $type;
 }

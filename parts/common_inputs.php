@@ -1,4 +1,5 @@
 <?php
+
 //Build Decades Select List
 function displayDecadeSelect($current, $Season_ID) {
 
@@ -21,6 +22,7 @@ function displayDecadeSelect($current, $Season_ID) {
 
     echo '</select>';
 }
+
 //Build Conferences Select List
 function displayConfSelect($current, $Season_ID) {
 
@@ -43,6 +45,7 @@ function displayConfSelect($current, $Season_ID) {
 
     echo '</select>';
 }
+
 //Build Division Select List
 function displayDivSelect($current, $Season_ID) {
 
@@ -65,6 +68,7 @@ function displayDivSelect($current, $Season_ID) {
 
     echo '</select>';
 }
+
 //Build Conf Champ Select List
 function displayConfChampSelect($current, $Season_ID) {
 
@@ -101,6 +105,7 @@ function displayConfChampSelect($current, $Season_ID) {
 
     echo '</select>';
 }
+
 //Build National Champ Select List
 function displayNatChampSelect($current, $Season_ID) {
 
@@ -123,6 +128,7 @@ function displayNatChampSelect($current, $Season_ID) {
 
     echo '</select>';
 }
+
 //Build Head Coach Select List
 function displayHCSelect($current, $Season_ID) {
 
@@ -145,6 +151,7 @@ function displayHCSelect($current, $Season_ID) {
 
     echo '</select>';
 }
+
 //Build Depth Chart Select List
 function displayDepthSelect($current, $Season_ID) {
 
@@ -181,6 +188,7 @@ function displayDepthSelect($current, $Season_ID) {
 
     echo '</select>';
 }
+
 //Build Home/Away Select List
 function displayHorAselect($current, $Game_ID) {
 
@@ -223,6 +231,7 @@ function displayHorAselect($current, $Game_ID) {
 
     echo '</select>';
 }
+
 //Build Location Select List
 function displayLocSelect($current, $Game_ID) {
 
@@ -246,6 +255,7 @@ function displayLocSelect($current, $Game_ID) {
 
     echo '</select>';
 }
+
 //Build Opponents Select List
 function displayOppSelect($current, $Game_ID) {
 
@@ -269,6 +279,7 @@ function displayOppSelect($current, $Game_ID) {
 
     echo '</select>';
 }
+
 //Build recruiting class select List
 function displayRecruitClassSelect($current) {
 
@@ -292,6 +303,7 @@ function displayRecruitClassSelect($current) {
 
     echo '</select>';
 }
+
 //Build Game Type Select List
 function displayGMTypeSelect($current, $Game_ID) {
 
@@ -314,6 +326,7 @@ function displayGMTypeSelect($current, $Game_ID) {
 
     echo '</select>';
 }
+
 //Build a checkbox indicating if a game was conference or not
 function displayConfGMCheckbox($current, $Game_ID) {
 
@@ -325,6 +338,7 @@ function displayConfGMCheckbox($current, $Game_ID) {
 
     echo 'style="width: 50px">';
 }
+
 //Build a checkbox indicating if a game was divisional or not
 function displayDivGMCheckbox($current, $Game_ID) {
 
@@ -336,6 +350,7 @@ function displayDivGMCheckbox($current, $Game_ID) {
 
     echo 'style="width: 50px">';
 }
+
 //Build a dropdown of player classes to choose from
 function displayPlayerClassSelect($current, $player_row) {
 
@@ -413,6 +428,7 @@ function displayPlayerClassSelect($current, $player_row) {
 
     echo '</select>';
 }
+
 //Build a dropdown of players in a given season to choose from
 function displayExistingPlayersSelect($Season_ID, $ID) {
 
@@ -429,6 +445,7 @@ function displayExistingPlayersSelect($Season_ID, $ID) {
 
     echo '</select>';
 }
+
 //Build a dropdown of positions based on given position group 
 function displayPosGroupSelect($positionGroup) {
 
@@ -461,6 +478,7 @@ function displayPosGroupSelect($positionGroup) {
         echo '<select id="secondaryPosSelect" hidden><option>N-A</option></select>';
     }
 }
+
 //Build a set of decade dropdowns with existing years to choose from
 function buildDecadeDropdowns($Class) {
 
@@ -478,6 +496,7 @@ function buildDecadeDropdowns($Class) {
         echo '&nbsp;';
     }
 }
+
 //Build the years of a decade for decade dropdowns set
 function displayDecadeDropdownOptions($ID, $Class) {
 
@@ -488,6 +507,7 @@ function displayDecadeDropdownOptions($ID, $Class) {
         }
     }
 }
+
 //Build a set of decade buttons based on existing decades
 function buildDecadeButtons($Class) {
 
@@ -497,13 +517,14 @@ function buildDecadeButtons($Class) {
         echo '<button class="btn btn-secondary ', $Class, '" data-decade="', $fetchDecades['DecadeName'], '">', $fetchDecades['DecadeName'], '</button>&nbsp;';
     }
 }
+
 //Build a dropdown of all player positions
 function displayAllPosSelect($PorS, $current, $player_row) {
 
     echo '<select id="', $player_row, '" class="form-control playerPOS', $PorS, '" style="width: 75px">';
 
     $positionArray = returnPositionArray();
-    array_push($positionArray,'DB');
+    array_push($positionArray, 'DB');
 
     foreach ($positionArray as $pos) {
 
@@ -516,6 +537,7 @@ function displayAllPosSelect($PorS, $current, $player_row) {
 
     echo '</select>';
 }
+
 //Build a checkbox indicating if a game went to overtime
 function displayOTCheckbox($current, $Game_ID) {
 
@@ -527,6 +549,7 @@ function displayOTCheckbox($current, $Game_ID) {
 
     echo 'style="width: 50px">';
 }
+
 //Build a dropdown of conferences for filtering
 function displayConfFilterSelect() {
 
@@ -544,6 +567,7 @@ function displayConfFilterSelect() {
 
     echo '</select>';
 }
+
 //Build a dropdown of divisions for filtering
 function displayDivFilterSelect() {
 
@@ -561,6 +585,7 @@ function displayDivFilterSelect() {
 
     echo '</select>';
 }
+
 //Build a dropdown of conference championships for filtering
 function displayConfChampFilterSelect() {
 
@@ -578,6 +603,7 @@ function displayConfChampFilterSelect() {
 
     echo '</select>';
 }
+
 //Build a dropdown of national championship for filtering
 function displayNationalChampFilterSelect() {
 
@@ -595,6 +621,7 @@ function displayNationalChampFilterSelect() {
 
     echo '</select>';
 }
+
 //Build a dropdown of player positions for filtering
 function displayPlayerPositionFilterSelect() {
 
@@ -612,6 +639,7 @@ function displayPlayerPositionFilterSelect() {
 
     echo '</select>';
 }
+
 //Build a dropdown of player classess for filtering
 function displayPlayerClassFilterSelect() {
 
@@ -629,6 +657,7 @@ function displayPlayerClassFilterSelect() {
 
     echo '</select>';
 }
+
 //Build Players With Photos Select List
 function displayPlayerPhotoSelect($Player_Master_ID) {
 
@@ -665,6 +694,7 @@ function displayPlayerPhotoSelect($Player_Master_ID) {
 
     echo '</select>';
 }
+
 //Build Games With Photos Select List
 function displayGamePhotoSelect($Game_ID) {
 
@@ -704,6 +734,7 @@ function displayGamePhotoSelect($Game_ID) {
 
     echo '</select>';
 }
+
 //Build Misc Tags With Photos Select List
 function displayMiscPhotoSelect($Misc_ID_Photo) {
 
@@ -740,6 +771,7 @@ function displayMiscPhotoSelect($Misc_ID_Photo) {
 
     echo '</select>';
 }
+
 //Build Games With Videos Select List
 function displayGameVideoSelect($Game_ID) {
 
@@ -779,6 +811,7 @@ function displayGameVideoSelect($Game_ID) {
 
     echo '</select>';
 }
+
 //Build videos with Misc category select list
 function displayVideoMiscSelect() {
 
@@ -794,6 +827,7 @@ function displayVideoMiscSelect() {
 
     echo '</select>';
 }
+
 //Build player season status select
 function playerStatusSelect($current, $player_row) {
 
@@ -841,6 +875,7 @@ function playerStatusSelect($current, $player_row) {
 
     echo '</select>';
 }
+
 //Build player offeson status select
 function playerOffseasonSelect($current, $player_row) {
 
@@ -883,6 +918,7 @@ function playerOffseasonSelect($current, $player_row) {
 
     echo '</select>';
 }
+
 //Build a dropdown of player season status for filtering
 function displayPlayerStatusFilterSelect() {
 
@@ -900,6 +936,7 @@ function displayPlayerStatusFilterSelect() {
 
     echo '</select>';
 }
+
 //Build a dropdown of player offseason status for filtering
 function displayPlayerOffseasonFilterSelect() {
 
@@ -916,4 +953,26 @@ function displayPlayerOffseasonFilterSelect() {
     }
 
     echo '</select>';
+}
+
+//Build year selector grouped by decade
+function buildYearSelector() {
+
+    $getDecades = db_query("SELECT * FROM `decades` ORDER BY Decade_Row DESC");
+    while ($fetchDecades = $getDecades->fetch_assoc()) {
+
+        echo '<span class="badge badge-dark">' . $fetchDecades['DecadeName'] . '</span>&nbsp;';
+
+        $getSeasons = db_query("SELECT * FROM `seasons` WHERE Decade_ID='{$fetchDecades['Decade_Row']}' ORDER BY Year ASC");
+        $num_years = mysqli_num_rows($getSeasons);
+        $i = 0;
+        while ($fetchSeasons = $getSeasons->fetch_assoc()) {
+            if (++$i === $num_years) {
+                echo '<a href="#" class="boxYear" data-seasonID="',$fetchSeasons['Season_ID'],'">' . $fetchSeasons['Year'] . '</a>';
+            } else {
+                echo '<a href="#" class="boxYear" data-seasonID="',$fetchSeasons['Season_ID'],'">' . $fetchSeasons['Year'] . '</a>&nbsp;&middot;&nbsp;';
+            }
+        }
+        echo '<br>';
+    }
 }

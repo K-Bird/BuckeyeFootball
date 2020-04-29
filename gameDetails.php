@@ -16,6 +16,7 @@ $fetchGameData = $getGameData->fetch_assoc();
         <link rel="stylesheet" type="text/css" href="libs/css/nouislider.css">
         <link rel="stylesheet" type="text/css" href="libs/css/grid-gallery.css">
         <link rel="stylesheet" type="text/css" href="libs/css/lightbox.css">
+        <link rel="stylesheet" type="text/css" href="libs/css/common.css">
         <script src="libs/js/jquery.js"></script>
         <script src="libs/js/bootstrap.js"></script>
         <script src="libs/js/nouislider.js"></script>
@@ -27,7 +28,7 @@ $fetchGameData = $getGameData->fetch_assoc();
     <body>
         <!-- include main navigation bar at top of page -->
         <?php include ('nav/navBar.php'); ?>
-        <div class="container">
+        <div class="container-fluid">
             <div class="row" style="text-align: center">
                 <div class="col-lg-12">
                     <br>
@@ -41,6 +42,7 @@ $fetchGameData = $getGameData->fetch_assoc();
                     <!-- Button group to change the game details view -->
                     <div class="btn-group" role="group">
                         <button id="gmdetailsOverview" class="btn btn-secondary gmDetailNav">Overview</button>
+                        <button id="gmdetailsBox" class="btn btn-secondary gmDetailNav">Box Score</button>
                         <button id="gmdetailsStats" class="btn btn-secondary gmDetailNav">Stats</button>
                         <button id="gmdetailsPhotos" class="btn btn-secondary gmDetailNav">Photos</button>
                         <button id="gmdetailsVideos" class="btn btn-secondary gmDetailNav">Videos</button> 
@@ -55,6 +57,7 @@ $fetchGameData = $getGameData->fetch_assoc();
                     </div>
                 </div>
             </div>
+        </div>
     </body>
 </html>
 <script>
@@ -69,6 +72,10 @@ $fetchGameData = $getGameData->fetch_assoc();
         if (localStorage.getItem('OSU_Game_Detail_View') === 'Overall') {
             $('#gmdetailsOverview').addClass('active');
             displayGameDetailContent('overview', getGameID());
+        }
+        if (localStorage.getItem('OSU_Game_Detail_View') === 'Box') {
+            $('#gmdetailsBox').addClass('active');
+            displayGameDetailContent('box', getGameID());
         }
         if (localStorage.getItem('OSU_Game_Detail_View') === 'Stats') {
             $('#gmdetailsStats').addClass('active');
@@ -91,7 +98,13 @@ $fetchGameData = $getGameData->fetch_assoc();
             $('#gmdetailsOverview').addClass('active');
             displayGameDetailContent('overview', getGameID());
         });
+        $("#gmdetailsBox").click(function () {
 
+            localStorage.setItem('OSU_Game_Detail_View', 'Box');
+            removeGmDetailNavActive();
+            $('#gmdetailsBox').addClass('active');
+            displayGameDetailContent('box', getGameID());
+        });
         $("#gmdetailsStats").click(function () {
 
             localStorage.setItem('OSU_Game_Detail_View', 'Stats');

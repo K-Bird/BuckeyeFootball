@@ -75,6 +75,9 @@
                 if ($Input_View === 'Media') {
                     include ('parts/input/input_media.php');
                 }
+                if ($Input_View === 'Box') {
+                    include ('parts/input/input_box_scores.php');
+                }
                 ?>
             </div>
         </div>
@@ -115,6 +118,48 @@
                 });
     }
 
+    //Set localstorage for box score editing
+    if (localStorage.getItem('OSU_Input_Box_View') === null) {
+        localStorage.setItem('OSU_Input_Box_View', 'controls');
+    }
+    if (localStorage.getItem('OSU_Input_Box_View') === 'controls') {
+
+        $.ajax(
+                {
+                    url: "libs/ajax/display_box_score_controls.php",
+                    type: "POST",
+                    data: {},
+                    success: function (data, textStatus, jqXHR)
+                    {
+                        $('#boxEditContent').replaceWith(data);
+                    },
+                    error: function (jqXHR, textStatus, errorThrown)
+                    {
+                        alert("Form Did Not Process: " + errorThrown);
+                    }
+                });
+
+    }
+    if (localStorage.getItem('OSU_Input_Box_View') === 'game') {
+
+        var Game_ID = localStorage.getItem('OSU_Input_Box_Game');
+        $.ajax(
+                {
+                    url: "libs/ajax/select_box_score_game.php",
+                    type: "POST",
+                    data: {new_game: Game_ID},
+                    success: function (data, textStatus, jqXHR)
+                    {
+                        $('#boxEditContent').replaceWith(data);
+                    },
+                    error: function (jqXHR, textStatus, errorThrown)
+                    {
+                        alert("Form Did Not Process: " + errorThrown);
+                    }
+                });
+
+    }
+
     $(document).ready(function () {
 
         //When the game tag lock icon is clicked, update the status in local storage and redisplay the icon
@@ -135,103 +180,16 @@
 
         });
 
-        //When input view seasons button is clicked update the database to the new view
-        $("#input_seasons_btn").click(function () {
+        //When an input view button is clicked update the database to the new view
+        $(".inputViewBtn").click(function () {
+
+            var view = $(this).data('view');
+
             $.ajax(
                     {
                         url: "libs/ajax/update_input_view.php",
                         type: "POST",
-                        data: {new_view: "Seasons"},
-                        success: function (data, textStatus, jqXHR)
-                        {
-                            location.reload();
-                        },
-                        error: function (jqXHR, textStatus, errorThrown)
-                        {
-                            alert("Form Did Not Process: " + errorThrown);
-                        }
-                    });
-            e.preventDefault();
-        });
-        //When input view players button is clicked update the database to the new view
-        $("#input_players_btn").click(function () {
-            $.ajax(
-                    {
-                        url: "libs/ajax/update_input_view.php",
-                        type: "POST",
-                        data: {new_view: "Players"},
-                        success: function (data, textStatus, jqXHR)
-                        {
-                            location.reload();
-                        },
-                        error: function (jqXHR, textStatus, errorThrown)
-                        {
-                            alert("Form Did Not Process: " + errorThrown);
-                        }
-                    });
-            e.preventDefault();
-        });
-        //When input view recruits button is clicked update the database to the new view
-        $("#input_recruits_btn").click(function () {
-            $.ajax(
-                    {
-                        url: "libs/ajax/update_input_view.php",
-                        type: "POST",
-                        data: {new_view: "Recruits"},
-                        success: function (data, textStatus, jqXHR)
-                        {
-                            location.reload();
-                        },
-                        error: function (jqXHR, textStatus, errorThrown)
-                        {
-                            alert("Form Did Not Process: " + errorThrown);
-                        }
-                    });
-            e.preventDefault();
-        });
-        //When input view stats button is clicked update the database to the new view
-        $("#input_stats_btn").click(function () {
-            $.ajax(
-                    {
-                        url: "libs/ajax/update_input_view.php",
-                        type: "POST",
-                        data: {new_view: "Stats"},
-                        success: function (data, textStatus, jqXHR)
-                        {
-                            location.reload();
-                        },
-                        error: function (jqXHR, textStatus, errorThrown)
-                        {
-                            alert("Form Did Not Process: " + errorThrown);
-                        }
-                    });
-            e.preventDefault();
-        });
-        //When input view lists button is clicked update the database to the new view
-        $("#input_lists_btn").click(function () {
-            $.ajax(
-                    {
-                        url: "libs/ajax/update_input_view.php",
-                        type: "POST",
-                        data: {new_view: "Lists"},
-                        success: function (data, textStatus, jqXHR)
-                        {
-                            location.reload();
-                        },
-                        error: function (jqXHR, textStatus, errorThrown)
-                        {
-                            alert("Form Did Not Process: " + errorThrown);
-                        }
-                    });
-            e.preventDefault();
-        });
-        //When input view lists button is clicked update the database to the new view
-        $("#input_media_btn").click(function () {
-            $.ajax(
-                    {
-                        url: "libs/ajax/update_input_view.php",
-                        type: "POST",
-                        data: {new_view: "Media"},
+                        data: {new_view: view},
                         success: function (data, textStatus, jqXHR)
                         {
                             location.reload();
@@ -1936,7 +1894,7 @@
 
                 $.ajax(
                         {
-                            url: "libs/ajax/search_existing_player.php",
+                            url: "libs/ajax/search_existing_player_recruit.php",
                             type: "POST",
                             data: {name: name, recID: recID},
                             success: function (data, textStatus, jqXHR)
@@ -1973,5 +1931,378 @@
                     });
 
         });
+    });
+
+    //When a box score year is clicked, display the selectable games for that season
+    $(document).on("click", '.boxYear', function (e) {
+
+        var seasonID = $(this).attr('data-seasonID');
+
+        $.ajax(
+                {
+                    url: "libs/ajax/display_box_score_games.php",
+                    type: "POST",
+                    data: {new_season: seasonID},
+                    success: function (data, textStatus, jqXHR)
+                    {
+                        $('#boxGamesResults').replaceWith('<div id="boxGamesResults">' + data + '</div>');
+                    },
+                    error: function (jqXHR, textStatus, errorThrown)
+                    {
+                        alert("Form Did Not Process: " + errorThrown);
+                    }
+                });
+    });
+
+    //When a box score game is clicked, display the game's box score for editing
+    $(document).on("click", '.selectBoxScoreGame', function (e) {
+
+        var Game_ID = $(this).attr('data-gmID');
+        localStorage.setItem('OSU_Input_Box_Game', Game_ID);
+        localStorage.setItem('OSU_Input_Box_View', 'game');
+
+        $.ajax(
+                {
+                    url: "libs/ajax/select_box_score_game.php",
+                    type: "POST",
+                    data: {new_game: Game_ID},
+                    success: function (data, textStatus, jqXHR)
+                    {
+                        $('#boxScoreControls').replaceWith(data);
+                    },
+                    error: function (jqXHR, textStatus, errorThrown)
+                    {
+                        alert("Form Did Not Process: " + errorThrown);
+                    }
+                });
+    });
+
+    //When change game for box score editing button is clicked, redisplay box edit controls
+    $(document).on("click", '#changeBoxGame, #changeBoxGameNew', function (e) {
+
+        localStorage.setItem('OSU_Input_Box_View', 'controls');
+
+        $.ajax(
+                {
+                    url: "libs/ajax/display_box_score_controls.php",
+                    type: "POST",
+                    data: {},
+                    success: function (data, textStatus, jqXHR)
+                    {
+                        $('#boxScoreGameInput').replaceWith(data);
+                    },
+                    error: function (jqXHR, textStatus, errorThrown)
+                    {
+                        alert("Form Did Not Process: " + errorThrown);
+                    }
+                });
+    });
+    var boxPointsTimer;
+    //When box score points is changed, update the points for the game being edited
+    $(document).on("keydown", '.boxPoints', function (e) {
+
+        var _this = $(this);
+
+        clearTimeout(boxPointsTimer);
+        boxPointsTimer = setTimeout(function () {
+
+            var Game_ID = _this.attr('data-gmid');
+            var field = _this.attr('data-field');
+            var value = _this.val();
+
+            $.ajax(
+                    {
+                        url: "libs/ajax/update_box_points.php",
+                        type: "POST",
+                        data: {Game_ID: Game_ID, field: field, value: value},
+                        success: function (data, textStatus, jqXHR)
+                        {
+                            location.reload();
+                        },
+                        error: function (jqXHR, textStatus, errorThrown)
+                        {
+                            alert("Form Did Not Process: " + errorThrown);
+                        }
+                    });
+
+        }, 1000);
+    });
+    //When box OSU scoring play modal is opened update data and contents
+    $(document).on("show.bs.modal", '#addScoringPlayModal', function (event) {
+
+        var opp = $(event.relatedTarget).data('opp');
+        var year = $(event.relatedTarget).data('year');
+        var week = $(event.relatedTarget).data('week');
+        var quarter = $(event.relatedTarget).data('q');
+
+        if (quarter === 1) {
+            display_quarter = 'First Quarter';
+        }
+        if (quarter === 2) {
+            display_quarter = 'Second Quarter';
+        }
+        if (quarter === 3) {
+            display_quarter = 'Third Quarter';
+        }
+        if (quarter === 4) {
+            display_quarter = 'Fourth Quarter';
+        }
+
+        //update form quarter value
+        $('input[name=q]').val(quarter);
+        //update modal title
+        $('#AddScoringPlayTitle').append('Add Scoring Play: ' + year + " - Week " + week + " - Vs " + opp + ' |  ' + display_quarter);
+
+    });
+    //When box opp scoring play modal is opened update data and contents
+    $(document).on("show.bs.modal", '#addOppScoringPlayModal', function (event) {
+
+        var opp = $(event.relatedTarget).data('opp');
+        var year = $(event.relatedTarget).data('year');
+        var week = $(event.relatedTarget).data('week');
+        var quarter = $(event.relatedTarget).data('q');
+
+        if (quarter === 1) {
+            display_quarter = 'First Quarter';
+        }
+        if (quarter === 2) {
+            display_quarter = 'Second Quarter';
+        }
+        if (quarter === 3) {
+            display_quarter = 'Third Quarter';
+        }
+        if (quarter === 4) {
+            display_quarter = 'Fourth Quarter';
+        }
+
+        //update form quarter value
+        $('input[name=q]').val(quarter);
+        //update modal title
+        $('#AddOppScoringPlayTitle').append('Add ' + opp + ' Scoring Play: ' + year + " - Week " + week + ' |  ' + display_quarter);
+
+    });
+    //When box OSU scoring play modal is closed clear contents
+    $(document).on("hide.bs.modal", '#addScoringPlayModal', function (event) {
+
+        //update modal title
+        $('#AddScoringPlayTitle').replaceWith('<h5 class="modal-title" id="AddScoringPlayTitle"></h5>');
+
+    });
+    //When box Opp scoring play modal is closed clear contents
+    $(document).on("hide.bs.modal", '#addOppScoringPlayModal', function (event) {
+
+        //update modal title
+        $('#AddOppScoringPlayTitle').replaceWith('<h5 class="modal-title" id="AddOppScoringPlayTitle"></h5>');
+
+    });
+
+    //On typing into select player for scoring play searchbox genterate the player tags results as buttons
+    $(document).on("keyup", '#searchScoringPlayer', function (e) {
+
+        var name = $(this).val();
+        var type = 'scoring';
+
+        if (name === '') {
+            $("#scoringPlayerResults").replaceWith('<div id="scoringPlayerResults"></div>');
+        } else {
+
+            $.ajax(
+                    {
+                        url: "libs/ajax/search_existing_player_scoring.php",
+                        type: "POST",
+                        data: {name: name, type: type},
+                        success: function (data, textStatus, jqXHR)
+                        {
+                            $('#scoringPlayerResults').replaceWith(data);
+                        },
+                        error: function (jqXHR, textStatus, errorThrown)
+                        {
+                            alert("Results Could Not Be Loaded: " + errorThrown);
+                        }
+                    });
+        }
+    });
+    //On typing into select from player for scoring play searchbox genterate the player tags results as buttons
+    $(document).on("keyup", '#searchFromPlayer', function (e) {
+
+        var name = $(this).val();
+
+        if (name === '') {
+            $("#fromPlayerResults").replaceWith('<div id="fromPlayerResults"></div>');
+        } else {
+
+            $.ajax(
+                    {
+                        url: "libs/ajax/search_existing_player_from.php",
+                        type: "POST",
+                        data: {name: name},
+                        success: function (data, textStatus, jqXHR)
+                        {
+                            $('#fromPlayerResults').replaceWith(data);
+                        },
+                        error: function (jqXHR, textStatus, errorThrown)
+                        {
+                            alert("Results Could Not Be Loaded: " + errorThrown);
+                        }
+                    });
+        }
+    });
+
+    //When a scoring player is selected from scoring play editing display the player and update the scoring play form
+    $(document).on("click", '.scoringPlayerListItem', function (e) {
+
+        var player_ID = this.id;
+
+        $('#scoringPlayerResults').hide();
+        $('#searchScoringPlayer').hide();
+        $('#addScoringPlayForm').append('<input type="hidden" name="scoringPlayerID" value="' + player_ID + '" />');
+
+        $.ajax(
+                {
+                    url: "libs/ajax/display_box_selected_scoring_player.php",
+                    type: "POST",
+                    data: {player_ID: player_ID},
+                    success: function (data, textStatus, jqXHR)
+                    {
+                        $('#scoringPlayerResults').replaceWith(data);
+                    },
+                    error: function (jqXHR, textStatus, errorThrown)
+                    {
+                        alert("Results Could Not Be Loaded: " + errorThrown);
+                    }
+                });
+    });
+
+    //When a from player is selected from from play editing display the player and update the from play form
+    $(document).on("click", '.fromPlayerListItem', function (e) {
+
+        var player_ID = this.id;
+
+        $('#fromPlayerResults').hide();
+        $('#searchFromPlayer').hide();
+        $('#addScoringPlayForm').append('<input type="hidden" name="fromPlayerID" value="' + player_ID + '" />');
+
+        $.ajax(
+                {
+                    url: "libs/ajax/display_box_selected_from_player.php",
+                    type: "POST",
+                    data: {player_ID: player_ID},
+                    success: function (data, textStatus, jqXHR)
+                    {
+                        $('#fromPlayerResults').replaceWith(data);
+                    },
+                    error: function (jqXHR, textStatus, errorThrown)
+                    {
+                        alert("Results Could Not Be Loaded: " + errorThrown);
+                    }
+                });
+    });
+
+    //When remove a scoring player is selected from scoring play remove the player and form value, redisplay form fields
+    $(document).on("click", '.selectedFromPlayerRemove', function (e) {
+
+        $('#fromPlayerSelected').replaceWith('<div id="fromPlayerSelected"></div>');
+        $('#searchFromPlayer').val('');
+        $('#searchFromPlayer').show();
+        $('#fromPlayerResults').show();
+        $('input[name=fromPlayerID').remove();
+        $(this).parent().remove();
+
+    });
+    //When a scoring play type is selected enable the from player field, if any other type disable the field
+    $(document).on("change", '#scoringPlayType', function (e) {
+
+        var newCategory = $(this).val();
+
+        if (newCategory === 'passTD') {
+            $('#searchFromPlayer').prop('disabled', false);
+        } else {
+            $('#searchFromPlayer').prop('disabled', true);
+        }
+
+    });
+    //When OSU scoring play form is submitted, serialize data and add scoring play to the database
+    $(document).on("submit", '#addScoringPlayForm', function (e) {
+
+        $formData = $(this).serialize();
+        $.ajax(
+                {
+                    url: "libs/ajax/add_box_scoring_play.php",
+                    type: "POST",
+                    data: $formData,
+                    success: function (data, textStatus, jqXHR)
+                    {
+                        location.reload();
+                    },
+                    error: function (jqXHR, textStatus, errorThrown)
+                    {
+                        alert("Form Did Not Process");
+                    }
+                });
+
+
+    });
+    //When Opp scoring play form is submitted, serialize data and add scoring play to the database
+    $(document).on("submit", '#addOppScoringPlayForm', function (e) {
+
+        $formData = $(this).serialize();
+        $.ajax(
+                {
+                    url: "libs/ajax/add_box_opp_scoring_play.php",
+                    type: "POST",
+                    data: $formData,
+                    success: function (data, textStatus, jqXHR)
+                    {
+                        location.reload();
+                    },
+                    error: function (jqXHR, textStatus, errorThrown)
+                    {
+                        alert("Form Did Not Process");
+                    }
+                });
+
+
+    });
+
+    //When a remove scoring play icon is clicked, remove the scoring play from the game
+    $(document).on("click", '.removeScoringPlay', function (e) {
+
+        var element = $(this).closest('li');
+        var play_ID = this.id;
+
+        $.ajax(
+                {
+                    url: "libs/ajax/remove_box_scoring_play.php",
+                    type: "POST",
+                    data: {play_ID: play_ID},
+                    success: function (data, textStatus, jqXHR)
+                    {
+                        element.remove();
+                    },
+                    error: function (jqXHR, textStatus, errorThrown)
+                    {
+                        alert("Results Could Not Be Loaded: " + errorThrown);
+                    }
+                });
+    });
+    //When add a new box score button is clicked, add new blank box score for given game
+    $(document).on("click", '#addBoxScore', function (e) {
+
+        var Game_ID = $(this).attr('data-gmID');
+
+        $.ajax(
+                {
+                    url: "libs/ajax/add_new_box_score.php",
+                    type: "POST",
+                    data: {Game_ID : Game_ID},
+                    success: function (data, textStatus, jqXHR)
+                    {
+                        location.reload();
+                    },
+                    error: function (jqXHR, textStatus, errorThrown)
+                    {
+                        alert("Cannot add new box score: " + errorThrown);
+                    }
+                });
     });
 </script>
