@@ -415,25 +415,6 @@ function returnMiscTagNameByIDvideo($Misc_ID_Video) {
     return $TagName;
 }
 
-//Build display of videos based on category given
-function buildVideosDisplay($category, $ID) {
-
-    $taggedVideos = taggedVideoIDs($ID, $category);
-
-    foreach ($taggedVideos as $video_id) {
-
-        $getVideoInfo = db_query("SELECT * FROM `videos` WHERE Video_ID={$video_id}");
-        $fetchVideoInfo = $getVideoInfo->fetch_assoc();
-
-        echo '<div>';
-        echo '<video controls height="500px" width="800px">';
-        echo "<source src=/buckeyefootball/libs/video/uploaded/" . $fetchVideoInfo['Video_Name'] . "." . $fetchVideoInfo['Extension'] . " type=video/" . $fetchVideoInfo['Extension'] . ">";
-        echo '</video>';
-        echo '<br><br>';
-        echo '</div>';
-    }
-}
-
 //recevie a player id and genterate all images tagged with the player ID
 function buildPlayerPhotoGallery($Player_Master_ID) {
 
@@ -482,6 +463,119 @@ function buildMiscPhotoGallery($Misc_ID_Photo) {
         echo '<div class="gg-element">';
         echo '<img class="playerPhoto" src="/buckeyefootball/libs/images/uploaded/' . $fetchPhotoDetails['Photo_Name'] . '.' . $fetchPhotoDetails['Extension'] . '">';
         echo '</div>';
+    }
+}
+
+//recevie a misc tag or game tag and return gallery of videos
+function buildVideoGallery($ID, $category) {
+
+    $i = 1;
+
+    if ($category === 'all') {
+
+        $getVideoDetails = db_query("SELECT * FROM `videos`");
+        while ($fetchVideoDetails = $getVideoDetails->fetch_assoc()) {
+            echo displayVideo($fetchVideoDetails);
+            echo '&nbsp;';
+            if ($i % 3 == 0) {
+                echo '<br>';
+            }
+            $i++;
+        }
+    }
+
+    if ($category === 'game') {
+        $taggedVideos = taggedVideoIDs($ID, 'game');
+
+        foreach ($taggedVideos as $videoID) {
+
+            $getVideoDetails = db_query("SELECT * FROM `videos` WHERE Video_ID='{$videoID}'");
+            $fetchVideoDetails = $getVideoDetails->fetch_assoc();
+            echo displayVideo($fetchVideoDetails);
+            echo '&nbsp;';
+            if ($i % 3 == 0) {
+                echo '<br>';
+            }
+            $i++;
+        }
+    }
+
+    if ($category === 'misc') {
+        $taggedVideos = taggedVideoIDs($ID, 'misc');
+
+        foreach ($taggedVideos as $videoID) {
+
+            $getVideoDetails = db_query("SELECT * FROM `videos` WHERE Video_ID='{$videoID}'");
+            $fetchVideoDetails = $getVideoDetails->fetch_assoc();
+            echo displayVideo($fetchVideoDetails);
+
+            echo '&nbsp;';
+            if ($i % 3 == 0) {
+                echo '<br>';
+            }
+            $i++;
+        }
+    }
+}
+
+function displayVideo($videoResult) {
+
+    if ($videoResult['Extension'] === 'gif') {
+        echo '<img src="/buckeyefootball/libs/video/uploaded/' . $videoResult['Video_Name'] . '.' . $videoResult['Extension'] . '" height="200px" width="400px">';
+    } else {
+        echo '<video controls height="200px" width="400px">';
+        echo '<source src="/buckeyefootball/libs/video/uploaded/' . $videoResult['Video_Name'] . '.' . $videoResult['Extension'] . '" type=video/' . $videoResult['Extension'] . '">';
+        echo '</video>';
+    }
+}
+
+//Build the tags for displaying on a video of any category
+function returnVideoTags($video_id, $category) {
+
+    $getVideoTags = db_query("SELECT * FROM `videos` WHERE Video_ID='{$video_id}'");
+    $fetchVideotag = $getVideoTags->fetch_assoc();
+
+    if ($category === 'game') {
+        $gameTags = $fetchVideotag['Game_Tags'];
+
+        if (empty($gameTags)) {
+            
+        } else {
+
+            $eachTag = explode(',', $gameTags);
+
+            foreach ($eachTag as $tag) {
+                echo '<span class="badge badge-pill badge-secondary">';
+
+                $getGameData = db_query("SELECT * FROM `games` WHERE GM_ID='{$tag}'");
+                $fetchGameData = $getGameData->fetch_assoc();
+
+                echo $fetchGameData['Date'] . " - (" . HomeAwayLookup($fetchGameData ['H_A']) . ") Vs " . opponentLookup($fetchGameData['Vs']);
+
+                echo '&nbsp;<span aria-hidden="true" data-tag="', $tag, '" data-video="', $video_id, '" class="gameTagRemovev">&times;</span>';
+                echo '</span>';
+            }
+        }
+    }
+
+    if ($category === 'misc') {
+        $miscTags = $fetchVideotag['Misc_Tags'];
+
+        if (empty($miscTags)) {
+            
+        } else {
+
+            $eachTag = explode(',', $miscTags);
+
+            foreach ($eachTag as $tag) {
+                echo '<span class="badge badge-pill badge-secondary">';
+
+                echo returnMiscTagNameByIDvideo($tag);
+
+                echo '&nbsp;<span aria-hidden="true" data-tag="', $tag, '" data-video="', $video_id, '" class="miscTagRemovev">&times;</span>';
+                echo '</span>';
+            }
+        }
     }
 }
 
@@ -754,7 +848,7 @@ function returnGameIndicator($category, $Game_ID) {
             return '<span class="oi oi-spreadsheet" title="Stats"></span>';
         }
     }
-        if ($category === 'box') {
+    if ($category === 'box') {
 
         $checkGamePhotosExist = db_query("SELECT * FROM `games_box_scores` WHERE `GM_ID` = '{$Game_ID}'");
 

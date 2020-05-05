@@ -214,6 +214,70 @@ include ('parts/common_inputs.php');
                     });
         });
 
+        //When New Misc Tag is Selected From the Misc Tag Video Dropdown Set it to View
+        $('#displayAllVideos').click(function () {
+
+            $.ajax(
+                    {
+                        url: "libs/ajax/update_video_media_view.php",
+                        type: "POST",
+                        data: {type: 'all'},
+                        success: function (data, textStatus, jqXHR)
+                        {
+                            location.reload();
+                        },
+                        error: function (jqXHR, textStatus, errorThrown)
+                        {
+                            alert("Content Could Not Be Loaded: " + errorThrown);
+                        }
+                    });
+
+        });
+
+        //When New Game is Selected From the Game Video Dropdown Set it to View
+        $('#gameVideoSelect').change(function () {
+
+            var game_tag = $(this).val();
+
+            $.ajax(
+                    {
+                        url: "libs/ajax/update_video_media_view.php",
+                        type: "POST",
+                        data: {game_tag: game_tag, type: 'game'},
+                        success: function (data, textStatus, jqXHR)
+                        {
+                            location.reload();
+                        },
+                        error: function (jqXHR, textStatus, errorThrown)
+                        {
+                            alert("Content Could Not Be Loaded: " + errorThrown);
+                        }
+                    });
+
+        });
+
+        //When New Misc Tag is Selected From the Misc Tag Video Dropdown Set it to View
+        $('#miscVideoSelect').change(function () {
+
+            var misc_tag = $(this).val();
+
+            $.ajax(
+                    {
+                        url: "libs/ajax/update_video_media_view.php",
+                        type: "POST",
+                        data: {misc_tag: misc_tag, type: 'misc'},
+                        success: function (data, textStatus, jqXHR)
+                        {
+                            location.reload();
+                        },
+                        error: function (jqXHR, textStatus, errorThrown)
+                        {
+                            alert("Content Could Not Be Loaded: " + errorThrown);
+                        }
+                    });
+
+        });
+
     });
     function getPhotoPlayerID() {
 

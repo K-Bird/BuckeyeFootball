@@ -6,6 +6,8 @@ $GM_ID = $_POST['GM_ID'];
 ?>
 <div class="row" style="text-align: center">
     <div class="col-lg-12">
-        <?php echo buildVideosDisplay('game', $GM_ID); ?>
+        <?php
+        buildVideoGallery($GM_ID, 'game');
+        ?>
     </div>
 </div>

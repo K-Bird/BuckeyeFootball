@@ -1,11 +1,9 @@
 <?php
 
 include ("../../libs/db/common_db_functions.php");
-/*
-  take a player master ID or game ID and create a player tag with it
- */
 
 $type = $_POST['type'];
+$video_id = $_POST['video_id'];
 
 if ($type === 'game') {
     
@@ -16,7 +14,7 @@ if ($type === 'game') {
     
     echo '&nbsp;<span class="badge badge-pill badge-secondary">';
     echo $fetchGameData['Date'] . " " . opponentLookup($fetchGameData['Vs']);
-    echo '&nbsp;<span aria-hidden="true" id="', $gameID, '" class="gameUploadTagRemovev">&times;</span>';
+    echo '&nbsp;<span aria-hidden="true" class="gameTagRemovev" data-tag="', $gameID, '" data-videoid="', $video_id, '">&times;</span>';
     echo '</span>&nbsp;';
     
 }
@@ -30,6 +28,6 @@ if ($type === 'misc') {
 
     echo '&nbsp;<span class="badge badge-pill badge-secondary">';
     echo $fetchMiscData['Tag_Name'];
-    echo '&nbsp;<span aria-hidden="true" id="', $miscID, '" class="miscUploadTagRemovev">&times;</span>';
+    echo '&nbsp;<span aria-hidden="true" class="miscTagRemovev" data-tag="', $miscID, '" data-videoid="', $video_id, '">&times;</span>';
     echo '</span>&nbsp;';
 }

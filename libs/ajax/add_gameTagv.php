@@ -43,5 +43,5 @@ $fetchGameData = $getGameData->fetch_assoc();
 
 echo '&nbsp;<span class="badge badge-pill badge-secondary">';
 echo $fetchGameData['Date'] . " " . opponentLookup($fetchGameData['Vs']);
-echo '&nbsp;<span aria-hidden="true" id="', $gameID, '">&times;</span>';
+echo '&nbsp;<span class="gameTagRemovev" data-tag="', $gameID, '" data-video="', $video_id, '">&times;</span>';
 echo '</span>&nbsp;';

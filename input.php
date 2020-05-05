@@ -1931,7 +1931,73 @@
                     });
 
         });
+
+        //When manage video tags modal is shown update the title
+        $(document).on("show.bs.modal", '#manageVideoTagsModal', function (event) {
+
+            var desc = $(event.relatedTarget).data('des');
+            var Video_ID = $(event.relatedTarget).data('videoid');
+
+            $('#manageVideoTagsTitle').append('Manage Tags For: ' + desc);
+
+            $.ajax(
+                    {
+                        url: "libs/ajax/display_video_tag_edit.php",
+                        type: "POST",
+                        data: {Video_ID: Video_ID},
+                        success: function (data, textStatus, jqXHR)
+                        {
+                            $('#editVideoTagsContent').replaceWith(data);
+                        },
+                        error: function (jqXHR, textStatus, errorThrown)
+                        {
+                            alert("Form Did Not Process: " + errorThrown);
+                        }
+                    });
+
+        });
+
+        //When manage video tags modal is hidden update the title
+        $(document).on("hide.bs.modal", '#manageVideoTagsModal', function (event) {
+
+            $('#manageVideoTagsTitle').replaceWith('<h5 class="modal-title" id="manageVideoTagsTitle"></h5>');
+            $('#editVideoTagsContent').replaceWith('<div id="editVideoTagsContent"></div>');
+
+        });
     });
+
+    //When view viedo modal is shown update the title
+    $(document).on("show.bs.modal", '#viewVideoModal', function (event) {
+
+        var desc = $(event.relatedTarget).data('des');
+        var Video_ID = $(event.relatedTarget).data('videoid');
+
+        $('#viewVideoTitle').append('View: ' + desc);
+
+        $.ajax(
+                {
+                    url: "libs/ajax/display_video_input.php",
+                    type: "POST",
+                    data: {Video_ID: Video_ID},
+                    success: function (data, textStatus, jqXHR)
+                    {
+                        $('#viewVideoContent').replaceWith(data);
+                    },
+                    error: function (jqXHR, textStatus, errorThrown)
+                    {
+                        alert("Form Did Not Process: " + errorThrown);
+                    }
+                });
+
+    });
+
+    //When manage video tags modal is hidden update the title
+    $(document).on("hide.bs.modal", '#viewVideoModal', function (event) {
+
+        $('#viewVideoTitle').replaceWith('<h5 class="modal-title" id="viewVideoTitle"></h5>');
+        $('#viewVideoContent').replaceWith('<div id="viewVideoContent"></div>');
+    });
+
 
     //When a box score year is clicked, display the selectable games for that season
     $(document).on("click", '.boxYear', function (e) {
@@ -2294,7 +2360,7 @@
                 {
                     url: "libs/ajax/add_new_box_score.php",
                     type: "POST",
-                    data: {Game_ID : Game_ID},
+                    data: {Game_ID: Game_ID},
                     success: function (data, textStatus, jqXHR)
                     {
                         location.reload();

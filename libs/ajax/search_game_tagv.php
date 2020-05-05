@@ -12,7 +12,7 @@ if (isset($_POST['videoID'])) {
 
 $search_type = $_POST['type'];
 
-$returnFoundGames = db_query("SELECT * FROM `ref_game_lookup` WHERE Date LIKE '%$year%' AND Opp LIKE '%$opp%' AND Loc LIKE '%$loc%' LIMIT 20");
+$returnFoundGames = db_query("SELECT * FROM `ref_game_lookup` WHERE Date LIKE '%$year%' AND Opp LIKE '%$opp%' AND Loc LIKE '%$loc%' LIMIT 10");
 
 if ($search_type === 'upload') {
     echo '<div id="gameTagResultsv">';

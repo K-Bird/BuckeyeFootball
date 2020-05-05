@@ -39,5 +39,5 @@ db_query("Update `Videos` SET Misc_Tags ='{$reloadedTags}' WHERE Video_ID='{$vid
 
 echo '&nbsp;<span class="badge badge-pill badge-secondary">';
 echo returnMiscTagNameByIDvideo($miscID);
-echo '&nbsp;<span aria-hidden="true">&times;</span>';
+echo '&nbsp;<span class="miscTagRemovev" data-tag="', $miscID, '" data-video="', $video_id, '">&times;</span>';
 echo '</span>&nbsp;';

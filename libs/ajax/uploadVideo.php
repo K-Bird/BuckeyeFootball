@@ -5,6 +5,10 @@ include ("../../libs/db/common_db_functions.php");
 $combinedGameTags = '';
 $combinedMiscTags = '';
 
+if (isset($_POST['videoDesc'])) {
+    $videoDesc = $_POST['videoDesc'];
+}
+
 if (isset($_POST['gameVideoTag'])) {
     $tagCount = count($_POST['gameVideoTag']);
 
@@ -59,7 +63,7 @@ $uploadPath = $uploadDirectory . $nextName . "." . $fileExtension;
 
 echo $uploadPath;
 
-$addNewVideo = db_query("INSERT INTO `videos` (Video_Name, Extension, Game_Tags, Misc_Tags) VALUES ('{$nextName}','{$fileExtension}','{$combinedGameTags}','{$combinedMiscTags}')");
+$addNewVideo = db_query("INSERT INTO `videos` (Video_Name, Des, Extension, Game_Tags, Misc_Tags) VALUES ('{$nextName}','{$videoDesc}','{$fileExtension}','{$combinedGameTags}','{$combinedMiscTags}')");
 
 if (isset($_POST['submit'])) {
 
@@ -85,4 +89,4 @@ if (isset($_POST['submit'])) {
     }
 }
 
-//header('Location: ' . $_SERVER['HTTP_REFERER']);
+header('Location: ' . $_SERVER['HTTP_REFERER']);

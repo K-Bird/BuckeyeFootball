@@ -95,7 +95,6 @@
         if (localStorage.getItem('OSU_Media_Sub_Nav') === 'Misc') {
             $('#editTagsModalContainer').load('parts/input/media_input/editTagsModal.php?miscID=' + getPhotoMiscID() + '&type=misc');
         }
-
         //When New Player is Selected From the Player Photo Dropdown Set Them to View
         $('#playerPhotoSelect').change(function () {
 
@@ -153,9 +152,9 @@
 
             $.ajax(
                     {
-                        url: "libs/ajax/update_game_video.php",
+                        url: "libs/ajax/update_video_input_view.php",
                         type: "POST",
-                        data: {game_tag: game_tag},
+                        data: {game_tag: game_tag, type: 'game'},
                         success: function (data, textStatus, jqXHR)
                         {
                             location.reload();
@@ -175,9 +174,28 @@
 
             $.ajax(
                     {
-                        url: "libs/ajax/update_misc_video.php",
+                        url: "libs/ajax/update_video_input_view.php",
                         type: "POST",
-                        data: {misc_tag: misc_tag},
+                        data: {misc_tag: misc_tag, type: 'misc'},
+                        success: function (data, textStatus, jqXHR)
+                        {
+                            location.reload();
+                        },
+                        error: function (jqXHR, textStatus, errorThrown)
+                        {
+                            alert("Content Could Not Be Loaded: " + errorThrown);
+                        }
+                    });
+
+        });        
+        //When New Misc Tag is Selected From the Misc Tag Video Dropdown Set it to View
+        $('#displayAllVideos').click(function () {
+
+            $.ajax(
+                    {
+                        url: "libs/ajax/update_video_input_view.php",
+                        type: "POST",
+                        data: {type: 'all'},
                         success: function (data, textStatus, jqXHR)
                         {
                             location.reload();
@@ -189,6 +207,25 @@
                     });
 
         });
+        $('#displayNotAddedVideos').click(function () {
+
+            $.ajax(
+                    {
+                        url: "libs/ajax/update_video_input_view.php",
+                        type: "POST",
+                        data: {type: 'not'},
+                        success: function (data, textStatus, jqXHR)
+                        {
+                            location.reload();
+                        },
+                        error: function (jqXHR, textStatus, errorThrown)
+                        {
+                            alert("Content Could Not Be Loaded: " + errorThrown);
+                        }
+                    });
+
+        });
+
 
         //When New Misc is Selected From the Misc Photo Dropdown Set Them to View
         $('#miscPhotoSelect').change(function () {
@@ -580,6 +617,8 @@
         //On upload game tag for video button click post ajax rendering
         $(document).on("click", '.gameTagListItemv', function (event) {
 
+            //Get Video ID of clicked game tag
+            var video_id = $(this).data('videoid')
             //Get game ID of clicked game to tag
             var gameID = $(this).attr('id');
             //create array to capture current tags
@@ -601,7 +640,7 @@
                     {
                         url: "libs/ajax/return_selected_tagv.php",
                         type: "POST",
-                        data: {gameID: gameID, type: 'game'},
+                        data: {gameID: gameID, type: 'game', video_id: video_id},
                         success: function (data, textStatus, jqXHR)
                         {
                             $('#gameTagSelectedv').append(data);
@@ -754,7 +793,7 @@
             var gameID = $(this).attr('id');
 
             //Get ID of video being edited
-            var video_id = $(this).attr('data-videoID');
+            var video_id = $(this).attr('data-videoid');
 
             $.ajax(
                     {
@@ -763,7 +802,7 @@
                         data: {gameID: gameID, video_id: video_id},
                         success: function (data, textStatus, jqXHR)
                         {
-                            $('#gameTagsv' + video_id).append(data);
+                            $('#existingGameTagResultsv' + video_id).append(data);
                         },
                         error: function (jqXHR, textStatus, errorThrown)
                         {
@@ -888,11 +927,10 @@
         // When game existing tag X is clicked, remove the tag from the image
         $(document).on('click', '.gameTagRemovev', function () {
 
-            //Get value of clicked tags ID
-            var gameID_pre = $(this).attr('id');
-            var gameID = gameID_pre.slice(4);
+            //Get id of tag
+            var tag_id = $(this).attr('data-tag');
 
-
+            //get id of video
             var video_id = $(this).attr('data-video');
 
 
@@ -901,11 +939,10 @@
                     {
                         url: "libs/ajax/remove_gameTagv.php",
                         type: "POST",
-                        data: {gameID: gameID, video_id: video_id},
+                        data: {gameID: tag_id, video_id: video_id},
                         success: function (data, textStatus, jqXHR)
                         {
-                            //remove deleted tag
-                            $('#' + gameID_pre).parent().remove();
+                            location.reload();
                         },
                         error: function (jqXHR, textStatus, errorThrown)
                         {
@@ -948,31 +985,27 @@
         // When misc existing tag X for a video is clicked, remove the tag from the image
         $(document).on('click', '.miscTagRemovev', function () {
 
-            //Get value of clicked tags ID
-            var miscID_pre = $(this).attr('id');
-            var miscID = miscID_pre.slice(4);
+            //Get id of tag
+            var tag_id = $(this).attr('data-tag');
 
-            //get id of visible video
+            //get id of video
             var video_id = $(this).attr('data-video');
-
 
             //remove selected tag from video
             $.ajax(
                     {
                         url: "libs/ajax/remove_miscTagv.php",
                         type: "POST",
-                        data: {miscID: miscID, video_id: video_id},
+                        data: {miscID: tag_id, video_id: video_id},
                         success: function (data, textStatus, jqXHR)
                         {
-                            //remove deleted tag
-                            $('#' + miscID_pre).parent().remove();
+                            location.reload();
                         },
                         error: function (jqXHR, textStatus, errorThrown)
                         {
                             alert("Selected Tag Could Not Be Removed: " + errorThrown);
                         }
                     });
-
         });
 
         //When player upload tag X is clicked, alter the form value that contains the tags to upload
@@ -1025,29 +1058,6 @@
             }
         });
 
-        //When game upload tag X is clicked for video, alter the form value that contains the tags to upload
-        $(document).on("click", '.gameUploadTagRemovev', function (event) {
-
-            //Get value of clicked tags ID
-            var gameID = $(this).attr('id');
-
-            var newTagArray = [];
-            //explode new gamePhotoTag values
-            var tagString = $('#gameVideoTag').val()
-            newTagArray = tagString.split(",");
-            //removed matched tag from array
-            var filteredArray = newTagArray.filter(function (value, index, arr) {
-
-                return value != gameID;
-
-            });
-            //Set value of photo tags to be uploaded
-            $('#gameVideoTag').val(filteredArray);
-            //remove the tag on screen
-            $(this).parent().remove();
-
-        });
-
         //When misc upload tag X is clicked, alter the form value that contains the tags to upload
         $(document).on("click", '.miscUploadTagRemove', function (event) {
 
@@ -1066,29 +1076,6 @@
             });
             //Set value of photo tags to be uploaded
             $('#miscPhotoTag').val(filteredArray);
-            //remove the tag on screen
-            $(this).parent().remove();
-
-        });
-
-        //When misc video upload tag X is clicked, alter the form value that contains the tags to upload
-        $(document).on("click", '.miscUploadTagRemovev', function (event) {
-
-            //Get value of clicked tags ID
-            var miscID = $(this).attr('id');
-
-            var newTagArray = [];
-            //explode new miscPhotoTag values
-            var tagString = $('#miscVideoTag').val()
-            newTagArray = tagString.split(",");
-            //removed matched tag from array
-            var filteredArray = newTagArray.filter(function (value, index, arr) {
-
-                return value != miscID;
-
-            });
-            //Set value of photo tags to be uploaded
-            $('#miscVideoTag').val(filteredArray);
             //remove the tag on screen
             $(this).parent().remove();
 
@@ -1174,7 +1161,7 @@
                         data: {video_ID: video_ID},
                         success: function (data, textStatus, jqXHR)
                         {
-                            alert(data);
+                            location.reload();
                         },
                         error: function (jqXHR, textStatus, errorThrown)
                         {
@@ -1207,6 +1194,36 @@
 
         });
 
+    });
+
+    //When video description is typed update the description
+    $(document).on("keyup", '.videoDes', function (e) {
+
+        var video_ID = this.id;
+        var value = $(this).val();
+
+        clearTimeout(boxPointsTimer);
+        boxPointsTimer = setTimeout(function () {
+
+
+
+
+            $.ajax(
+                    {
+                        url: "libs/ajax/update_video_desc.php",
+                        type: "POST",
+                        data: {video_ID: video_ID, value: value},
+                        success: function (data, textStatus, jqXHR)
+                        {
+                            location.reload();
+                        },
+                        error: function (jqXHR, textStatus, errorThrown)
+                        {
+                            alert("Form Did Not Process: " + errorThrown);
+                        }
+                    });
+
+        }, 1000);
     });
 
     function getPhotoPlayerID() {

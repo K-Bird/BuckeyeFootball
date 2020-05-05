@@ -773,7 +773,7 @@ function displayMiscPhotoSelect($Misc_ID_Photo) {
 }
 
 //Build Games With Videos Select List
-function displayGameVideoSelect($Game_ID) {
+function displayGameVideoSelect() {
 
     $taggedGames = [];
     $getTaggedGames = db_query("SELECT * FROM `videos`");
@@ -790,16 +790,11 @@ function displayGameVideoSelect($Game_ID) {
     }
 
 
-    echo '<select id="gameVideoSelect" class="selectpicker" data-live-search="true" name="playerVideoSelect" style="width: 300px">';
-
+    echo '<select id="gameVideoSelect" class="selectpicker" data-live-search="true" name="gameVideoSelect" style="width: 300px">';
+    echo '<option value=""></option>';
     foreach ($taggedGames as $tag) {
 
         echo '<option value="', $tag, '" ';
-
-        if ($Game_ID === $tag) {
-
-            echo 'Selected="Selected"';
-        }
 
         $getGameData = db_query("SELECT * FROM `games` WHERE GM_ID='{$tag}'");
         $fetchGameData = $getGameData->fetch_assoc();
@@ -818,7 +813,8 @@ function displayVideoMiscSelect() {
     $selectVidMiscTag = db_query("SELECT * from `ref_misc_video_tags`");
 
     echo '<select id="miscVideoSelect" class="selectpicker" data-live-search="true">';
-
+    
+    echo '<option value=""></option>';
     while ($fetchVidMiscTag = $selectVidMiscTag->fetch_assoc()) {
 
 
