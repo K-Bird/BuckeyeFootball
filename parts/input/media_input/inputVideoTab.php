@@ -33,7 +33,7 @@ $display_type = $fetchVideoDisplayType['Value'];
         <table id="allVideosTable" class="table table-sm table-hover">
             <thead>
                 <tr>
-                    <th>ID</th><th>Description</th><th>Game Tags</th><th>Misc Tags</th><th>Action</th>
+                    <th>ID</th><th>Description</th><th>Game Tags</th><th>Misc Tags</th><th>Scoring Play</th><th>Action</th>
                 </tr>
             </thead>
             <tbody>
@@ -88,9 +88,14 @@ $display_type = $fetchVideoDisplayType['Value'];
                         echo returnVideoTags($fetchAllVideos['Video_ID'], 'misc');
                         echo '</td>';
                         echo '<td>';
+                        echo returnScoringPlayTag($fetchAllVideos['Video_ID']);    
+                        echo '</td>';
+                        echo '<td>';
                         echo '<button id="viewVideoBtn" class="btn btn-outline-primary" data-toggle="modal" data-target="#viewVideoModal" data-videoID="', $fetchAllVideos['Video_ID'], '" data-des="', $fetchAllVideos['Des'], '">View Video</button>';
                         echo '&nbsp;';
                         echo '<button id="manageVideoTagsBtn" class="btn btn-warning" data-toggle="modal" data-target="#manageVideoTagsModal" data-videoID="', $fetchAllVideos['Video_ID'], '" data-des="', $fetchAllVideos['Des'], '">Manage Tags</button>';
+                        echo '&nbsp;';
+                        echo '<button id="manageScoringPlayBtn" class="btn btn-warning" data-toggle="modal" data-target="#manageScoringPlayModal" data-videoID="', $fetchAllVideos['Video_ID'], '" data-des="', $fetchAllVideos['Des'], '">Manage Scoring Play</button>';
                         echo '&nbsp;';
                         echo '<button class="btn btn-danger removeVideo" data-vidid="' . $fetchAllVideos['Video_ID'] . '">Remove</button>';
                         echo '</td>';
@@ -107,7 +112,8 @@ $display_type = $fetchVideoDisplayType['Value'];
 </div>
 <?php
 include ('manageVideoTagsModal.php');
-include ('viewVideoModal.php');
+include ('manageScoringPlayModal.php');
+include ('parts/viewVideoModal.php');
 
 function displayVideoRow($videoResult) {
 

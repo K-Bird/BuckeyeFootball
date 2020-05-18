@@ -1966,6 +1966,39 @@
         });
     });
 
+    //When manage video tags modal is shown update the title
+    $(document).on("show.bs.modal", '#manageScoringPlayModal', function (event) {
+
+        var desc = $(event.relatedTarget).data('des');
+        var Video_ID = $(event.relatedTarget).data('videoid');
+        $('#scorePlayVideoID').val(Video_ID);
+
+        $('#manageScoringPlayTitle').append('Add Scoring Play: ' + desc);
+
+        $.ajax(
+                {
+                    url: "libs/ajax/display_video_scoring_play_edit.php",
+                    type: "POST",
+                    data: {Video_ID: Video_ID},
+                    success: function (data, textStatus, jqXHR)
+                    {
+                        $('#editScoringPlayContent').replaceWith(data);
+                    },
+                    error: function (jqXHR, textStatus, errorThrown)
+                    {
+                        alert("Form Did Not Process: " + errorThrown);
+                    }
+                });
+
+    });
+
+    //When manage video tags modal is hidden update the title
+    $(document).on("hide.bs.modal", '#manageScoringPlayModal', function (event) {
+
+        $('#manageScoringPlayTitle').replaceWith('<h5 class="modal-title" id="manageScoringPlayTitle"></h5>');
+        $('#editScoringPlayContent').replaceWith('<div id="editScoringPlayContent"></div>');
+    });
+
     //When view viedo modal is shown update the title
     $(document).on("show.bs.modal", '#viewVideoModal', function (event) {
 
@@ -2370,5 +2403,91 @@
                         alert("Cannot add new box score: " + errorThrown);
                     }
                 });
+    });
+
+    //When a box score year is clicked, display the selectable games for that season
+    $(document).on("click", '.scorePlayYear', function (e) {
+
+        var seasonID = $(this).attr('data-seasonID');
+
+        $.ajax(
+                {
+                    url: "libs/ajax/display_score_play_games.php",
+                    type: "POST",
+                    data: {new_season: seasonID},
+                    success: function (data, textStatus, jqXHR)
+                    {
+                        $('#scorePlayGamesResults').replaceWith('<div id="scorePlayGamesResults">' + data + '</div>');
+                    },
+                    error: function (jqXHR, textStatus, errorThrown)
+                    {
+                        alert("Form Did Not Process: " + errorThrown);
+                    }
+                });
+    });
+
+    //When a box score game is clicked, display the game's box score for editing
+    $(document).on("click", '.selectScorePlayGame', function (e) {
+
+        var Game_ID = $(this).attr('data-gmID');
+        var Video_ID = $('#scorePlayVideoID').val();
+
+        $.ajax(
+                {
+                    url: "libs/ajax/select_score_play_game.php",
+                    type: "POST",
+                    data: {new_game: Game_ID, Video_ID : Video_ID},
+                    success: function (data, textStatus, jqXHR)
+                    {
+                        $('#scoringPlayResults').replaceWith(data);
+                    },
+                    error: function (jqXHR, textStatus, errorThrown)
+                    {
+                        alert("Form Did Not Process: " + errorThrown);
+                    }
+                });
+    });
+
+    //When a box score game is clicked, display the game's box score for editing
+    $(document).on("click", '.selectScorePlay', function (e) {
+
+        var Play_ID = $(this).attr('data-playid');
+        var Video_ID = $('#scorePlayVideoID').val();
+        
+        $.ajax(
+                {
+                    url: "libs/ajax/select_score_play_video.php",
+                    type: "POST",
+                    data: {new_play : Play_ID, Video_ID : Video_ID},
+                    success: function (data, textStatus, jqXHR)
+                    {
+                        location.reload();
+                    },
+                    error: function (jqXHR, textStatus, errorThrown)
+                    {
+                        alert("Form Did Not Process: " + errorThrown);
+                    }
+                });        
+    });
+    
+        //When a box score game is clicked, display the game's box score for editing
+    $(document).on("click", '.removeScorePlay', function (e) {
+
+        var Play_ID = $(this).attr('data-playid');
+        
+        $.ajax(
+                {
+                    url: "libs/ajax/remove_score_play_video.php",
+                    type: "POST",
+                    data: {new_play : Play_ID},
+                    success: function (data, textStatus, jqXHR)
+                    {
+                        alert(data);
+                    },
+                    error: function (jqXHR, textStatus, errorThrown)
+                    {
+                        alert("Form Did Not Process: " + errorThrown);
+                    }
+                });        
     });
 </script>

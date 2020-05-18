@@ -58,10 +58,10 @@
                             echo '<td><ul class="list-group">';
                             while ($fetchScoringPlays = $getScoringPlays->fetch_assoc()) {
                                 if ($fetchScoringPlays['OSU_OPP'] === 'OSU') {
-                                    echo displayOSUScoringPlay($fetchScoringPlays);
+                                    echo displayOSUScoringPlay($fetchScoringPlays,'input');
                                 }
                                 if ($fetchScoringPlays['OSU_OPP'] === 'OPP') {
-                                    echo displayOPPScoringPlay($fetchScoringPlays, opponentLookup($fetchGameData['Vs']));
+                                    echo displayOPPScoringPlay($fetchScoringPlays, opponentLookup($fetchGameData['Vs']),'input');
                                 }
                             }
                             echo '</ul></td>';

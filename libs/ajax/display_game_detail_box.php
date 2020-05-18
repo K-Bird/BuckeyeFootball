@@ -1,5 +1,6 @@
 <?php
 include ("../../libs/db/common_db_functions.php");
+include ('../../parts/viewVideoModal.php');
 
 $GM_ID = $_POST['GM_ID'];
 
@@ -71,10 +72,10 @@ $fetchScoringData = $getScoringData->fetch_assoc();
                                 echo '<td><ul class="list-group">';
                                 while ($fetchScoringPlays = $getScoringPlays->fetch_assoc()) {
                                     if ($fetchScoringPlays['OSU_OPP'] === 'OSU') {
-                                        echo displayOSUScoringPlay($fetchScoringPlays);
+                                        echo displayOSUScoringPlay($fetchScoringPlays, 'full');
                                     }
                                     if ($fetchScoringPlays['OSU_OPP'] === 'OPP') {
-                                        echo displayOPPScoringPlay($fetchScoringPlays, opponentLookup($fetchGameData['Vs']));
+                                        echo displayOPPScoringPlay($fetchScoringPlays, opponentLookup($fetchGameData['Vs']), 'full');
                                     }
                                 }
                                 echo '</ul></td>';
@@ -90,7 +91,7 @@ $fetchScoringData = $getScoringData->fetch_assoc();
     </div>
 </div>
 <br>
-<div class="row" style="text-align: center">
+<div class="row">
     <div class="col-lg-12">
         <div class="card">
             <div class="card-body">
@@ -98,7 +99,7 @@ $fetchScoringData = $getScoringData->fetch_assoc();
                 <table class="table table-sm table-hover">
                     <thead>
                         <tr>
-                            <th colspan="4" style="text-align: left">First Quarter</th><th>Ohio State</th><th><?php echo opponentLookup($fetchGameData['Vs']); ?></th>
+                            <th colspan="5" style="text-align: left">First Quarter</th><th>Ohio State</th><th><?php echo opponentLookup($fetchGameData['Vs']); ?></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -119,16 +120,21 @@ $fetchScoringData = $getScoringData->fetch_assoc();
                             echo '<td><ul class="list-group">';
 
                             if ($fetchScoringPlays['OSU_OPP'] === 'OSU') {
-                                echo displayOSUScoringPlayLight($fetchScoringPlays);
+                                echo displayOSUScoringPlay($fetchScoringPlays, 'lite');
                                 $game_flow_OSU_Points = 0;
                                 $game_flow_OSU_Points = calculateGameFlowPoints($fetchScoringPlays['Play_Type'], $fetchScoringPlays['Post_Play_Points']);
                                 $game_flow_OSU_Score = $game_flow_OSU_Score + $game_flow_OSU_Points;
                             }
                             if ($fetchScoringPlays['OSU_OPP'] === 'OPP') {
-                                echo displayOPPScoringPlayLight($fetchScoringPlays, opponentLookup($fetchGameData['Vs']));
+                                echo displayOPPScoringPlay($fetchScoringPlays, opponentLookup($fetchGameData['Vs']),'lite');
                                 $game_flow_OPP_Points = calculateGameFlowPoints($fetchScoringPlays['Play_Type'], $fetchScoringPlays['Post_Play_Points']);
                                 $game_flow_OPP_Score = $game_flow_OPP_Score + $game_flow_OPP_Points;
                             }
+                            echo '<td>';
+                            if ($fetchScoringPlays['video_ID'] != '0') {
+                                displayVideoModalIcon($fetchScoringPlays['video_ID'],returnScoringPlayVideoDesc($fetchScoringPlays));
+                            }
+                            echo '</td>';
                             echo '<td>', $fetchScoringPlays['Time_Left'], ' Left</td>';
                             echo '<td>', $game_flow_OSU_Score, '</td>';
                             echo '<td>', $game_flow_OPP_Score, '</td>';
@@ -152,16 +158,21 @@ $fetchScoringData = $getScoringData->fetch_assoc();
                             echo '<td><ul class="list-group">';
 
                             if ($fetchScoringPlays['OSU_OPP'] === 'OSU') {
-                                echo displayOSUScoringPlayLight($fetchScoringPlays);
+                                echo displayOSUScoringPlay($fetchScoringPlays, 'lite');
                                 $game_flow_OSU_Points = 0;
                                 $game_flow_OSU_Points = calculateGameFlowPoints($fetchScoringPlays['Play_Type'], $fetchScoringPlays['Post_Play_Points']);
                                 $game_flow_OSU_Score = $game_flow_OSU_Score + $game_flow_OSU_Points;
                             }
                             if ($fetchScoringPlays['OSU_OPP'] === 'OPP') {
-                                echo displayOPPScoringPlayLight($fetchScoringPlays, opponentLookup($fetchGameData['Vs']));
+                                echo displayOPPScoringPlay($fetchScoringPlays, opponentLookup($fetchGameData['Vs']),'lite');
                                 $game_flow_OPP_Points = calculateGameFlowPoints($fetchScoringPlays['Play_Type'], $fetchScoringPlays['Post_Play_Points']);
                                 $game_flow_OPP_Score = $game_flow_OPP_Score + $game_flow_OPP_Points;
                             }
+                            echo '<td>';
+                            if ($fetchScoringPlays['video_ID'] != '0') {
+                                displayVideoModalIcon($fetchScoringPlays['video_ID'],returnScoringPlayVideoDesc($fetchScoringPlays));
+                            }
+                            echo '</td>';
                             echo '<td>', $fetchScoringPlays['Time_Left'], ' Left</td>';
                             echo '<td>', $game_flow_OSU_Score, '</td>';
                             echo '<td>', $game_flow_OPP_Score, '</td>';
@@ -185,16 +196,21 @@ $fetchScoringData = $getScoringData->fetch_assoc();
                             echo '<td><ul class="list-group">';
 
                             if ($fetchScoringPlays['OSU_OPP'] === 'OSU') {
-                                echo displayOSUScoringPlayLight($fetchScoringPlays);
+                                echo displayOSUScoringPlay($fetchScoringPlays, 'lite');
                                 $game_flow_OSU_Points = 0;
                                 $game_flow_OSU_Points = calculateGameFlowPoints($fetchScoringPlays['Play_Type'], $fetchScoringPlays['Post_Play_Points']);
                                 $game_flow_OSU_Score = $game_flow_OSU_Score + $game_flow_OSU_Points;
                             }
                             if ($fetchScoringPlays['OSU_OPP'] === 'OPP') {
-                                echo displayOPPScoringPlayLight($fetchScoringPlays, opponentLookup($fetchGameData['Vs']));
+                                echo displayOPPScoringPlay($fetchScoringPlays, opponentLookup($fetchGameData['Vs']),'lite');
                                 $game_flow_OPP_Points = calculateGameFlowPoints($fetchScoringPlays['Play_Type'], $fetchScoringPlays['Post_Play_Points']);
                                 $game_flow_OPP_Score = $game_flow_OPP_Score + $game_flow_OPP_Points;
                             }
+                            echo '<td>';
+                            if ($fetchScoringPlays['video_ID'] != '0') {
+                                displayVideoModalIcon($fetchScoringPlays['video_ID'],returnScoringPlayVideoDesc($fetchScoringPlays));
+                            }
+                            echo '</td>';
                             echo '<td>', $fetchScoringPlays['Time_Left'], ' Left</td>';
                             echo '<td>', $game_flow_OSU_Score, '</td>';
                             echo '<td>', $game_flow_OPP_Score, '</td>';
@@ -218,16 +234,21 @@ $fetchScoringData = $getScoringData->fetch_assoc();
                             echo '<td><ul class="list-group">';
 
                             if ($fetchScoringPlays['OSU_OPP'] === 'OSU') {
-                                echo displayOSUScoringPlayLight($fetchScoringPlays);
+                                echo displayOSUScoringPlay($fetchScoringPlays, 'lite');
                                 $game_flow_OSU_Points = 0;
                                 $game_flow_OSU_Points = calculateGameFlowPoints($fetchScoringPlays['Play_Type'], $fetchScoringPlays['Post_Play_Points']);
                                 $game_flow_OSU_Score = $game_flow_OSU_Score + $game_flow_OSU_Points;
                             }
                             if ($fetchScoringPlays['OSU_OPP'] === 'OPP') {
-                                echo displayOPPScoringPlayLight($fetchScoringPlays, opponentLookup($fetchGameData['Vs']));
+                                echo displayOPPScoringPlay($fetchScoringPlays, opponentLookup($fetchGameData['Vs']),'lite');
                                 $game_flow_OPP_Points = calculateGameFlowPoints($fetchScoringPlays['Play_Type'], $fetchScoringPlays['Post_Play_Points']);
                                 $game_flow_OPP_Score = $game_flow_OPP_Score + $game_flow_OPP_Points;
                             }
+                            echo '<td>';
+                            if ($fetchScoringPlays['video_ID'] != '0') {
+                                displayVideoModalIcon($fetchScoringPlays['video_ID'],returnScoringPlayVideoDesc($fetchScoringPlays));
+                            }
+                            echo '</td>';
                             echo '<td>', $fetchScoringPlays['Time_Left'], ' Left</td>';
                             echo '<td>', $game_flow_OSU_Score, '</td>';
                             echo '<td>', $game_flow_OPP_Score, '</td>';

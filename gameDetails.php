@@ -16,6 +16,7 @@ $fetchGameData = $getGameData->fetch_assoc();
         <link rel="stylesheet" type="text/css" href="libs/css/nouislider.css">
         <link rel="stylesheet" type="text/css" href="libs/css/grid-gallery.css">
         <link rel="stylesheet" type="text/css" href="libs/css/lightbox.css">
+        <link rel="stylesheet" type="text/css" href="libs/css/open-iconic-bootstrap.css">
         <link rel="stylesheet" type="text/css" href="libs/css/common.css">
         <script src="libs/js/jquery.js"></script>
         <script src="libs/js/bootstrap.js"></script>
@@ -129,6 +130,38 @@ $fetchGameData = $getGameData->fetch_assoc();
             $('#gmdetailsVideos').addClass('active');
             displayGameDetailContent('videos', getGameID());
 
+        });
+
+        //When view viedo modal is shown update the title
+        $(document).on("show.bs.modal", '#viewVideoModal', function (event) {
+
+            var desc = $(event.relatedTarget).data('des');
+            var Video_ID = $(event.relatedTarget).data('videoid');
+
+            $('#viewVideoTitle').append('View: ' + desc);
+
+            $.ajax(
+                    {
+                        url: "libs/ajax/display_video_input.php",
+                        type: "POST",
+                        data: {Video_ID: Video_ID},
+                        success: function (data, textStatus, jqXHR)
+                        {
+                            $('#viewVideoContent').replaceWith(data);
+                        },
+                        error: function (jqXHR, textStatus, errorThrown)
+                        {
+                            alert("Form Did Not Process: " + errorThrown);
+                        }
+                    });
+
+        });
+
+        //When manage video tags modal is hidden update the title
+        $(document).on("hide.bs.modal", '#viewVideoModal', function (event) {
+
+            $('#viewVideoTitle').replaceWith('<h5 class="modal-title" id="viewVideoTitle"></h5>');
+            $('#viewVideoContent').replaceWith('<div id="viewVideoContent"></div>');
         });
 
     });
