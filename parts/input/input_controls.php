@@ -13,28 +13,28 @@
         }
         ?>"  >Recruits</button>
 
-        <button id="input_players_btn"type="button" data-view="Players" class="inputViewBtn btn btn-secondary <?php
+        <button id="input_players_btn" type="button" data-view="Players" class="inputViewBtn btn btn-secondary <?php
         if ($Input_View === 'Players') {
             echo 'bg-dark';
         }
         ?>" >Players</button>
 
-        <button id="input_stats_btn"type="button" data-view="Stats" class="inputViewBtn btn btn-secondary <?php
+        <button id="input_stats_btn" type="button" data-view="Stats" class="inputViewBtn btn btn-secondary <?php
         if ($Input_View === 'Stats') {
             echo 'bg-dark';
         }
         ?>" >Stats</button>
-                <button id="input_stats_btn"type="button" data-view="Box" class="inputViewBtn btn btn-secondary <?php
+                <button id="input_stats_btn" type="button" data-view="Box" class="inputViewBtn btn btn-secondary <?php
         if ($Input_View === 'Box') {
             echo 'bg-dark';
         }
         ?>" >Box Scores</button>
-        <button id="input_box_scores_btn"type="button" data-view="Lists" class="inputViewBtn btn btn-secondary <?php
+        <button id="input_box_scores_btn" type="button" data-view="Lists" class="inputViewBtn btn btn-secondary <?php
         if ($Input_View === 'Lists') {
             echo 'bg-dark';
         }
         ?>" >Lists</button>
-        <button id="input_media_btn"type="button" data-view="Media" class="inputViewBtn btn btn-secondary <?php
+        <button id="input_media_btn" type="button" data-view="Media" class="inputViewBtn btn btn-secondary <?php
         if ($Input_View === 'Media') {
             echo 'bg-dark';
         }
