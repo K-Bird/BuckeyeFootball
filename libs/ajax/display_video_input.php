@@ -14,7 +14,7 @@ if ($fetchVideoInfo['Extension'] === 'gif') {
 } else {
 
     echo '<video controls height="500px" width="800px">';
-    echo '<source src="/buckeyefootball/libs/video/uploaded/' . $fetchVideoInfo['Video_Name'] . '.' . $fetchVideoInfo['Extension'] . '" type=video/' . $fetchVideoInfo['Extension'] . '">';
+    echo '<source src="/buckeyefootball/libs/video/uploaded/' . $fetchVideoInfo['Video_Name'] . '.' . $fetchVideoInfo['Extension'] . '" type="video/' . $fetchVideoInfo['Extension'] . '">';
     echo '</video>';
 }
 echo '</div>';
