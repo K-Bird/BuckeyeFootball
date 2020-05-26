@@ -53,7 +53,7 @@
                         $i = 1;
 
                         while ($i <= 4) {
-                            $getScoringPlays = db_query("SELECT * FROM `games_scoring_plays` WHERE GM_ID='{$Game_ID}' AND Q='{$i}' ORDER BY Time_Left DESC");
+                            $getScoringPlays = db_query("SELECT * FROM `games_scoring_plays` WHERE GM_ID='{$Game_ID}' AND Q='{$i}' ORDER BY SUBSTR(Time_Left,0,1) DESC");
 
                             echo '<td><ul class="list-group">';
                             while ($fetchScoringPlays = $getScoringPlays->fetch_assoc()) {

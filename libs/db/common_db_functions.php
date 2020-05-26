@@ -1260,18 +1260,18 @@ function returnScoringPlayTypeVerb($type, $OSU_OPP) {
     }
     if ($type === 'Saf') {
 
-        return ' Safety ';
+        return ' Team Safety ';
     }
 }
 
 //Return the video description of a scoring play's video
 function returnScoringPlayVideoDesc($scoringPlayResult) {
-    
+
     $Game_ID = $scoringPlayResult['GM_ID'];
     $Game_Info = returnGameFieldByGameID('Date', $Game_ID) . " - (" . HomeAwayLookup(returnGameFieldByGameID('H_A', $Game_ID)) . ") Vs " . opponentLookup(returnGameFieldByGameID('Vs', $Game_ID));
-    
+
     $desc = "Q" . $scoringPlayResult['Q'] . " - " . getPlayerFieldByMasterID('First_Name', $scoringPlayResult['Scoring_Player']) . " " . getPlayerFieldByMasterID('Last_Name', $scoringPlayResult['Scoring_Player']) . " " .
-    $scoringPlayResult['Distance'] . " Yard" . returnScoringPlayTypeVerb($scoringPlayResult['Play_Type'], $scoringPlayResult['OSU_OPP']) . " (" . $Game_Info . ")";
+            $scoringPlayResult['Distance'] . " Yard" . returnScoringPlayTypeVerb($scoringPlayResult['Play_Type'], $scoringPlayResult['OSU_OPP']) . " (" . $Game_Info . ")";
 
     if ($scoringPlayResult['Play_Type'] === 'passTD') {
 
@@ -1296,11 +1296,27 @@ function displayOSUScoringPlay($fetchScoringPlays, $displayType) {
         echo getPlayerFieldByMasterID('First_Name', $fetchScoringPlays['From_Player']) . " ";
         echo getPlayerFieldByMasterID('Last_Name', $fetchScoringPlays['From_Player']) . " ";
     }
+    if ($displayType === 'full') {
+        echo '<br>';
+    }
+    if ($displayType === 'full') {
+        echo '&nbsp;', displayPostPlayScoreText($fetchScoringPlays['Post_Play_Points'], $fetchScoringPlays['Play_Type']);
+    }
+    if ($displayType === 'lite') {
+        if ($fetchScoringPlays['Play_Type'] === 'FG' || $fetchScoringPlays['Play_Type'] === 'Saf') {
+            
+        } else {
+            echo '&nbsp;(', displayPostPlayScoreText($fetchScoringPlays['Post_Play_Points'], $fetchScoringPlays['Play_Type']) . ')';
+        }
+    }
     if ($displayType === 'full' || $displayType === 'input') {
         echo " (" . $fetchScoringPlays['Time_Left'] . " Remaining)";
     }
     if ($displayType === 'input') {
-        echo '&nbsp;&nbsp;<span id="', $fetchScoringPlays['Play_ID'], '" class="oi oi-circle-x removeScoringPlay" style="color: white"></span>';
+        echo '&nbsp; +', $fetchScoringPlays['Post_Play_Points'];
+    }
+    if ($displayType === 'input') {
+        echo '&nbsp;<span id="', $fetchScoringPlays['Play_ID'], '" class="oi oi-circle-x removeScoringPlay" style="color: white"></span>';
     }
     if ($displayType === 'full') {
         if ($fetchScoringPlays['video_ID'] != '0') {
@@ -1327,8 +1343,24 @@ function displayOPPScoringPlay($fetchScoringPlays, $oppName, $displayType) {
         echo getPlayerFieldByMasterID('First_Name', $fetchScoringPlays['From_Player']) . " ";
         echo getPlayerFieldByMasterID('Last_Name', $fetchScoringPlays['From_Player']) . " ";
     }
+    if ($displayType === 'full') {
+        echo '<br>';
+    }
+    if ($displayType === 'full') {
+        echo '&nbsp;', displayPostPlayScoreText($fetchScoringPlays['Post_Play_Points'], $fetchScoringPlays['Play_Type']);
+    }
+    if ($displayType === 'lite') {
+        if ($fetchScoringPlays['Play_Type'] === 'FG' || $fetchScoringPlays['Play_Type'] === 'Saf') {
+            
+        } else {
+            echo '&nbsp;(', displayPostPlayScoreText($fetchScoringPlays['Post_Play_Points'], $fetchScoringPlays['Play_Type']) . ')';
+        }
+    }
     if ($displayType === 'full' || $displayType === 'input') {
         echo " (" . $fetchScoringPlays['Time_Left'] . " Remaining)";
+    }
+    if ($displayType === 'input') {
+        echo '&nbsp; +', $fetchScoringPlays['Post_Play_Points'];
     }
     if ($displayType === 'input') {
         echo '&nbsp;&nbsp;<span id="', $fetchScoringPlays['Play_ID'], '" class="oi oi-circle-x removeScoringPlay" style="color:red"></span>';
@@ -1336,6 +1368,26 @@ function displayOPPScoringPlay($fetchScoringPlays, $oppName, $displayType) {
     if ($displayType === 'full' || $displayType === 'input') {
         echo '</li>';
     }
+}
+
+function displayPostPlayScoreText($Post_Play_Points, $Score_Type) {
+
+    $postPlayText = '';
+    if ($Score_Type === 'passTD' || $Score_Type === 'rushTD' || $Score_Type === 'INT' || $Score_Type === 'fum' || $Score_Type === 'KR' || $Score_Type === 'PR') {
+        if ($Post_Play_Points === '0') {
+            $postPlayText = 'XP Missed';
+        }
+        if ($Post_Play_Points === '1') {
+            $postPlayText = 'XP Good';
+        }
+        if ($Post_Play_Points === '2') {
+            $postPlayText = '2Pt Conversion';
+        }
+    }
+    if ($Score_Type === 'FG' || $Score_Type === 'Saf') {
+        $postPlayText = '';
+    }
+    return $postPlayText;
 }
 
 function calculateGameFlowPoints($Score_Type, $Post_Points) {
@@ -1364,7 +1416,7 @@ function displayFlowScoreType($Score_Type) {
         $type = 'FG';
     }
     if ($Score_Type === 'Saf') {
-        $type = 'Saftey';
+        $type = 'Safety';
     }
     return $type;
 }
