@@ -2,7 +2,7 @@
 
 include ("../../libs/db/common_db_functions.php");
 
-$name = $_POST['name'];
+$name = addslashes($_POST['name']);
 
 $returnFoundNames = db_query("SELECT DISTINCT * FROM `players` WHERE concat(First_Name, ' ', Last_Name) LIKE '%$name%' GROUP BY First_Name ORDER BY Last_Name, First_Name LIMIT 3");
 
