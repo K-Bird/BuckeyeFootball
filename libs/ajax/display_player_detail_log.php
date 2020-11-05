@@ -216,6 +216,6 @@ function returnGameLogQuery($Player_Master_ID, $position) {
     }
     if ($position === 'LT' || $position === 'RT' || $position === 'LG' || $position === 'RG' || $position === 'C' || $position === 'OL' || $position === 'H' || $position === 'LS') {
 
-        return "SELECT * FROM `players` WHERE Player_Player_Master_ID={$Player_Master_ID}";
+        return "SELECT * FROM `players` WHERE Player_Master_ID={$Player_Master_ID}";
     }
 }

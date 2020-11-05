@@ -1373,7 +1373,7 @@ function displayOPPScoringPlay($fetchScoringPlays, $oppName, $displayType) {
 function displayPostPlayScoreText($Post_Play_Points, $Score_Type) {
 
     $postPlayText = '';
-    if ($Score_Type === 'passTD' || $Score_Type === 'rushTD' || $Score_Type === 'INT' || $Score_Type === 'fum' || $Score_Type === 'KR' || $Score_Type === 'PR') {
+    if ($Score_Type === 'passTD' || $Score_Type === 'rushTD' || $Score_Type === 'INT' || $Score_Type === 'Fum' || $Score_Type === 'KR' || $Score_Type === 'PR') {
         if ($Post_Play_Points === '0') {
             $postPlayText = 'XP Missed';
         }
@@ -1381,7 +1381,10 @@ function displayPostPlayScoreText($Post_Play_Points, $Score_Type) {
             $postPlayText = 'XP Good';
         }
         if ($Post_Play_Points === '2') {
-            $postPlayText = '2Pt Conversion';
+            $postPlayText = '2Pt Conversion Good';
+        }
+        if ($Post_Play_Points === '-2') {
+            $postPlayText = '2Pt Conversion Failed';
         }
     }
     if ($Score_Type === 'FG' || $Score_Type === 'Saf') {
@@ -1394,8 +1397,13 @@ function calculateGameFlowPoints($Score_Type, $Post_Points) {
 
     $points = 0;
 
-    if ($Score_Type === 'passTD' || $Score_Type === 'rushTD' || $Score_Type === 'INT' || $Score_Type === 'fum' || $Score_Type === 'KR' || $Score_Type === 'PR') {
-        $points = 6 + $Post_Points;
+    if ($Score_Type === 'passTD' || $Score_Type === 'rushTD' || $Score_Type === 'INT' || $Score_Type === 'Fum' || $Score_Type === 'KR' || $Score_Type === 'PR') {
+
+        if ($Post_Points < 0) {
+            $points = 6;
+        } else {
+            $points = 6 + $Post_Points;
+        }
     }
     if ($Score_Type === 'FG') {
         $points = 3;
@@ -1409,7 +1417,7 @@ function calculateGameFlowPoints($Score_Type, $Post_Points) {
 
 function displayFlowScoreType($Score_Type) {
 
-    if ($Score_Type === 'passTD' || $Score_Type === 'rushTD' || $Score_Type === 'INT' || $Score_Type === 'fum' || $Score_Type === 'KR' || $Score_Type === 'PR') {
+    if ($Score_Type === 'passTD' || $Score_Type === 'rushTD' || $Score_Type === 'INT' || $Score_Type === 'Fum' || $Score_Type === 'KR' || $Score_Type === 'PR') {
         $type = 'TD';
     }
     if ($Score_Type === 'FG') {

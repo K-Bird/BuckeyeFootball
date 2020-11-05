@@ -143,7 +143,7 @@ $fetchScoringData = $getScoringData->fetch_assoc();
                         echo '</tr>';
                         ?> 
                         <tr>
-                            <th colspan="6" style="text-align: left">Second Quarter</th>
+                            <th colspan="6" style="text-align: left">Second Quarter</th><th></th>
                         </tr>
                         <?php
                         $getScoringPlays = db_query("SELECT * FROM `games_scoring_plays` WHERE GM_ID='{$GM_ID}' AND Q='2' ORDER BY SUBSTR(Time_Left,0,1) DESC");
@@ -181,7 +181,7 @@ $fetchScoringData = $getScoringData->fetch_assoc();
                         echo '</tr>';
                         ?> 
                         <tr>
-                            <th colspan="6" style="text-align: left">Third Quarter</th>
+                            <th colspan="6" style="text-align: left">Third Quarter</th><th></th>
                         </tr>
                         <?php
                         $getScoringPlays = db_query("SELECT * FROM `games_scoring_plays` WHERE GM_ID='{$GM_ID}' AND Q='3' ORDER BY SUBSTR(Time_Left,0,1) DESC");
@@ -219,7 +219,7 @@ $fetchScoringData = $getScoringData->fetch_assoc();
                         echo '</tr>';
                         ?> 
                         <tr>
-                            <th colspan="6" style="text-align: left">Fourth Quarter</th>
+                            <th colspan="6" style="text-align: left">Fourth Quarter</th><th></th>
                         </tr>
                         <?php
                         $getScoringPlays = db_query("SELECT * FROM `games_scoring_plays` WHERE GM_ID='{$GM_ID}' AND Q='4' ORDER BY SUBSTR(Time_Left,0,1) DESC");

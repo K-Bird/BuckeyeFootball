@@ -99,23 +99,21 @@ function gameStatCardRows($category, $GM_ID) {
                     $XP_Percent = $XPM / $XPA;
                 } else {
                     $XP_Percent = 0;
-
-                    if ($FGA > 0) {
-                        $FG_Percent = $FGM / $FGA;
-                    } else {
-                        $FG_Percent = 0;
-
-                        echo '<td>' . returnPlayerName($master_ID) . '</td><td>' . $XPM . '</td><td>' . $XPA . '</td><td>' . toPercent($XP_Percent) . '</td><td>' . $FGM . '</td><td>' . $FGA . '</td><td>' . toPercent($FG_Percent) . '</td><td>' . $Long . '</td>';
-                    }
-                    if ($category === 'Punting') {
-                        $punts = $fetchPlayerStatRows['Att'];
-                        $puntYards = $fetchPlayerStatRows['Yards'];
-                        $Long = $fetchPlayerStatRows['LongPunt'];
-                        $punt_Avg = $puntYards / $punts;
-
-                        echo '<td>' . returnPlayerName($master_ID) . '</td><td>' . $punts . '</td><td>' . $puntYards . '</td><td>' . number_format($punt_Avg, 1) . '</td><td>' . $Long . '</td>';
-                    }
                 }
+                if ($FGA > 0) {
+                    $FG_Percent = $FGM / $FGA;
+                } else {
+                    $FG_Percent = 0;
+                }
+                echo '<tr><td>' . returnPlayerName($master_ID) . '</td><td>' . $XPM . '</td><td>' . $XPA . '</td><td>' . toPercent($XP_Percent) . '</td><td>' . $FGM . '</td><td>' . $FGA . '</td><td>' . toPercent($FG_Percent) . '</td><td>' . $Long . '</td></tr>';
+            }
+            if ($category === 'Punting') {
+                $punts = $fetchPlayerStatRows['Att'];
+                $puntYards = $fetchPlayerStatRows['Yards'];
+                $Long = $fetchPlayerStatRows['LongPunt'];
+                $punt_Avg = $puntYards / $punts;
+
+                echo '<tr><td>' . returnPlayerName($master_ID) . '</td><td>' . $punts . '</td><td>' . $puntYards . '</td><td>' . number_format($punt_Avg, 1) . '</td><td>' . $Long . '</td></tr>';
             }
         }
     }
