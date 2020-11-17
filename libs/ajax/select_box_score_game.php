@@ -9,8 +9,8 @@ $fetchGameData = $getGameData->fetch_assoc();
 $getBoxData = db_query("SELECT * FROM `games_box_scores` WHERE GM_ID='{$Game_ID}'");
 $fetchBoxData = $getBoxData->fetch_assoc();
 
-$curr_OSU_Total = $fetchBoxData['Q1_OSU'] + $fetchBoxData['Q2_OSU'] + $fetchBoxData['Q3_OSU'] + $fetchBoxData['Q4_OSU'];
-$curr_Opp_Total = $fetchBoxData['Q1_Opp'] + $fetchBoxData['Q2_Opp'] + $fetchBoxData['Q3_Opp'] + $fetchBoxData['Q4_Opp'];
+$curr_OSU_Total = $fetchBoxData['Q1_OSU'] + $fetchBoxData['Q2_OSU'] + $fetchBoxData['Q3_OSU'] + $fetchBoxData['Q4_OSU'] + $fetchBoxData['OT_OSU'];
+$curr_Opp_Total = $fetchBoxData['Q1_Opp'] + $fetchBoxData['Q2_Opp'] + $fetchBoxData['Q3_Opp'] + $fetchBoxData['Q4_Opp'] + $fetchBoxData['OT_Opp'];
 
 $OSU_Diff = $curr_OSU_Total - $fetchGameData['OSU_Score'];
 $Opp_Diff = $curr_Opp_Total - $fetchGameData['Opp_Score'];

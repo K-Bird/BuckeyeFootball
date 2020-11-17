@@ -1310,7 +1310,11 @@ function displayOSUScoringPlay($fetchScoringPlays, $displayType) {
         }
     }
     if ($displayType === 'full' || $displayType === 'input') {
+        if ($fetchScoringPlays['Time_Left'] === '') {
+            
+        } else {
         echo " (" . $fetchScoringPlays['Time_Left'] . " Remaining)";
+        }
     }
     if ($displayType === 'input') {
         echo '&nbsp; +', $fetchScoringPlays['Post_Play_Points'];
@@ -1357,7 +1361,11 @@ function displayOPPScoringPlay($fetchScoringPlays, $oppName, $displayType) {
         }
     }
     if ($displayType === 'full' || $displayType === 'input') {
+        if ($fetchScoringPlays['Time_Left'] === '') {
+            
+        } else {
         echo " (" . $fetchScoringPlays['Time_Left'] . " Remaining)";
+        }
     }
     if ($displayType === 'input') {
         echo '&nbsp; +', $fetchScoringPlays['Post_Play_Points'];

@@ -21,7 +21,7 @@ $fetchScoringData = $getScoringData->fetch_assoc();
                 <table class="table" style="text-align: center">
                     <thead>
                         <tr>
-                            <th></th><th>Q1</th><th>Q2</th><th>Q3</th><th>Q4</th><th>Final</th>
+                            <th></th><th>Q1</th><th>Q2</th><th>Q3</th><th>Q4</th><?php if ($fetchGameData['OT'] === 'Y') { echo '<th>OT</th>'; } ?><th>Final</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -39,6 +39,7 @@ $fetchScoringData = $getScoringData->fetch_assoc();
                             <td>
                                 <?php echo $fetchBoxData['Q4_OSU']; ?>
                             </td>
+                            <?php if ($fetchGameData['OT'] === 'Y') { echo '<td>',$fetchBoxData['OT_OSU'],'</td>'; } ?>
                             <td>
                                 <?php echo $fetchGameData['OSU_Score']; ?>
                             </td>
@@ -57,6 +58,7 @@ $fetchScoringData = $getScoringData->fetch_assoc();
                             <td>
                                 <?php echo $fetchBoxData['Q4_Opp']; ?>
                             </td>
+                            <?php if ($fetchGameData['OT'] === 'Y') { echo '<td>',$fetchBoxData['OT_Opp'],'</td>'; } ?>
                             <td>
                                 <?php echo $fetchGameData['Opp_Score']; ?>
                             </td>
@@ -65,8 +67,14 @@ $fetchScoringData = $getScoringData->fetch_assoc();
                             <td>Scoring Plays</td>
                             <?php
                             $i = 1;
-
-                            while ($i <= 4) {
+                            //If there is overtime set the quarters to account for to 5, otherwise 4
+                            if ($fetchGameData['OT'] === 'Y') {
+                                $num_qtrs = 5;
+                            } else {
+                                $num_qtrs = 4;
+                            }
+                        //Iterate through the number of quarters to display to scoring plays in each
+                            while ($i <= $num_qtrs) {
                                 $getScoringPlays = db_query("SELECT * FROM `games_scoring_plays` WHERE GM_ID='{$GM_ID}' AND Q='{$i}' ORDER BY SUBSTR(Time_Left,0,1) DESC");
 
                                 echo '<td><ul class="list-group">';
@@ -82,6 +90,7 @@ $fetchScoringData = $getScoringData->fetch_assoc();
                                 $i++;
                             }
                             ?> 
+                            <td></td>
                         </tr>
                     </tbody>
                 </table>
@@ -256,6 +265,44 @@ $fetchScoringData = $getScoringData->fetch_assoc();
                         echo '</ul></td>';
                         echo '</tr>';
                         ?> 
+                        <?php
+                        
+                        if ($fetchGameData['OT'] === 'Y') { echo '<tr><th colspan="6" style="text-align: left">Overtime</th><th></th></tr>'; } 
+                        
+                        $getScoringPlays = db_query("SELECT * FROM `games_scoring_plays` WHERE GM_ID='{$GM_ID}' AND Q='5' ORDER BY SUBSTR(Time_Left,0,1) DESC");
+                        while ($fetchScoringPlays = $getScoringPlays->fetch_assoc()) {
+                            echo '<tr>';
+                            echo '<td>';
+                            if ($fetchScoringPlays['OSU_OPP'] === 'OSU') {
+                                echo '<img src="libs/images/logo_nav.png" height="30" width="30">';
+                            }
+                            echo '</td>';
+                            echo '<td>', displayFlowScoreType($fetchScoringPlays['Play_Type']), '</td>';
+                            echo '<td><ul class="list-group">';
+
+                            if ($fetchScoringPlays['OSU_OPP'] === 'OSU') {
+                                echo displayOSUScoringPlay($fetchScoringPlays, 'lite');
+                                $game_flow_OSU_Points = 0;
+                                $game_flow_OSU_Points = calculateGameFlowPoints($fetchScoringPlays['Play_Type'], $fetchScoringPlays['Post_Play_Points']);
+                                $game_flow_OSU_Score = $game_flow_OSU_Score + $game_flow_OSU_Points;
+                            }
+                            if ($fetchScoringPlays['OSU_OPP'] === 'OPP') {
+                                echo displayOPPScoringPlay($fetchScoringPlays, opponentLookup($fetchGameData['Vs']),'lite');
+                                $game_flow_OPP_Points = calculateGameFlowPoints($fetchScoringPlays['Play_Type'], $fetchScoringPlays['Post_Play_Points']);
+                                $game_flow_OPP_Score = $game_flow_OPP_Score + $game_flow_OPP_Points;
+                            }
+                            echo '<td>';
+                            if ($fetchScoringPlays['video_ID'] != '0') {
+                                displayVideoModalIcon($fetchScoringPlays['video_ID'],returnScoringPlayVideoDesc($fetchScoringPlays));
+                            }
+                            echo '</td>';
+                            echo '<td>', $fetchScoringPlays['Time_Left'],'</td>';
+                            echo '<td>', $game_flow_OSU_Score, '</td>';
+                            echo '<td>', $game_flow_OPP_Score, '</td>';
+                        }
+                        echo '</ul></td>';
+                        echo '</tr>';
+                        ?>
                     </tbody>
                 </table>             
             </div>

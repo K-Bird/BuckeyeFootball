@@ -2146,11 +2146,19 @@
         if (quarter === 4) {
             display_quarter = 'Fourth Quarter';
         }
+        if (quarter === 5) {
+            display_quarter = 'Overtime';
+        }
 
         //update form quarter value
         $('input[name=q]').val(quarter);
         //update modal title
         $('#AddScoringPlayTitle').append('Add Scoring Play: ' + year + " - Week " + week + " - Vs " + opp + ' |  ' + display_quarter);
+        //If an overtime quarter disable the time left field
+        if (quarter === 5) {
+            $('input[name=TimeLeft]').prop('placeholder', 'N/A for OT');
+            $('input[name=TimeLeft]').prop('disabled', true);
+        }
 
     });
     //When box opp scoring play modal is opened update data and contents
@@ -2436,7 +2444,7 @@
                 {
                     url: "libs/ajax/select_score_play_game.php",
                     type: "POST",
-                    data: {new_game: Game_ID, Video_ID : Video_ID},
+                    data: {new_game: Game_ID, Video_ID: Video_ID},
                     success: function (data, textStatus, jqXHR)
                     {
                         $('#scoringPlayResults').replaceWith(data);
@@ -2453,12 +2461,12 @@
 
         var Play_ID = $(this).attr('data-playid');
         var Video_ID = $('#scorePlayVideoID').val();
-        
+
         $.ajax(
                 {
                     url: "libs/ajax/select_score_play_video.php",
                     type: "POST",
-                    data: {new_play : Play_ID, Video_ID : Video_ID},
+                    data: {new_play: Play_ID, Video_ID: Video_ID},
                     success: function (data, textStatus, jqXHR)
                     {
                         location.reload();
@@ -2467,19 +2475,19 @@
                     {
                         alert("Form Did Not Process: " + errorThrown);
                     }
-                });        
+                });
     });
-    
-        //When a box score game is clicked, display the game's box score for editing
+
+    //When a box score game is clicked, display the game's box score for editing
     $(document).on("click", '.removeScorePlay', function (e) {
 
         var Play_ID = $(this).attr('data-playid');
-        
+
         $.ajax(
                 {
                     url: "libs/ajax/remove_score_play_video.php",
                     type: "POST",
-                    data: {new_play : Play_ID},
+                    data: {new_play: Play_ID},
                     success: function (data, textStatus, jqXHR)
                     {
                         alert(data);
@@ -2488,6 +2496,6 @@
                     {
                         alert("Form Did Not Process: " + errorThrown);
                     }
-                });        
+                });
     });
 </script>
