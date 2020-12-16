@@ -13,6 +13,6 @@
             <a class="nav-item nav-link" href="media.php">Media</a>
         </div>
     </div>
-    <?php include ('nav/nav_id.php'); ?>
     <a class="nav-item nav-link" href="input.php">Input Data</a>
+    <?php include ('nav/nav_id.php'); ?>
 </nav>
