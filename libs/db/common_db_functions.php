@@ -1313,7 +1313,7 @@ function displayOSUScoringPlay($fetchScoringPlays, $displayType) {
         if ($fetchScoringPlays['Time_Left'] === '') {
             
         } else {
-        echo " (" . $fetchScoringPlays['Time_Left'] . " Remaining)";
+            echo " (" . $fetchScoringPlays['Time_Left'] . " Remaining)";
         }
     }
     if ($displayType === 'input') {
@@ -1364,7 +1364,7 @@ function displayOPPScoringPlay($fetchScoringPlays, $oppName, $displayType) {
         if ($fetchScoringPlays['Time_Left'] === '') {
             
         } else {
-        echo " (" . $fetchScoringPlays['Time_Left'] . " Remaining)";
+            echo " (" . $fetchScoringPlays['Time_Left'] . " Remaining)";
         }
     }
     if ($displayType === 'input') {
@@ -1435,4 +1435,320 @@ function displayFlowScoreType($Score_Type) {
         $type = 'Safety';
     }
     return $type;
+}
+
+/* Data Integrity Functions - Functions to support data integrity checks */
+
+function update_DI_Indicator($field, $status) {
+
+    if ($status == 'Y') {
+        db_query("UPDATE `data_integrity` SET DI_Status = 'Y' WHERE DI_Indicator = '{$field}'");
+    }
+    if ($status == 'N') {
+        db_query("UPDATE `data_integrity` SET DI_Status = 'N' WHERE DI_Indicator = '{$field}'");
+    }
+}
+
+function return_DI_Indicator($Indicator) {
+
+    $get_DI_Indicator = db_query("SELECT * FROM `data_integrity` WHERE DI_Indicator = '{$Indicator}'");
+    $fetch_DI_Indicator = $get_DI_Indicator->fetch_assoc();
+    $status = $fetch_DI_Indicator['DI_Status'];
+
+    if ($status === 'Y') {
+        echo '<span class="oi oi-circle-x" style="color: red"></span>';
+    }
+    if ($status === 'N') {
+        echo '<span class="oi oi-circle-check" style="color: green"></span>';
+    }
+}
+
+function DI_distinct_player_master_ids() {
+
+    $distinct_Master_IDs = array();
+    $get_All_Master_IDs = db_query("SELECT DISTINCT `player_master_id` FROM `players`");
+    while ($fetch_all_Master_IDs = $get_All_Master_IDs->fetch_assoc()) {
+        foreach ($fetch_all_Master_IDs as $col => $val) {
+            array_push($distinct_Master_IDs, $val);
+        }
+    }
+    return $distinct_Master_IDs;
+}
+
+function DI_distinct_player_ref_master_ids() {
+
+    $distinct_Master_IDs = array();
+    $get_All_Master_IDs = db_query("SELECT DISTINCT `player_master_id` FROM `ref_player_lookup`");
+    while ($fetch_all_Master_IDs = $get_All_Master_IDs->fetch_assoc()) {
+        foreach ($fetch_all_Master_IDs as $col => $val) {
+            array_push($distinct_Master_IDs, $val);
+        }
+    }
+    return $distinct_Master_IDs;
+}
+
+function DI_player_single_field($field) {
+
+    $distinct_master_id_array = DI_distinct_player_master_ids();
+    $anyDisc = 'N';
+
+    foreach ($distinct_master_id_array as $ID) {
+        $field_array = [];
+        $get_Master_ID_Info = db_query("SELECT * FROM `players` WHERE Player_Master_ID = '{$ID}'");
+        while ($fetch_Master_ID_Info = $get_Master_ID_Info->fetch_assoc()) {
+            array_push($field_array, $fetch_Master_ID_Info[$field]);
+        }
+        IF (count(array_unique($field_array)) === 1) {
+            
+        } ELSE {
+            echo '<span class="badge badge-dark">Affected Player_Master_IDs [`players`]:</span>&nbsp;<span class="badge badge-warning">' . $ID . '</span>&nbsp;';
+            $anyDisc = 'Y';
+        }
+    }
+    IF ($anyDisc === 'N') {
+        echo '<span class="badge badge-success">No Discrepancy Found</span>';
+    }
+    update_DI_Indicator($field, $anyDisc);
+}
+
+function DI_player_ref_check() {
+
+    $distinct_player_master_id_array = DI_distinct_player_master_ids();
+    $distinct_player_ref_id_array = DI_distinct_player_ref_master_ids();
+    $anyDisc = 'N';
+
+    //Find Master IDs that are in the player table but not ref lookup table
+    $player_diff_array = array_diff($distinct_player_master_id_array, $distinct_player_ref_id_array);
+    if (empty($player_diff_array)) {
+        echo '<span class="badge badge-success">players - No Missing IDs</span>';
+        update_DI_Indicator('Player_Ref', $anyDisc);
+    } else {
+        echo '<span class="badge badge-dark">In Players Not Ref - Missing IDs [`players` -> `ref_lookup_players`:</span>&nbsp;';
+        foreach ($player_diff_array as $ID) {
+            echo '<span class="badge badge-warning">' . $ID . '</span>&nbsp;';
+        }
+        $anyDisc = 'Y';
+    }
+
+    echo '<br><br>';
+
+    //Find Master IDs that are in the ref table but not the player table
+    $ref_diff_array = array_diff($distinct_player_ref_id_array, $distinct_player_master_id_array);
+    if (empty($ref_diff_array)) {
+        echo '<span class="badge badge-success">ref lookup - No Missing IDs</span>';
+    } else {
+        echo '<span class="badge badge-dark">In Ref Not Players - Missing IDs [`ref_lookup_players` -> `players`]:</span>&nbsp;';
+        foreach ($ref_diff_array as $ID) {
+            echo '<span class="badge badge-warning">' . $ID . '</span>&nbsp;';
+        }
+        $anyDisc = 'Y';
+    }
+
+    //Find any first name Discrepancy between player and ref lookup tables
+    echo '<br><br><span class="badge badge-dark">Name Discrepancies [ `players` <-> `ref_lookup_players` ]:</span>&nbsp;';
+    foreach ($distinct_player_master_id_array as $Player_Master_ID) {
+
+        $get_ref_name = db_query("SELECT * FROM `ref_player_lookup` WHERE Player_Master_ID = '{$Player_Master_ID}'");
+        $fetch_ref_name = $get_ref_name->fetch_assoc();
+        $ref_fname = $fetch_ref_name['First_Name'];
+        $ref_lname = $fetch_ref_name['Last_Name'];
+
+        $get_player_fname = getPlayerFieldByMasterID('First_Name', $Player_Master_ID);
+        $get_player_lname = getPlayerFieldByMasterID('Last_Name', $Player_Master_ID);
+
+        if ($ref_fname == $get_player_fname) {
+            
+        } else {
+            echo '<span class="badge badge-warning">' . $Player_Master_ID . ' (first)</span>&nbsp;';
+            $anyDisc = 'Y';
+        }
+        if ($ref_lname == $get_player_lname) {
+            
+        } else {
+            echo '<span class="badge badge-warning">' . $Player_Master_ID . ' (last)</span>&nbsp;';
+            $anyDisc = 'Y';
+        }
+    }
+    update_DI_Indicator('Player_Ref', $anyDisc);
+}
+
+function DI_recruit_Master_ID_check() {
+
+    $anyDisc = 'N';
+    $get_all_recruits = db_query("SELECT * FROM `recruits`");
+    echo '<span class="badge badge-dark">Recruit - Missing Master ID Link [`recruits` -> `players`]:</span>&nbsp;';
+    while ($fetch_all_recruits = $get_all_recruits->fetch_assoc()) {
+
+        if ($fetch_all_recruits['Player_ID'] == 0) {
+            $anyDisc = 'Y';
+            echo '<span class="badge badge-warning">' . $fetch_all_recruits['Recruit_ID'] . ' (' . $fetch_all_recruits['Class'] . ')</span>&nbsp;';
+        }
+    }
+    update_DI_Indicator('Recruit_Missing_ID', $anyDisc);
+}
+
+function DI_recruit_name_check() {
+
+    $anyDisc = 'N';
+    $get_all_recruits = db_query("SELECT * FROM `recruits`");
+    echo '<span class="badge badge-dark">Recruit - Name Discrepancies [ `recruit` <-> `players` ]:</span>&nbsp;';
+    while ($fetch_all_recruits = $get_all_recruits->fetch_assoc()) {
+
+        if ($fetch_all_recruits['Player_ID'] == 0) {
+            
+        } else {
+
+            $rec_fname = $fetch_all_recruits['First_Name'];
+            $rec_lname = $fetch_all_recruits['Last_Name'];
+            $Player_Master_ID = $fetch_all_recruits['Player_ID'];
+            $get_player_fname = getPlayerFieldByMasterID('First_Name', $Player_Master_ID);
+            $get_player_lname = getPlayerFieldByMasterID('Last_Name', $Player_Master_ID);
+
+            if ($rec_fname == $get_player_fname) {
+                
+            } else {
+                echo '<span class="badge badge-warning">' . $Player_Master_ID . ' (first)</span>&nbsp;';
+                $anyDisc = 'Y';
+            }
+            if ($rec_lname == $get_player_lname) {
+                
+            } else {
+                echo '<span class="badge badge-warning">' . $Player_Master_ID . ' (last)</span>&nbsp;';
+                $anyDisc = 'Y';
+            }
+        }
+    }
+    update_DI_Indicator('Recruit_Name', $anyDisc);
+}
+
+function DI_recruit_extra_master_id_check() {
+
+    $anyDisc = 'N';
+    $distinct_Rec_Master_IDs = array();
+    $get_All_Rec_Master_IDs = db_query("SELECT DISTINCT `Player_ID` FROM `recruits` WHERE `Player_ID`!= 0");
+    while ($fetch_all_Rec_Master_IDs = $get_All_Rec_Master_IDs->fetch_assoc()) {
+        foreach ($fetch_all_Rec_Master_IDs as $col => $val) {
+            array_push($distinct_Rec_Master_IDs, $val);
+        }
+    }
+
+    $distinct_player_master_ids = DI_distinct_player_master_ids();
+
+    $rec_diff_array = array_diff($distinct_Rec_Master_IDs, $distinct_player_master_ids);
+    if (empty($rec_diff_array)) {
+        echo '<span class="badge badge-success">`recruits` -> `players` - No Missing IDs</span>';
+    } else {
+        echo '<span class="badge badge-dark">In Recruits Not Players - Missing IDs [`recruits` -> `players`]:</span>&nbsp;';
+        foreach ($rec_diff_array as $ID) {
+            echo '<span class="badge badge-warning">' . $ID . '</span>&nbsp;';
+        }
+        $anyDisc = 'Y';
+    }
+    update_DI_Indicator('Recruit_Extra_ID', $anyDisc);
+}
+
+function DI_player_stats_indv_agg_check() {
+
+    //Set discrepancy to No
+    $anyDisc = 'N';
+
+    //Define the stat categories
+    $statCategories = array('def', 'kicking', 'passing', 'punting', 'rec', 'ret', 'rushing');
+
+    //Loop through each stat category
+    foreach ($statCategories as $category) {
+
+        //Define fields for each stat category
+        if ($category === 'def') {
+            $categoryFields = array('Tackles', 'ForLoss', 'Sacks', 'INTs', 'INT_TDs', 'PassDef', 'QBHurries', 'FumbleRec', 'FumbleTDs');
+        }
+        if ($category === 'kicking') {
+            $categoryFields = array('XPA', 'XPM', 'FGA', 'FGM');
+        }
+        if ($category === 'passing') {
+            $categoryFields = array('Comp', 'Att', 'Yards', 'TDs', 'INTs');
+        }
+        if ($category === 'punting') {
+            $categoryFields = array('Att','Yards');
+        }
+        if ($category === 'rec') {
+            $categoryFields = array('Rec', 'Yards', 'TDs');
+        }
+        if ($category === 'ret') {
+            $categoryFields = array('KR_Ret', 'KR_Yards', 'KR_TDs', 'PR_Ret', 'PR_Yards','PR_TDs');
+        }
+        if ($category === 'rushing') {
+            $categoryFields = array('Att','Yards', 'TDs');
+        }
+        
+        //Set number of fields for stat category
+        $number_of_fields = count($categoryFields);
+
+        //Get all players who have a stat in the category
+        $get_Player_Master_IDs = db_query("SELECT DISTINCT `Player_ID` FROM `stats_{$category}`");
+        
+        //Loop through each player
+        while ($fetch_Player_Master_IDs = $get_Player_Master_IDs->fetch_assoc()) {
+
+            $Player_Master_ID = $fetch_Player_Master_IDs['Player_ID'];
+            $stat_years = DI_player_stats_seasons_sorted($category, $Player_Master_ID);
+            
+            //Loop through each season a stat was recorded
+            foreach ($stat_years as $year => $val) {
+                $statCategoryIndvArray = array_fill(0, $number_of_fields, 0);
+                $statCategoryAggArray = array_fill(0, $number_of_fields, 0);
+                $get_player_statCategory_stats = db_query("SELECT * FROM `stats_{$category}` WHERE Player_ID='{$Player_Master_ID}'");
+                while ($fetch_player_statCategory_stats = $get_player_statCategory_stats->fetch_assoc()) {
+                    $season_year = getSeason_Year(getSeasonIDbyGameID($fetch_player_statCategory_stats['Game_ID']));
+                    $Season_ID = getSeason_ID($season_year);
+                    if ($season_year === $val) {
+                        $i = 0;
+                        $statCategoryValues = array_values($statCategoryIndvArray);
+                        while ($i < $number_of_fields) {
+                            $currentValue = $statCategoryValues[$i];
+                            $nextValue = $currentValue + $fetch_player_statCategory_stats[$categoryFields[$i]];
+                            $statCategoryIndvArray[$i] = $nextValue;
+                            $i++;
+                        }
+                    }
+                }
+                $Season_ID = getSeason_ID($val);
+                
+                //Get the corresponding aggregate stat row for the season
+                $get_player_agg_statCategory_stats = db_query("SELECT * FROM `stats_{$category}_agg` WHERE Player_ID='{$Player_Master_ID}' AND Season_ID='{$Season_ID}'");
+                while ($fetch_player_agg_statCategory_stats = $get_player_agg_statCategory_stats->fetch_assoc()) {
+                    $i = 0;
+
+                    while ($i < $number_of_fields) {
+                        $statCategoryAggArray[$i] = $fetch_player_agg_statCategory_stats[$categoryFields[$i]];
+                        $i++;
+                    }
+                }
+                //Compare the aggregated individual stats with the aggregate stats row
+                if ($statCategoryIndvArray == $statCategoryAggArray) {
+                    
+                } else {
+                    //If it does not match, set the discrepancy indicator to Yes and display details
+                    $anyDisc = 'Y';
+                    echo '<span class="badge badge-warning">ID: ' . $Player_Master_ID . ' (' . getPlayerFieldByMasterID('First_Name', $Player_Master_ID) . ' ' . getPlayerFieldByMasterID('Last_Name', $Player_Master_ID) . ') Season: ' . $Season_ID . ' (' . $val . ') - ' . $category . '</span>&nbsp;&nbsp;';
+                }
+            }
+        }
+    }
+    update_DI_Indicator('Player_Stat_Agg', $anyDisc);
+}
+
+function DI_player_stats_seasons_sorted($Stat_Category, $Player_Master_ID) {
+
+    $get_stat_years = db_query("SELECT * FROM `stats_{$Stat_Category}` WHERE Player_ID='{$Player_Master_ID}'");
+    $stat_year_array = array();
+    while ($fetch_stat_years = $get_stat_years->fetch_assoc()) {
+
+        $GameID = $fetch_stat_years['Game_ID'];
+        $season_year = getSeason_Year(getSeasonIDbyGameID($GameID));
+        array_push($stat_year_array, $season_year);
+    }
+    $stat_year_array = array_unique($stat_year_array);
+    sort($stat_year_array);
+    return $stat_year_array;
 }
