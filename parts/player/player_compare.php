@@ -85,7 +85,7 @@ function playerCompareYearsBtns($startYear, $endYear, $orientation) {
         echo '<button id="prevCompareYearLeft" class="btn btn-danger btn-sm" data-year="' . getSeason_Year($subLeftYear) . '"><span class="oi oi-minus"></span></button>';
     }
     if ($orientation === 'Right') {
-        echo '<button id="nextCompareYearRight" class="btn btn-success btn-sm" data-year="' . getSeason_Year($addRightYear) . '"><span class="oi oi-plus"></span></button>';
+        echo '<button id="nextCompareYearRight" class="btn btn-success btn-sm" data-year="'; if(seasonYearExists($endYear) === 'FALSE') { echo ''; } else { echo getSeason_Year($addRightYear); } echo '"'; if(seasonYearExists($endYear) === 'FALSE') { echo ' disabled'; } echo '><span class="oi oi-plus"></span></button>';
         echo '<br><br>';
         echo '<button id="prevCompareYearRight" class="btn btn-danger btn-sm" data-year="' . getSeason_Year($subRightYear) . '"><span class="oi oi-minus"></span></button>';
     }

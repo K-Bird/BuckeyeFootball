@@ -17,7 +17,7 @@ $get_PlayerCompareEnd = db_query("SELECT * FROM `Controls` WHERE Control='player
 $fetch_PlayerCompareEnd = $get_PlayerCompareEnd->fetch_assoc();
 $Player_Compare_End = $fetch_PlayerCompareEnd['Value'];
 
-$get_PlayerComparePosGroup = db_query("SELECT * FROM `Controls` WHERE Control='player_compare_pos_grouped'");
+$get_PlayerComparePosGroup = db_query("SELECT * FROM `Controls` WHERE Control='player_compare_pos_groups'");
 $fetch_PlayerComparePosGroup = $get_PlayerComparePosGroup->fetch_assoc();
 $Player_Compare_PosGroup = $fetch_PlayerComparePosGroup['Value'];
 ?>
