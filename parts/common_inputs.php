@@ -83,7 +83,7 @@ function displayConfChampSelect($current, $Season_ID) {
     echo '>Champions</option>';
 
     echo '<option value="Shared" ';
-    if ($currentConfChamp === 'Shared') {
+    if ($current === 'Shared') {
 
         echo 'Selected="Selected"';
     }
@@ -911,7 +911,16 @@ function playerOffseasonSelect($current, $player_row) {
     if ($current === "Not On Team") {
         echo 'selected';
     } echo '>Not On Team</option>';
-
+    
+    echo '<option value="Granted Extra Eligibility"';
+    if ($current === "Granted Extra Eligibility") {
+        echo 'selected';
+    } echo '>Granted Extra Eligibility</option>';
+    
+    echo '<option value="Medical Red-Shirt"';
+    if ($current === "Medical Red-Shirt") {
+        echo 'selected';
+    } echo '>Medical Red-Shirt</option>';
     echo '</select>';
 }
 

@@ -13,8 +13,6 @@ if ($seasonExists === 0) {
     echo 'Class Imported';
     $seasonID = getSeason_ID($class);
 
-$nextMasterID = incrementPlayerMasterID();
-
 //Copy recruits into player table
 db_query("INSERT INTO `players` (
 
@@ -35,7 +33,7 @@ db_query("INSERT INTO `players` (
     `Team_Status`,
     `Post_Season_Status`) SELECT
     
-    '{$nextMasterID}',
+    '0',
     '{$seasonID}',
     `Last_Name`, 
     `First_Name`,
@@ -54,8 +52,16 @@ db_query("INSERT INTO `players` (
     
 FROM `recruits` WHERE Class='{$class}'");
     
-//populate the Player_Master_ID in the recruits table
-db_query("UPDATE `recruits` INNER JOIN `players` ON recruits.Recruit_ID = players.Recruit_ID SET recruits.Player_ID = players.Player_Master_ID");
+//for each created player from recruits, populate the Player_Master_ID in players table
+$getNewRecruits = db_query("SELECT * FROM `players` WHERE Season='{$seasonID}' AND Class='FR' AND Team_Status='Recruit'");
+while ($fetchNewRecruits = $getNewRecruits->fetch_assoc()) {
+    
+    $nextMasterID = incrementPlayerMasterID();
+    $Player_Row = $fetchNewRecruits['Player_Row'];
+    $Recruit_ID = $fetchNewRecruits['Recruit_ID'];
+    db_query("UPDATE `players` SET Player_Master_ID='{$nextMasterID}' WHERE Player_Row='{$Player_Row}'");
+    db_query("UPDATE `recruits` SET Player_ID='{$nextMasterID}' WHERE Recruit_ID='{$Recruit_ID}'");
+}
 
 //Update atheletes to WR
 db_query("UPDATE `players` SET Position='WR' WHERE Position='ATH' AND Season='{$seasonID}'");

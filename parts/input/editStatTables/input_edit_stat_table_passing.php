@@ -17,9 +17,6 @@
                 <td>
                     INTs
                 </td>
-                <td>
-                    Rate
-                </td>
             </tr>
         </thead>
         <tbody>
@@ -38,9 +35,6 @@
                 </td>
                 <td>
                     <input class="form-control" type="text" name="passINTs" placeholder="<?php echo $fetchPlayerGameStats['INTs']; ?>">
-                </td>
-                <td>
-                    <input class="form-control" type="text" name="passRate" placeholder="<?php echo $fetchPlayerGameStats['Rate']; ?>">
                 </td>
             </tr>
             <tr style="text-align: center">

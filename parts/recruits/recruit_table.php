@@ -25,16 +25,16 @@
             while ($fetch_RecruitData = $get_RecruitData->fetch_assoc()) {
 
                 echo '<tr>';
-                echo '<td class="recruit-sort-natrk">', $fetch_RecruitData['Nat_RK'], '</td>';
-                echo '<td class="recruit-sort-strk">', $fetch_RecruitData['Pos_RK'], '</td>';
-                echo '<td class="recruit-sort-posrk">', $fetch_RecruitData['State_RK'], '</td>';
+                echo '<td class="recruit-sort-natrk">', display_Not_Ranked($fetch_RecruitData['Nat_RK']), '</td>';
+                echo '<td class="recruit-sort-strk">', display_Not_Ranked($fetch_RecruitData['Pos_RK']), '</td>';
+                echo '<td class="recruit-sort-posrk">', display_Not_Ranked($fetch_RecruitData['State_RK']), '</td>';
                 echo '<td class="recruit-sort-fname">', $fetch_RecruitData['First_Name'], '</td>';
                 echo '<td class="recruit-sort-lname">', $fetch_RecruitData['Last_Name'], '</td>';
                 echo '<td class="recruit-filter-pos" data-posval="', $fetch_RecruitData['Position'], '">', $fetch_RecruitData['Position'], '</td>';
                 echo '<td class="recruit-sort-ht">', $fetch_RecruitData['Height'], '</td>';
                 echo '<td class="recruit-sort-wt">', $fetch_RecruitData['Weight'], '</td>';
                 echo '<td class="recruit-sort-hometown">', $fetch_RecruitData['Hometown'], '</td>';
-                echo '<td class="recruit-sort-stars">', $fetch_RecruitData['Stars'], '</td>';
+                echo '<td class="recruit-sort-stars">', display_Not_Ranked($fetch_RecruitData['Stars']), '</td>';
                 echo '<td class="recruit-sort-score">', number_format($fetch_RecruitData['Score'], 4), '</td>';
                 echo '<td>';
 

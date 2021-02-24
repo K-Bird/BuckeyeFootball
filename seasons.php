@@ -188,11 +188,22 @@ include ("parts/common_inputs.php");
 
             }
             if (decade === '2010s') {
-
-                var currYear = (new Date()).getFullYear()
-
-                slider.noUiSlider.set([2010, currYear]);
+                slider.noUiSlider.set([2010, 2019]);
                 localStorage['startYear'] = 2010;
+                localStorage['endYear'] = 2019;
+
+            }
+            if (decade === '2020s') {
+
+                var currYear = (new Date()).getFullYear();
+                var currYearExists = getSeasonYearExists();
+
+                if (currYearExists === 'FALSE') {
+                    currYear = currYear - 1;
+                }
+                
+                slider.noUiSlider.set([2020, currYear]);
+                localStorage['startYear'] = 2020;
                 localStorage['endYear'] = currYear;
 
             }
@@ -533,5 +544,27 @@ include ("parts/common_inputs.php");
 
 
 
+    }
+
+    function getSeasonYearExists() {
+
+        var exists = "";
+        var currYear = (new Date()).getFullYear();
+        $.ajax(
+                {
+                    async: false,
+                    url: "libs/ajax/check_season_year_exists.php",
+                    type: "POST",
+                    data: {currYear: currYear},
+                    success: function (data, textStatus, jqXHR)
+                    {
+                        exists = data.toString();
+                    },
+                    error: function (jqXHR, textStatus, errorThrown)
+                    {
+                        alert("Get Season Year Exists Failed: " + errorThrown);
+                    }
+                });
+        return exists;
     }
 </script>

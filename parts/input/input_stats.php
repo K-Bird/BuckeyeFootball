@@ -72,7 +72,14 @@
                                    data-lname="', getPlayerFieldByRow("Last_Name", $inputAddPlayer), '" 
                                    data-season="', $Input_Season, '"
                                    data-toggle="modal" 
-                                   data-target="#addStatModal">
+                                   data-target="#addStatModal"';
+                        
+                        if (opponentLookup($fetchGameData['Vs']) === 'BYE') {
+                            echo ' disabled';
+                        }
+                        
+                        
+                                    echo '>
                                    <span class="oi oi-plus"></span>
                               </button>';
                         echo '</td>';

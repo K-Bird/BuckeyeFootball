@@ -142,8 +142,19 @@
         <br>
         <span class="badge badge-dark">Select Timeframe to View</span><br><br>
         <div id="DataYearSlider"></div>
-        <?php echo buildDecadeButtons('dataDecadeSlider'); ?>
-        <button class="btn btn-secondary dataDecadeSlider" data-decade="currYear">Current Season</button>
+        <?php 
+        echo buildDecadeButtons('dataDecadeSlider'); 
+        
+        $currentYear = date("Y");
+        $disableCurrentYearDecadeBtn  = '';
+        
+        if (seasonYearExists($currentYear) === 'FALSE') {
+            $disableCurrentYearDecadeBtn = ' disabled ';
+        }
+        
+        ?>
+        
+        <button class="btn btn-secondary dataDecadeSlider" data-decade="currYear" <?php echo $disableCurrentYearDecadeBtn; ?>>Current Season</button>
     </div>
     <div class="col-lg-2">
 

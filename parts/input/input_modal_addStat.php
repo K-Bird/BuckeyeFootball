@@ -58,7 +58,6 @@
                                             <span class="badge badge-secondary statLabel kickLabel">FG Long</span>
                                         </th>
                                         <th>
-                                            <span class="badge badge-secondary statLabel passLabel">Rate</span>
                                             <span class="badge badge-secondary statLabel defLabel">Pass Def</span>
                                             <span class="badge badge-secondary statLabel retLabel">Punt Return TDs</span>
                                         </th>
@@ -128,7 +127,6 @@
                                             <input type="text" class="form-control statInput kickInput" name="kickLong" style="width: 75px">
                                         </td>
                                         <td>
-                                            <input type="text" class="form-control statInput passInput" name="passRate" style="width: 75px">
                                             <input type="text" class="form-control statInput defInput" name="defPassDef" style="width: 75px">
                                             <input type="text" class="form-control statInput retInput" name="retPRRetTDs" style="width: 75px">
                                         </td>

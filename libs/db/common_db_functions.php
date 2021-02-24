@@ -223,7 +223,7 @@ function playerStatCardthead($cagetory) {
 
     if ($cagetory === 'Passing') {
 
-        return '<th></th><th>Completions</th><th>Attempts</th><th>Completion %</th><th>Yards</th><th>TDs</th><th>INTs</th><th>QB Rating</th>';
+        return '<th></th><th>Completions</th><th>Attempts</th><th>Completion %</th><th>Yards</th><th>TDs</th><th>INTs</th>';
     }
     if ($cagetory === 'Rushing') {
 
@@ -904,6 +904,16 @@ function returnGameIndicator($category, $Game_ID) {
     }
 }
 
+function seasonYearExists($season_year) {
+
+    $checkSeasonExists = db_query("SELECT * FROM `seasons` WHERE Year='{$season_year}'");
+    if (mysqli_num_rows($checkSeasonExists) > 0) {
+        return "TRUE";
+    } else {
+        return "FALSE";
+    }
+}
+
 /* Player Functions - Player specific functions */
 
 //Return if a player is a stater at their position in context of depth chart number
@@ -1084,7 +1094,12 @@ function opponentLookup($opp_ID) {
     $getOpp = db_query("SELECT * FROM `opponents` WHERE Team_ID='{$opp_ID}'");
     $fetchOpp = $getOpp->fetch_assoc();
     $oppName = $fetchOpp['School'];
-    return $oppName;
+
+    if ($opp_ID == '0') {
+        return 'BYE';
+    } else {
+        return $oppName;
+    }
 }
 
 //Convert a number to a percentage
@@ -1501,7 +1516,7 @@ function DI_player_single_field($field) {
         IF (count(array_unique($field_array)) === 1) {
             
         } ELSE {
-            echo '<span class="badge badge-dark">Affected Player_Master_IDs [`players`]:</span>&nbsp;<span class="badge badge-warning">' . $ID . '</span>&nbsp;';
+            echo '<span class="badge badge-warning">' . $ID . '</span>&nbsp;';
             $anyDisc = 'Y';
         }
     }
@@ -1520,32 +1535,26 @@ function DI_player_ref_check() {
     //Find Master IDs that are in the player table but not ref lookup table
     $player_diff_array = array_diff($distinct_player_master_id_array, $distinct_player_ref_id_array);
     if (empty($player_diff_array)) {
-        echo '<span class="badge badge-success">players - No Missing IDs</span>';
         update_DI_Indicator('Player_Ref', $anyDisc);
     } else {
-        echo '<span class="badge badge-dark">In Players Not Ref - Missing IDs [`players` -> `ref_lookup_players`:</span>&nbsp;';
         foreach ($player_diff_array as $ID) {
-            echo '<span class="badge badge-warning">' . $ID . '</span>&nbsp;';
+            echo '<span class="badge badge-warning">' . $ID . ' (Missing ID - Players)</span>&nbsp;';
         }
         $anyDisc = 'Y';
     }
 
-    echo '<br><br>';
-
     //Find Master IDs that are in the ref table but not the player table
     $ref_diff_array = array_diff($distinct_player_ref_id_array, $distinct_player_master_id_array);
     if (empty($ref_diff_array)) {
-        echo '<span class="badge badge-success">ref lookup - No Missing IDs</span>';
+        
     } else {
-        echo '<span class="badge badge-dark">In Ref Not Players - Missing IDs [`ref_lookup_players` -> `players`]:</span>&nbsp;';
         foreach ($ref_diff_array as $ID) {
-            echo '<span class="badge badge-warning">' . $ID . '</span>&nbsp;';
+            echo '<span class="badge badge-warning">' . $ID . ' (Missing ID - Player Ref)</span>&nbsp;';
         }
         $anyDisc = 'Y';
     }
 
     //Find any first name Discrepancy between player and ref lookup tables
-    echo '<br><br><span class="badge badge-dark">Name Discrepancies [ `players` <-> `ref_lookup_players` ]:</span>&nbsp;';
     foreach ($distinct_player_master_id_array as $Player_Master_ID) {
 
         $get_ref_name = db_query("SELECT * FROM `ref_player_lookup` WHERE Player_Master_ID = '{$Player_Master_ID}'");
@@ -1559,15 +1568,18 @@ function DI_player_ref_check() {
         if ($ref_fname == $get_player_fname) {
             
         } else {
-            echo '<span class="badge badge-warning">' . $Player_Master_ID . ' (first)</span>&nbsp;';
+            echo '<span class="badge badge-warning">' . $Player_Master_ID . ' (Name - First)</span>&nbsp;';
             $anyDisc = 'Y';
         }
         if ($ref_lname == $get_player_lname) {
             
         } else {
-            echo '<span class="badge badge-warning">' . $Player_Master_ID . ' (last)</span>&nbsp;';
+            echo '<span class="badge badge-warning">' . $Player_Master_ID . ' (Name - Last)</span>&nbsp;';
             $anyDisc = 'Y';
         }
+    }
+    IF ($anyDisc === 'N') {
+        echo '<span class="badge badge-success">No Discrepancy Found</span>';
     }
     update_DI_Indicator('Player_Ref', $anyDisc);
 }
@@ -1576,13 +1588,15 @@ function DI_recruit_Master_ID_check() {
 
     $anyDisc = 'N';
     $get_all_recruits = db_query("SELECT * FROM `recruits`");
-    echo '<span class="badge badge-dark">Recruit - Missing Master ID Link [`recruits` -> `players`]:</span>&nbsp;';
     while ($fetch_all_recruits = $get_all_recruits->fetch_assoc()) {
 
-        if ($fetch_all_recruits['Player_ID'] == 0) {
+        if ($fetch_all_recruits['Player_ID'] == 0 && $fetch_all_recruits['On_Team'] != 'N') {
             $anyDisc = 'Y';
             echo '<span class="badge badge-warning">' . $fetch_all_recruits['Recruit_ID'] . ' (' . $fetch_all_recruits['Class'] . ')</span>&nbsp;';
         }
+    }
+    if ($anyDisc === 'N') {
+        echo '<span class="badge badge-success">No Discrepancy Found</span>';
     }
     update_DI_Indicator('Recruit_Missing_ID', $anyDisc);
 }
@@ -1591,7 +1605,6 @@ function DI_recruit_name_check() {
 
     $anyDisc = 'N';
     $get_all_recruits = db_query("SELECT * FROM `recruits`");
-    echo '<span class="badge badge-dark">Recruit - Name Discrepancies [ `recruit` <-> `players` ]:</span>&nbsp;';
     while ($fetch_all_recruits = $get_all_recruits->fetch_assoc()) {
 
         if ($fetch_all_recruits['Player_ID'] == 0) {
@@ -1618,6 +1631,9 @@ function DI_recruit_name_check() {
             }
         }
     }
+    if ($anyDisc === 'N') {
+        echo '<span class="badge badge-success">No Discrepancy Found</span>';
+    }
     update_DI_Indicator('Recruit_Name', $anyDisc);
 }
 
@@ -1636,9 +1652,8 @@ function DI_recruit_extra_master_id_check() {
 
     $rec_diff_array = array_diff($distinct_Rec_Master_IDs, $distinct_player_master_ids);
     if (empty($rec_diff_array)) {
-        echo '<span class="badge badge-success">`recruits` -> `players` - No Missing IDs</span>';
+        echo '<span class="badge badge-success">No Discrepancy Found</span>';
     } else {
-        echo '<span class="badge badge-dark">In Recruits Not Players - Missing IDs [`recruits` -> `players`]:</span>&nbsp;';
         foreach ($rec_diff_array as $ID) {
             echo '<span class="badge badge-warning">' . $ID . '</span>&nbsp;';
         }
@@ -1669,30 +1684,30 @@ function DI_player_stats_indv_agg_check() {
             $categoryFields = array('Comp', 'Att', 'Yards', 'TDs', 'INTs');
         }
         if ($category === 'punting') {
-            $categoryFields = array('Att','Yards');
+            $categoryFields = array('Att', 'Yards');
         }
         if ($category === 'rec') {
             $categoryFields = array('Rec', 'Yards', 'TDs');
         }
         if ($category === 'ret') {
-            $categoryFields = array('KR_Ret', 'KR_Yards', 'KR_TDs', 'PR_Ret', 'PR_Yards','PR_TDs');
+            $categoryFields = array('KR_Ret', 'KR_Yards', 'KR_TDs', 'PR_Ret', 'PR_Yards', 'PR_TDs');
         }
         if ($category === 'rushing') {
-            $categoryFields = array('Att','Yards', 'TDs');
+            $categoryFields = array('Att', 'Yards', 'TDs');
         }
-        
+
         //Set number of fields for stat category
         $number_of_fields = count($categoryFields);
 
         //Get all players who have a stat in the category
         $get_Player_Master_IDs = db_query("SELECT DISTINCT `Player_ID` FROM `stats_{$category}`");
-        
+
         //Loop through each player
         while ($fetch_Player_Master_IDs = $get_Player_Master_IDs->fetch_assoc()) {
 
             $Player_Master_ID = $fetch_Player_Master_IDs['Player_ID'];
             $stat_years = DI_player_stats_seasons_sorted($category, $Player_Master_ID);
-            
+
             //Loop through each season a stat was recorded
             foreach ($stat_years as $year => $val) {
                 $statCategoryIndvArray = array_fill(0, $number_of_fields, 0);
@@ -1713,12 +1728,11 @@ function DI_player_stats_indv_agg_check() {
                     }
                 }
                 $Season_ID = getSeason_ID($val);
-                
+
                 //Get the corresponding aggregate stat row for the season
                 $get_player_agg_statCategory_stats = db_query("SELECT * FROM `stats_{$category}_agg` WHERE Player_ID='{$Player_Master_ID}' AND Season_ID='{$Season_ID}'");
                 while ($fetch_player_agg_statCategory_stats = $get_player_agg_statCategory_stats->fetch_assoc()) {
                     $i = 0;
-
                     while ($i < $number_of_fields) {
                         $statCategoryAggArray[$i] = $fetch_player_agg_statCategory_stats[$categoryFields[$i]];
                         $i++;
@@ -1734,6 +1748,9 @@ function DI_player_stats_indv_agg_check() {
                 }
             }
         }
+    }
+    IF ($anyDisc === 'N') {
+        echo '<span class="badge badge-success">No Discrepancy Found</span>';
     }
     update_DI_Indicator('Player_Stat_Agg', $anyDisc);
 }

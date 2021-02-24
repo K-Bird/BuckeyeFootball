@@ -45,10 +45,6 @@ if ($Category === 'passing') {
         db_query("UPDATE `stats_passing_agg` SET INTs=INTs + '{$INTDiff}' WHERE Season_ID='{$seasonID}' AND Player_ID='{$playerID}'");
         db_query("UPDATE `stats_passing` SET INTs='{$INTs}' WHERE Game_ID='{$gameID}' AND Player_ID='{$playerID}'");
     }
-    if ($_POST['passRate'] != '') {
-        $rate = $_POST['passRate'];
-        db_query("UPDATE `stats_passing` SET Rate='{$rate}' WHERE Game_ID='{$gameID}' AND Player_ID='{$playerID}'");
-    }
 }
 
 

@@ -2498,4 +2498,32 @@
                     }
                 });
     });
+
+    //When recruit on team status is changed update the database
+    $('.recOnTeam').change(function () {
+
+        var change = '';
+        var recID = $(this).attr('id');
+        if (this.checked) {
+            change = 'N';
+        } else {
+            change = '';
+        }
+
+        $.ajax(
+                {
+                    url: "libs/ajax/update_recruit_on_team.php",
+                    type: "POST",
+                    data: {recID: recID, recChg: change},
+                    success: function (data, textStatus, jqXHR)
+                    {
+                        alert(data);
+                        //location.reload();
+                    },
+                    error: function (jqXHR, textStatus, errorThrown)
+                    {
+                        alert("Form Did Not Process: " + errorThrown);
+                    }
+                });
+    });
 </script>

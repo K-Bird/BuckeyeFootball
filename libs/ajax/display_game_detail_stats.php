@@ -49,11 +49,10 @@ function gameStatCardRows($category, $GM_ID) {
                 $yards = $fetchPlayerStatRows['Yards'];
                 $TDs = $fetchPlayerStatRows['TDs'];
                 $INTs = $fetchPlayerStatRows['INTs'];
-                $Rate = $fetchPlayerStatRows['Rate'];
 
                 $CompPercentage = $comp / $att;
 
-                echo '<tr><td>' . returnPlayerName($master_ID) . '</td><td>' . $comp . '</td><td>' . $att . '</td><td>' . toPercent($CompPercentage) . '</td><td>' . number_format($yards) . '</td><td>' . $TDs . '</td><td>' . $INTs . '</td><td>' . number_format($Rate, 1) . '</td></tr>';
+                echo '<tr><td>' . returnPlayerName($master_ID) . '</td><td>' . $comp . '</td><td>' . $att . '</td><td>' . toPercent($CompPercentage) . '</td><td>' . number_format($yards) . '</td><td>' . $TDs . '</td><td>' . $INTs . '</td></tr>';
             }
             if ($category === 'Rushing') {
                 $att = $fetchPlayerStatRows['Att'];

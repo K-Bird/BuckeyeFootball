@@ -6,9 +6,9 @@
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
         <div class="navbar-nav">
             <a class="nav-item nav-link" href="index.php">Home</a>
-            <a class="nav-item nav-link" href="seasons.php">Seasons</a>
             <a class="nav-item nav-link" href="recruits.php">Recruits</a>
             <a class="nav-item nav-link" href="players.php">Players</a>
+            <a class="nav-item nav-link" href="seasons.php">Seasons</a>
             <a class="nav-item nav-link" href="data.php">Data</a>
             <a class="nav-item nav-link" href="media.php">Media</a>
         </div>

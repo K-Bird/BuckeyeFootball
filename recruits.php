@@ -62,3 +62,17 @@ $Recruit_View = $fetch_RecruitView['Value'];
         });
     });
 </script>
+<?php
+
+function display_Not_Ranked($Rank) {
+    
+    if ($Rank === '0') {
+        echo 'Not Ranked';
+    } else {
+        echo $Rank;
+    }
+    
+}
+
+
+?>

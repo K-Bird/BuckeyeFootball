@@ -34,7 +34,7 @@ include ("libs/db/common_db_functions.php");
             </div>
             <div class="col-lg-3">
                 <div class="card">
-                    <h5 class="card-header">Recruit to Players Missing Master ID &nbsp; <span id="DI_Indicator_Recruit_Missing_ID"></span></h5>
+                    <h5 class="card-header">Recruit to Players Missing Master ID Link &nbsp; <span id="DI_Indicator_Recruit_Missing_ID"></span></h5>
                     <div class="card-body">
                         <div id="DI_Recruit_Missing_ID_Content">
                             <div class="elementLoader"></div>
@@ -44,7 +44,7 @@ include ("libs/db/common_db_functions.php");
             </div>
             <div class="col-lg-3">
                 <div class="card">
-                    <h5 class="card-header">Recruit to Players Name Discrepancies &nbsp; <span id="DI_Indicator_Recruit_Name"></span></h5>
+                    <h5 class="card-header">Recruit <-> Players Name Discrepancies &nbsp; <span id="DI_Indicator_Recruit_Name"></span></h5>
                     <div class="card-body">
                         <div id="DI_Recruit_Name_Content">
                             <div class="elementLoader"></div>
@@ -54,7 +54,7 @@ include ("libs/db/common_db_functions.php");
             </div>
             <div class="col-lg-3">
                 <div class="card">
-                    <h5 class="card-header">Recruit to Players Extra Master ID &nbsp; <span id="DI_Indicator_Recruit_Extra_ID"></span></h5>
+                    <h5 class="card-header">In Recruits Not Players&nbsp; <span id="DI_Indicator_Recruit_Extra_ID"></span></h5>
                     <div class="card-body">
                         <div id="DI_Recruit_Extra_ID_Content">
                             <div class="elementLoader"></div>
@@ -73,7 +73,7 @@ include ("libs/db/common_db_functions.php");
             </div>
             <div class="col-lg-2">
                 <div class="card">
-                    <h5 class="card-header">First Name Discrepancy &nbsp; <span id="DI_Indicator_First_Name"></span></h5>
+                    <h5 class="card-header">First Name `players` &nbsp; <span id="DI_Indicator_First_Name"></span></h5>
                     <div class="card-body">
                         <div id="DI_First_Name_Disc_Content">
                             <div class="elementLoader"></div>
@@ -83,7 +83,7 @@ include ("libs/db/common_db_functions.php");
             </div>
             <div class="col-lg-2">
                 <div class="card">
-                    <h5 class="card-header">Last Name Discrepancy &nbsp; <span id="DI_Indicator_Last_Name"></span></h5>
+                    <h5 class="card-header">Last Name `players` &nbsp; <span id="DI_Indicator_Last_Name"></span></h5>
                     <div class="card-body">
                         <div id="DI_Last_Name_Disc_Content">
                             <div class="elementLoader"></div>
@@ -93,7 +93,7 @@ include ("libs/db/common_db_functions.php");
             </div>
             <div class="col-lg-5">
                 <div class="card">
-                    <h5 class="card-header">Player Ref Discrepancy &nbsp; <span id="DI_Indicator_Player_Ref"></span></h5>
+                    <h5 class="card-header">Players <-> Player Ref Discrepancy &nbsp; <span id="DI_Indicator_Player_Ref"></span></h5>
                     <div class="card-body">
                         <div id="DI_Player_Ref_Disc_Content">
                             <div class="elementLoader"></div>

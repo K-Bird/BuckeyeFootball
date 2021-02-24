@@ -26,11 +26,8 @@ if ($Category === 'pass') {
     if (isset($_POST['passINTs'])) {
         $INTs = $_POST['passINTs'];
     }
-    if (isset($_POST['passRate'])) {
-        $rate = $_POST['passRate'];
-    }
 
-    db_query("INSERT INTO `stats_passing` (Game_ID, Player_ID, Comp, Att, Yards, TDs, INTs, Rate) VALUES ('{$gameID}','{$playerID}','{$completions}','{$attempts}','{$yards}','{$TDs}','{$INTs}','{$rate}')");
+    db_query("INSERT INTO `stats_passing` (Game_ID, Player_ID, Comp, Att, Yards, TDs, INTs) VALUES ('{$gameID}','{$playerID}','{$completions}','{$attempts}','{$yards}','{$TDs}','{$INTs}')");
 
     /* Check for and update aggregate passing stats */
     if (doesAggExist($playerID, $gameID, $Category) === true) {

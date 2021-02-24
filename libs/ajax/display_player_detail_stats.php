@@ -88,8 +88,6 @@ function playerStatCardrow($category, $year, $master_ID) {
         $yards = 0;
         $TDs = 0;
         $INTs = 0;
-        $Rate = 0;
-        $RateCount = 0;
 
         $getPassingStats = db_query("SELECT * FROM `stats_passing` WHERE Player_ID='{$master_ID}'");
         while ($fetchPassingStats = $getPassingStats->fetch_assoc()) {
@@ -101,15 +99,12 @@ function playerStatCardrow($category, $year, $master_ID) {
                 $yards = $yards + $fetchPassingStats['Yards'];
                 $TDs = $TDs + $fetchPassingStats['TDs'];
                 $INTs = $INTs + $fetchPassingStats['INTs'];
-                $Rate = $Rate + $fetchPassingStats['Rate'];
-                $RateCount++;
             }
         }
 
         $CompPercentage = $comp / $att;
-        $RateAVG = $Rate / $RateCount;
 
-        echo '<td>' . $year . '</td><td>' . $comp . '</td><td>' . $att . '</td><td>' . toPercent($CompPercentage) . '</td><td>' . number_format($yards) . '</td><td>' . $TDs . '</td><td>' . $INTs . '</td><td>' . number_format($RateAVG, 1) . '</td>';
+        echo '<td>' . $year . '</td><td>' . $comp . '</td><td>' . $att . '</td><td>' . toPercent($CompPercentage) . '</td><td>' . number_format($yards) . '</td><td>' . $TDs . '</td><td>' . $INTs . '</td>';
     }
 
     if ($category === 'Rushing') {
